@@ -2,6 +2,8 @@
 try {
 require_once('/Models/AppUser.php');
 require_once('/Models/Student.php');
+require_once('/Models/StudentDB.php');
+require_once('/Models/db.php');
 
 
 $action = filter_input(INPUT_POST, 'action');
@@ -25,19 +27,19 @@ switch($action) {
 				$role = filter_input(INPUT_POST, "isTutor");
 
 				if ($role == NULL) {
-						$testStudent = new Student(1, 'test', 'user', 'L00123123', 'testpassword', 'email@email.com', 1);
-						//$student = AppUserDB::StudentLogin($username, $password);
+						//$testStudent = new Student(1, 'test', 'user', 'L00123123', 'testpassword', 'email@email.com', 1);
+						$user = StudentDB::StudentLogin($username, $password);
 
-				if (($username == $testStudent->getLNumber()) &	($password == $testStudent->getPassword())) {
-						$_SESSION['user'] = $testStudent;
-						$tutors = array();
-						$questions = array();
-						include("/Views/Home.php");
-				} else {
-						$_SESSION['user'] = null;
-						$loginError = "Login attempt failed.";
-						include("Views/Login.php");
-				}
+						if ($user !== null && isset($user)) {
+								$_SESSION['user'] = $user;
+								//$tutors = array();
+								//$questions = array();
+								include("/Views/Home.php");
+						} else {
+								$_SESSION['user'] = null;
+								$loginError = "Login attempt failed.";
+								include("Views/Login.php");
+						}
 
 
 				//$_SESSION['user'] = $student;
