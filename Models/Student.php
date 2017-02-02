@@ -1,6 +1,4 @@
 <?php
-include_once('../Models/AppUser.php');
-
 class Student extends AppUser {
     private $MajorID;
 
