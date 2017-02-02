@@ -1,6 +1,5 @@
 
 <?php
-
 class AppUser {
     protected $userID, $firstName, $lastName, $lnumber, $pass, $email;
 
