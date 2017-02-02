@@ -2,9 +2,9 @@
 
 class Database {
 	//static = create only one, and is not an instance of an object
-    private static $dsn = 'mysql:host=localhost:3307;dbname=CITLabMonitor';
-    private static $username = 'cittest';
-    private static $password = 'password';
+    private static $dsn = 'mysql:host=localhost;dbname=CITLabMonitor';
+    private static $username = 'root';
+    private static $password = '';
     private static $db;
 
     private function __construct() {}

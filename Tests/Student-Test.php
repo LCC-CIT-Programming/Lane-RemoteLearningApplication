@@ -1,4 +1,5 @@
 <?php
+include_once('../Models/AppUser.php');
 include_once('../Models/Student.php');
 
 function canConstructStudent() {

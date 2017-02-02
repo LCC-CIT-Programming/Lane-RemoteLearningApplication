@@ -72,7 +72,7 @@
 
 	  <div class="col-lg-6 well" id="student_div">
 		<!-- <img src="smiley.png" align="left" class="smiley"> -->
-		<h4 class="yourName"><?php echo $testStudent->getFirstName(); ?></h4>
+		<h4 class="yourName"><?php echo $user->getFirstName(); ?></h4>
 		<h4><a href="#">Edit Profile</a></h4>
 	  </div>
 
