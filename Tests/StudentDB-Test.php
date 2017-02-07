@@ -9,7 +9,7 @@ function canStudentLogin() {
   if ($user->getFirstName() == 'Student1') {
     echo "<p style='color:green;'> Student Login was successful! </p>";
   } else {
-    echo "<p style='color:red;'> Student Login not successful! </p>";
+    echo "<p style='color:red;'> Student Login was not successful! </p>";
   }
 }
 

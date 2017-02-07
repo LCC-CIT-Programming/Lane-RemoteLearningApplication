@@ -19,6 +19,37 @@ class CourseDB {
     $statement->closeCursor();
   }
 
+  public static function RetrieveCourse($course) {
+    $CourseNumber = $course->getCourseNumber();
+    $CourseName = $course->getCourseName();
+    $LeadInstructorID = $course->getLeadInstructor();
+
+    $query = 'SELECT *
+              FROM course
+              WHERE CourseNumber = :coursenum
+              AND CourseName = :coursename
+              AND LeadInstructorID = :leadinstructor';
+
+    $db = Database::getDB();
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(":coursenum", $CourseNumber);
+    $statement->bindValue(":coursename", $CourseName);
+    $statement->bindValue(":leadinstructor", $LeadInstructorID);
+    $statement->execute();
+    $row = $statement->fetch();
+    $statement->closeCursor();
+
+    if ($row != false){
+		    $course = new Course($row['CourseNumber'],
+									              $row['CourseName'],
+              									$row['LeadInstructorId']);
+			 return $course;
+   } else {
+    	 return null;
+   }
+  }
+
   public static function UpdateCourseByNumber($course) {
     $CourseNumber = $course->getCourseNumber();
     $CourseName = $course->getCourseName();
@@ -28,7 +59,9 @@ class CourseDB {
               SET CourseName = :coursename, LeadInstructorId = :leadinstructor
               WHERE CourseNumber = :coursenum';
 
-    $stmt = $db-prepare($query);
+    $db = Database::getDB();
+
+    $stmt = $db->prepare($query);
 		$stmt->bindValue(':coursenum', $CourseNumber);
 		$stmt->bindValue(':coursename', $CourseName);
 		$stmt->bindValue(':leadinstructor', $LeadInstructorID);
@@ -45,7 +78,9 @@ class CourseDB {
               SET CourseNumber = :coursenum, LeadInstructorId = :leadinstructor
               WHERE CourseName = :coursename';
 
-    $stmt = $db-prepare($query);
+    $db = Database::getDB();
+
+    $stmt = $db->prepare($query);
     $stmt->bindValue(':coursenum', $CourseNumber);
     $stmt->bindValue(':coursename', $CourseName);
     $stmt->bindValue(':leadinstructor', $LeadInstructorID);
@@ -63,7 +98,9 @@ class CourseDB {
               AND LeadInstructorId = :leadinstructor
               AND CourseName = :coursename';
 
-    $stmt = $db-prepare($query);
+    $db = Database::getDB();
+
+    $stmt = $db->prepare($query);
     $stmt->bindValue(':coursenum', $CourseNumber);
     $stmt->bindValue(':coursename', $CourseName);
     $stmt->bindValue(':leadinstructor', $LeadInstructorID);
