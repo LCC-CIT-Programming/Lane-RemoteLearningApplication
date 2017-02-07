@@ -13,5 +13,19 @@ function canStudentLogin() {
   }
 }
 
+function canGetCourses() {
+  $user = StudentDB::StudentLogin('L00000005', 'Student1');
+
+  $courses = array();
+  $courses = StudentDB::GetStudentCourses($user);
+  $numCourses = count($courses);
+  if ($numCourses == 2) {
+    echo "<p style='color:green;'>Getting student courses was successful! </p>";
+  } else {
+    echo "<p style='color:red;'>Getting student courses was not successful! </p>";
+  }
+}
+
 canStudentLogin();
+canGetCourses();
 ?>

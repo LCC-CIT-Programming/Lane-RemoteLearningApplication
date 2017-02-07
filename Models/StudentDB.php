@@ -36,33 +36,35 @@ class StudentDB {
     	 }
     }
 
-// PUT IN COURSE DB
-// 	public static function GetStudentCourses($student) {
-// 		$db = Database::getDB();
-//         $query = 'SELECT * FROM Course
-// 					JOIN Section ON Course.CourseNumber = Section.CourseNumber
-// 					JOIN StudentRegistration ON Section.SectionNumber = StudentRegistration.SectionNumber
-// 					JOIN Student ON StudentRegistration.StudentId = Student.StudentID
-// 				  WHERE Student.StudentID = :id';
-//
-//         $statement = $db->prepare($query);
-//         $statement->bindValue(":id", $student->getStudentID());
-//         $statement->execute();
-// 		$rows = $statement->fetchAll();
-//         $statement->closeCursor();
-//
-// 		$courses = new Array();
-//
-// 		foreach ($rows as $row) {
-//             $course = new Course($row['CourseNumber'],
-// 								 $row['CourseName'],
-// 								 $row['LeadInstructorId']);
-//             array_push($courses, $course);
-//         }
-//         return $courses;
-// 	}
-//
-//
+	public static function GetStudentCourses($student) {
+	 $userid = $student->getUserID();
+
+   $query = 'SELECT * FROM Course
+						 JOIN Section ON Course.CourseNumber = Section.CourseNumber
+						 JOIN StudentRegistration ON Section.SectionNumber = StudentRegistration.SectionNumber
+						 JOIN Student ON StudentRegistration.StudentId = Student.AppUserID
+				     WHERE Student.StudentID = :id';
+
+		$db = Database::getDB();
+
+	  $statement = $db->prepare($query);
+	  $statement->bindValue(":id", $userid);
+	  $statement->execute();
+		$rows = $statement->fetchAll();
+	  $statement->closeCursor();
+
+		$courses = array();
+
+		foreach ($rows as $row) {
+	          $course = new Course($row['CourseNumber'],
+								 								 $row['CourseName'],
+								 							   $row['LeadInstructorId']);
+	          array_push($courses, $course);
+	  }
+	  return $courses;
+	}
+
+
 // PUT THIS IN QUESTION DB
 // 	public static function GetOpenQuestions($student) {
 // 		$db = Database::getDB();
