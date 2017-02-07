@@ -7,7 +7,6 @@ class Course {
         $this->courseNumber = $courseNumber;
         $this->courseName = $CourseName;
         $this->leadInstructorID = $LeadInstructorID;
-
     }
 
     public function getCourseNumber() {
