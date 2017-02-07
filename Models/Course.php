@@ -4,7 +4,7 @@ class Course {
     protected $courseNumber, $courseName, $leadInstructorID;
 
     public function __construct($CourseNumber, $CourseName, $LeadInstructorID) {
-        $this->courseNumber = $courseNumber;
+        $this->courseNumber = $CourseNumber;
         $this->courseName = $CourseName;
         $this->leadInstructorID = $LeadInstructorID;
     }
@@ -21,7 +21,7 @@ class Course {
         return $this->courseName;
     }
 
-    public function setCourseNumber($value) {
+    public function setCourseName($value) {
        $this->courseName = $value;
     }
 
@@ -29,7 +29,7 @@ class Course {
         return $this->leadInstructorID;
     }
 
-    public function setCourseNumber($value) {
+    public function setLeadInstructor($value) {
        $this->leadInstructorID = $value;
     }
 }
