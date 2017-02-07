@@ -42,8 +42,8 @@ class StudentDB {
    $query = 'SELECT * FROM Course
 						 JOIN Section ON Course.CourseNumber = Section.CourseNumber
 						 JOIN StudentRegistration ON Section.SectionNumber = StudentRegistration.SectionNumber
-						 JOIN Student ON StudentRegistration.StudentId = Student.AppUserID
-				     WHERE Student.StudentID = :id';
+						 JOIN Student ON StudentRegistration.UserID = Student.UserID
+				     WHERE Student.UserID = :id';
 
 		$db = Database::getDB();
 

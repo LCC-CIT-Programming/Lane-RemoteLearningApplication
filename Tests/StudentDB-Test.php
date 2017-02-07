@@ -3,6 +3,7 @@ include_once('../Models/AppUser.php');
 include_once('../Models/StudentDB.php');
 include_once('../Models/db.php');
 include_once('../Models/Student.php');
+include_once('../Models/Course.php');
 
 function canStudentLogin() {
   $user = StudentDB::StudentLogin('L00000005', 'Student1');
@@ -14,7 +15,7 @@ function canStudentLogin() {
 }
 
 function canGetCourses() {
-  $user = StudentDB::StudentLogin('L00000005', 'Student1');
+  $user = StudentDB::StudentLogin('L00000006', 'Student2');
 
   $courses = array();
   $courses = StudentDB::GetStudentCourses($user);
