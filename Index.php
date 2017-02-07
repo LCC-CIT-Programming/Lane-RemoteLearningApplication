@@ -16,45 +16,31 @@ if ($action == NULL){
 
 
 switch($action) {
-		case "default":
-				$loginError = "";
-				include("Views/Login.php");
-	  break;
+	case "default":
+			$loginError = "";
+			include("Views/login.php");
+	break;
 
-		case "login":
-				$username = filter_input(INPUT_POST, "lnumber");
-				$password = filter_input(INPUT_POST, "password");
-				$role = filter_input(INPUT_POST, "isTutor");
+	case "login":
+			$username = filter_input(INPUT_POST, "lnumber");
+			$password = filter_input(INPUT_POST, "password");
+			$role = filter_input(INPUT_POST, "isTutor");
 
-				if ($role == NULL) {
-						//$testStudent = new Student(1, 'test', 'user', 'L00123123', 'testpassword', 'email@email.com', 1);
-						$user = StudentDB::StudentLogin($username, $password);
+			if ($role == NULL) {
+					$user = StudentDB::StudentLogin($username, $password);
 
-						if ($user !== null && isset($user)) {
-								$_SESSION['user'] = $user;
-								//$tutors = array();
-								//$questions = array();
-								include("/Views/Home.php");
-						} else {
-								$_SESSION['user'] = null;
-								$loginError = "Login attempt failed.";
-								include("Views/Login.php");
-						}
+					if ($user !== null && isset($user)) {
+							$_SESSION['user'] = $user;
+							include("/Views/home.php");
+					} else {
+							$_SESSION['user'] = null;
+							$loginError = "Login attempt failed.";
+							include("Views/login.php");
+					}
+			}
+	break;
+}
 
-
-				//$_SESSION['user'] = $student;
-				//$visit = new Visit($student->getStudentID(), 1);
-				//$visit->setStartTime(date("Y-m-d h:i:s"));
-			  //$_SESSION['currentVisit'] = $visit;
-				//$courses = StudentDB::GetStudentCourses($student);
-
-
-				//save visit in database
-
-
-		}
-		break;
-	}
 } catch(Exception $e) {
 
 	}
