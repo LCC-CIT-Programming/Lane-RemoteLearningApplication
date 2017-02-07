@@ -27,6 +27,56 @@ function canGetCourses() {
   }
 }
 
+function canRetreiveStudentByID() {
+  $user = StudentDB::StudentLogin('L00000006', 'Student2');
+  $retrieve = StudentDB::RetrieveStudentByID($user->getUserID());
+
+  if ($retrieve != null) {
+    echo "<p style='color:green;'>Getting student by id was successful! </p>";
+  } else {
+    echo "<p style='color:red;'>Getting student by id was not successful! </p>";
+  }
+}
+
+function canCreateStudent() {
+	$student = new Student(1, 'test', 'user', 'L00123123', 'testpassword', 'email@email.com', 1);
+	StudentDB::CreateStudent($student);
+
+  $createdStudent = StudentDB::StudentLogin('L00123123', 'testpassword');
+
+  if ($createdStudent != null) {
+    echo "<p style='color:green;'>Creating a student was successful! </p>";
+  } else {
+    echo "<p style='color:red;'>Creating a student was not successful! </p>";
+  }
+}
+
+function canUpdateStudent() {
+  $student = new Student(1  , 'test', 'user', 'L00123123', 'newpassword', 'email@email.com', 1);
+  StudentDB::UpdateStudent($student);
+  $updatedStudent = StudentDB::StudentLogin('L00123123', 'newpassword');
+
+  if ($updatedStudent != null) {
+    echo "<p style='color:green;'>Updating student was successful! </p>";
+  } else {
+    echo "<p style='color:red;'>Updating student was not successful! </p>";
+  }
+}
+
+function canDeleteStudent() {
+  $deletedStudent = StudentDB::StudentLogin('L00123123', 'newpassword');
+
+  if ($deletedStudent == null) {
+    echo "<p style='color:green;'>Deleting a student was successful! </p>";
+  } else {
+    echo "<p style='color:red;'>Deleting a student was not successful! </p>";
+  }
+}
+
 canStudentLogin();
 canGetCourses();
+canRetreiveStudentByID();
+canCreateStudent();
+canUpdateStudent();
+canDeleteStudent();
 ?>
