@@ -39,10 +39,10 @@ function canRetreiveStudentByID() {
 }
 
 function canCreateStudent() {
-	$student = new Student(1, 'test', 'user', 'L00123123', 'testpassword', 'email@email.com', 1);
+	$student = new Student(1, 'test', 'user', 'L00111111', 'testpassword', 'email@email.com', 1);
 	StudentDB::CreateStudent($student);
 
-  $createdStudent = StudentDB::StudentLogin('L00123123', 'testpassword');
+  $createdStudent = StudentDB::StudentLogin('L00111111', 'testpassword');
 
   if ($createdStudent != null) {
     echo "<p style='color:green;'>Creating a student was successful! </p>";
@@ -52,9 +52,9 @@ function canCreateStudent() {
 }
 
 function canUpdateStudent() {
-  $student = new Student(1  , 'test', 'user', 'L00123123', 'newpassword', 'email@email.com', 1);
+  $student = new Student(1  , 'test', 'user', 'L00111111', 'newpassword', 'email@email.com', 1);
   StudentDB::UpdateStudent($student);
-  $updatedStudent = StudentDB::StudentLogin('L00123123', 'newpassword');
+  $updatedStudent = StudentDB::StudentLogin('L00111111', 'newpassword');
 
   if ($updatedStudent != null) {
     echo "<p style='color:green;'>Updating student was successful! </p>";
@@ -64,7 +64,7 @@ function canUpdateStudent() {
 }
 
 function canDeleteStudent() {
-  $deletedStudent = StudentDB::StudentLogin('L00123123', 'newpassword');
+  $deletedStudent = StudentDB::StudentLogin('L00111111', 'newpassword');
 
   if ($deletedStudent == null) {
     echo "<p style='color:green;'>Deleting a student was successful! </p>";
@@ -72,6 +72,7 @@ function canDeleteStudent() {
     echo "<p style='color:red;'>Deleting a student was not successful! </p>";
   }
 }
+
 
 canStudentLogin();
 canGetCourses();
