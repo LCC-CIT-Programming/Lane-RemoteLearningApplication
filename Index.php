@@ -49,7 +49,7 @@ switch($action) {
 	}
 } catch(PDOException $e) {
 		$error_message = $e->getMessage();
-		include('../Errors/database_error.php')
+		include('../Errors/database_error.php');
 		exit();
 }
 
