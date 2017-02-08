@@ -14,6 +14,16 @@ function canRetrieveCourse() {
   }
 }
 
+function canRetrieveCourseById() {
+  $valid = CourseDB::RetrieveCourseByNumber('CS 133N');
+
+  if ($valid != null) {
+    echo "<p style='color:green;'>Retrieving the course was successful! </p>";
+  } else {
+    echo "<p style='color:red;'>Retrieving the course was not successful! </p>";
+  }
+}
+
 function canCreateCourse() {
   $course = new Course('CS 296N', 'ASP.Net Core MVC', 1);
   CourseDB::CreateCourse($course);
@@ -63,6 +73,7 @@ function canDeleteCourse() {
 }
 
 canRetrieveCourse();
+canRetrieveCourseById();
 canCreateCourse();
 canUpdateCourseByNumber();
 canUpdateCourseByName();

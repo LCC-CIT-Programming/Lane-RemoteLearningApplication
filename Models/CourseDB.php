@@ -50,6 +50,29 @@ class CourseDB {
    }
   }
 
+	public static function RetrieveCourseByNumber($id) {
+    $query = 'SELECT *
+							FROM course
+              WHERE CourseNumber = :coursenum';
+
+    $db = Database::getDB();
+
+    $statement = $db->prepare($query);
+		$statement->bindValue(':coursenum', $id);
+		$statement->execute();
+		$row = $statement->fetch();
+		$statement->closeCursor();
+
+		if ($row != false){
+				$course = new Course($row['CourseNumber'],
+																$row['CourseName'],
+																$row['LeadInstructorId']);
+			 return $course;
+	 	} else {
+			 return null;
+	 	}
+  }
+
   public static function UpdateCourseByNumber($course) {
     $CourseNumber = $course->getCourseNumber();
     $CourseName = $course->getCourseName();
@@ -61,12 +84,12 @@ class CourseDB {
 
     $db = Database::getDB();
 
-    $stmt = $db->prepare($query);
-		$stmt->bindValue(':coursenum', $CourseNumber);
-		$stmt->bindValue(':coursename', $CourseName);
-		$stmt->bindValue(':leadinstructor', $LeadInstructorID);
-		$stmt->execute();
-		$stmt->closeCursor();
+    $statement = $db->prepare($query);
+		$statement->bindValue(':coursenum', $CourseNumber);
+		$statement->bindValue(':coursename', $CourseName);
+		$statement->bindValue(':leadinstructor', $LeadInstructorID);
+		$statement->execute();
+		$statement->closeCursor();
   }
 
   public static function UpdateCourseByName($course) {
@@ -80,12 +103,12 @@ class CourseDB {
 
     $db = Database::getDB();
 
-    $stmt = $db->prepare($query);
-    $stmt->bindValue(':coursenum', $CourseNumber);
-    $stmt->bindValue(':coursename', $CourseName);
-    $stmt->bindValue(':leadinstructor', $LeadInstructorID);
-    $stmt->execute();
-    $stmt->closeCursor();
+    $statement = $db->prepare($query);
+    $statement->bindValue(':coursenum', $CourseNumber);
+    $statement->bindValue(':coursename', $CourseName);
+    $statement->bindValue(':leadinstructor', $LeadInstructorID);
+    $statement->execute();
+    $statement->closeCursor();
   }
 
   public static function DeleteCourse($course) {
@@ -100,12 +123,12 @@ class CourseDB {
 
     $db = Database::getDB();
 
-    $stmt = $db->prepare($query);
-    $stmt->bindValue(':coursenum', $CourseNumber);
-    $stmt->bindValue(':coursename', $CourseName);
-    $stmt->bindValue(':leadinstructor', $LeadInstructorID);
-    $stmt->execute();
-    $stmt->closeCursor();
+    $statement = $db->prepare($query);
+    $statement->bindValue(':coursenum', $CourseNumber);
+    $statement->bindValue(':coursename', $CourseName);
+    $statement->bindValue(':leadinstructor', $LeadInstructorID);
+    $statement->execute();
+    $statement->closeCursor();
   }
 
 }
