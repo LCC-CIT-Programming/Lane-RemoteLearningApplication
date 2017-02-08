@@ -52,10 +52,11 @@ function canCreateStudent() {
 }
 
 function canUpdateStudent() {
-  $student = new Student(1  , 'test', 'user', 'L00111111', 'newpassword', 'email@email.com', 1);
+  $student = StudentDB::StudentLogin('L00111111', 'testpassword');
+  $student->setPassword('newpassword');
   StudentDB::UpdateStudent($student);
-  $updatedStudent = StudentDB::StudentLogin('L00111111', 'newpassword');
 
+  $updatedStudent = StudentDB::StudentLogin('L00111111', 'newpassword');
   if ($updatedStudent != null) {
     echo "<p style='color:green;'>Updating student was successful! </p>";
   } else {
@@ -64,6 +65,8 @@ function canUpdateStudent() {
 }
 
 function canDeleteStudent() {
+  $student = StudentDB::StudentLogin('L00111111', 'newpassword');
+  StudentDB::DeleteStudent($student);
   $deletedStudent = StudentDB::StudentLogin('L00111111', 'newpassword');
 
   if ($deletedStudent == null) {

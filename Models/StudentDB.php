@@ -105,7 +105,7 @@ public static function CreateStudent($student){
 		$pass = $student->getPassword();
 		$email = $student->getEmail();
 		$major = $student->getMajorID();
-		$userid = $student->getUserID();
+		//$userid = $student->getUserID();
 
 		$query1 = 'INSERT INTO AppUser(FirstName, LastName, LNumber, Password, EmailAddress)
 							 VALUES (:firstName, :lastName, :lnum, :pass, :email)';
@@ -208,8 +208,11 @@ public static function UpdateStudent($student){
 		$db = Database::getDB();
 		$userid = $student->getUserID();
 
-		$query = 'DELETE FROM AppUser
-							WHERE UserId = :userid';
+		$query = 'DELETE FROM Student
+							WHERE UserId = :userid;
+
+							DELETE FROM AppUser
+							WHERE UserId = :userid;';
 
 		$statement = $db->prepare($query);
 		$statement->bindValue(':userid', $userid);
