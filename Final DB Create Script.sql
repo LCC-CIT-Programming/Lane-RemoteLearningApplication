@@ -45,7 +45,6 @@ CREATE TABLE IF NOT EXISTS `CITLabMonitor`.`AppUser` (
   `LNumber` VARCHAR(9) NULL DEFAULT NULL,
   `Password` VARCHAR(16) NULL DEFAULT NULL,
   `EmailAddress` VARCHAR(50) NULL DEFAULT NULL,
-  `Summary` VARCHAR(250) NULL DEFAULT NULL,
   PRIMARY KEY (`UserID`))
 ENGINE = InnoDB;
 
@@ -232,6 +231,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `CITLabMonitor`.`Tutor` (
   `UserID` INT NOT NULL,
+  `TutorBio` VARCHAR(250) NULL DEFAULT NULL,
   PRIMARY KEY (`UserID`),
   INDEX `fk_Tutor_AppUser1_idx1` (`UserID` ASC),
   CONSTRAINT `fk_Tutor_AppUser1`
@@ -245,6 +245,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `CITLabMonitor`.`TutorExpertise`
 -- -----------------------------------------------------
+/*
 CREATE TABLE IF NOT EXISTS `CITLabMonitor`.`TutorExpertise` (
   `TutorExpertiseID` INT NOT NULL AUTO_INCREMENT,
   `Course_CourseNumber` VARCHAR(10) NOT NULL,
@@ -263,7 +264,7 @@ CREATE TABLE IF NOT EXISTS `CITLabMonitor`.`TutorExpertise` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
+*/
 
 -- -----------------------------------------------------
 -- Table `CITLabMonitor`.`Schedule`
