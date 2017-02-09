@@ -4,6 +4,7 @@ include_once('../Models/StudentDB.php');
 include_once('../Models/db.php');
 include_once('../Models/Student.php');
 include_once('../Models/Course.php');
+include_once('../Models/Question.php');
 
 function canStudentLogin() {
   $user = StudentDB::StudentLogin('L00000005', 'Student1');
@@ -76,11 +77,24 @@ function canDeleteStudent() {
   }
 }
 
+function canGetStudentOpenQuestions() {
+  $student = StudentDB::StudentLogin('L00000006', 'Student2');
+  $questions = array();
+  $questions = StudentDB::GetOpenQuestions($student);
+
+  if (count($questions) == 1) {
+    echo "<p style='color:green;'>Getting a student's open questions was successful! </p>";
+  } else {
+    echo "<p style='color:red;'>Getting a student's open questions was not successful! </p>";
+  }
+}
+
 
 canStudentLogin();
 canGetCourses();
 canRetreiveStudentByID();
-canCreateStudent();
-canUpdateStudent();
-canDeleteStudent();
+// canCreateStudent();
+// canUpdateStudent();
+// canDeleteStudent();
+canGetStudentOpenQuestions();
 ?>
