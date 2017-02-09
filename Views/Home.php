@@ -108,30 +108,7 @@
                   '</tr>';
           }
       ?>
-			<!-- <tr>
-				<th>Subject</th>
-				<th>Description</th>
-				<th>Status</th>
-				<th>Timestamp</th>
-			</tr>
-			<tr>
-				<td name="Subject">CIS101</td>
-				<td name="Description">A cool question about cool stuff</td>
-				<td name="Status">Unanswered</td>
-				<td>11/29/16 9:00 A.M.</td>
-			</tr>
-			<tr>
-				<td name="Subject">CIS151</td>
-				<td name="Description">A  question about stuff</td>
-				<td name="Status">Answered</td>
-				<td>11/29/16 9:00 A.M.</td>
-			</tr>
-			<tr>
-				<td name="Subject">CIS101</td>
-				<td name="Description">A question about stuff</td>
-				<td name="Status">Unanswered</td>
-				<td>11/29/16 9:00 A.M.</td>
-			</tr> -->
+
 		</table>
 	  </div>
 
@@ -153,26 +130,19 @@
 					  <th>Expertise</th>
 					</tr>
 				  </thead>
-				  <!-- <tbody>
-					<tr>
-					  <th><img src="smiley.png" class="smiley"></th>
-					  <td>Gidget Goober</td>
-					  <td>Online</td>
-					  <td>Proficient in C# and shenanigans.</td>
-					</tr>
-					<tr>
-					  <th><img src="smiley.png" class="smiley"></th>
-					  <td>Billy Bob Thornton</td>
-					  <td>In Lab</td>
-					  <td>Jedi Knight of Python, Javascript, and all things geek.</td>
-					</tr>
-					<tr>
-					  <th><img src="smiley.png" class="smiley"></th>
-					  <td>Beyonce</td>
-					  <td>Online</td>
-					  <td>Queen Bee... Duh.</td>
-					</tr>
-				  </tbody> -->
+
+          <?php
+              $tutors = TutorDB::GetAllTutors();
+
+              foreach ($tutors as $tutor) {
+                  echo '<tr><td></td>
+                        <td>' . $tutor->getFirstName() . ' ' . $tutor->getLastName() . '</td>' .
+                       '<td>' . 'offline' . '</td>' .
+                       '<td>' . $tutor->getTutorBio() . '</td>' .
+                       '</tr>';
+              }
+          ?>
+
 				</table>
 			</div>
 
