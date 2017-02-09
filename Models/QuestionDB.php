@@ -15,6 +15,7 @@ class QuestionDB {
       $rows = $statement->fetchAll();
       $statement->closeCursor();
 
+      $questions = array();
       foreach ($rows as $row) {
           $question = new Question(
 							   $row['QuestionID'],
@@ -28,7 +29,8 @@ class QuestionDB {
 							   $row['CloseTime']
 							   );
 
-          $questions[] = $question;
+
+          array_push($questions, $question);
       }
       return $questions;
   }
@@ -118,5 +120,19 @@ public static function UpdateQuestion($question) {
     $statement->execute();
     $statement->closeCursor();
   }
+
+  public static function DeleteQuestion($question) {
+    $db = Database::getDB();
+    $questionid = $question->getQuestionID();
+
+    $query = 'DELETE FROM question
+		          WHERE question.questionID = :questionId';
+
+    $statement = $db->prepare($query);
+  	$statement->bindValue(":questionId", $questionid );
+    $statement->execute();
+    $statement->closeCursor();
+  }
+
 
 }
