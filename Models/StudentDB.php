@@ -69,8 +69,8 @@ public static function GetOpenQuestions($student) {
 		$db = Database::getDB();
 
 		$query = 'SELECT * FROM Question
-							JOIN Student ON Question.Student_StudentID = Student.StudentID
-				  		WHERE Student.StudentID = :id
+							JOIN Student ON Question.UserID = Student.UserID
+				  		WHERE Student.UserID = :id
 							AND (Question.Status = "Open" OR Question.Status = "Processing")';
 
     $statement = $db->prepare($query);
@@ -81,21 +81,26 @@ public static function GetOpenQuestions($student) {
 
 		$questions = array();
 
+		if ($rows != false) {
 		foreach ($rows as $row) {
         $question = new Question($row['QuestionID'],
-							 									 $row['Student_StudentID'],
+							 									 $row['UserID'],
+																 $row['CourseNumber'],
 																 $row['Subject'],
 																 $row['Description'],
 																 $row['Status'],
-																 $row['OpenTime']);
+																 $row['AskTime']);
 
-			if ($row['Status'] == 'Open' || $row['Status'] == 'Processing')
+			if ($row != false)
 					array_push($questions, $question);
-
       }
 
     return $questions;
+	} else {
+		return null;
 	}
+
+}
 
 
 public static function CreateStudent($student){
