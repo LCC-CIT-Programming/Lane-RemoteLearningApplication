@@ -65,36 +65,38 @@ class StudentDB {
 	}
 
 
-// PUT THIS IN QUESTION DB
-// 	public static function GetOpenQuestions($student) {
-// 		$db = Database::getDB();
-//         $query = 'SELECT * FROM Question
-// 					JOIN Student ON Question.Student_StudentID = Student.StudentID
-// 				  WHERE Student.StudentID = :id AND
-// 						(Question.Status = "Open" OR Question.Status = "Processing"');
-//
-//         $statement = $db->prepare($query);
-//         $statement->bindValue(":id", $student->getUserID());
-//         $statement->execute();
-// 		$rows = $statement->fetchAll();
-//         $statement->closeCursor();
-//
-// 		$questions = new Array();
-//
-// 		foreach ($rows as $row) {
-//             $question = new Question($row['QuestionID'],
-// 									 $row['Student_StudentID'],
-// 									 $row['Subject'],
-// 									 $row['Description'],
-// 									 $row['Status'],
-// 									 $row['OpenTime']);
-//
-// 			if ($row['Status'] == 'Open' || $row['Status'] == 'Processing')
-// 				array_push($questions, $question);
-//         }
-//         return $questions;
-// 	}
-//
+public static function GetOpenQuestions($student) {
+		$db = Database::getDB();
+
+		$query = 'SELECT * FROM Question
+							JOIN Student ON Question.Student_StudentID = Student.StudentID
+				  		WHERE Student.StudentID = :id
+							AND (Question.Status = "Open" OR Question.Status = "Processing")';
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(":id", $student->getUserID());
+    $statement->execute();
+		$rows = $statement->fetchAll();
+    $statement->closeCursor();
+
+		$questions = array();
+
+		foreach ($rows as $row) {
+        $question = new Question($row['QuestionID'],
+							 									 $row['Student_StudentID'],
+																 $row['Subject'],
+																 $row['Description'],
+																 $row['Status'],
+																 $row['OpenTime']);
+
+			if ($row['Status'] == 'Open' || $row['Status'] == 'Processing')
+					array_push($questions, $question);
+
+      }
+
+    return $questions;
+	}
+
 
 public static function CreateStudent($student){
 		$db = Database::getDB();

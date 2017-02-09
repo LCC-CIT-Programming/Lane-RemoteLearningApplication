@@ -7,6 +7,8 @@ require_once('/Models/Course.php');
 require_once('/Models/CourseDB.php');
 require_once('/Models/Question.php');
 require_once('/Models/QuestionDB.php');
+require_once('/Models/Tutor.php');
+require_once('/Models/TutorDB.php');
 
 try {
 $action = filter_input(INPUT_POST, 'action');
