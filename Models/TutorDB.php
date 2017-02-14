@@ -34,6 +34,7 @@ class TutorDB {
 		}
 	}
 
+
 	// public static function CreateTutor($tutor){
 	// 	$db = Database::getDB();
 	//
@@ -150,6 +151,56 @@ public static function GetAllTutors(){
 		return $tutors;
 
 	}
+
+	public static function GetOnlineTutors(){
+			$db = Database::getDB();
+
+			$query = 'SELECT *
+								FROM onlinetutors';
+
+			$statement = $db->prepare($query);
+			$statement->execute();
+			$rows = $statement->fetchAll();
+			$statement->closeCursor();
+
+			foreach ($rows as $row){
+				$tutor = TutorDB::RetrieveTutorByID($row['UserID']);
+				$tutors[] = $tutor;
+			}
+			return $tutors;
+
+		}
+
+		public static function RetrieveTutorByID($tutorid) {
+
+			$query = 'SELECT *
+								FROM AppUser
+								JOIN Tutor
+								ON AppUser.UserID = Tutor.UserID
+								WHERE AppUser.UserID = :userid';
+
+			$db = Database::getDB();
+
+			$statement = $db->prepare($query);
+			$statement->bindValue(':userid', $tutorid);
+			$statement->execute();
+			$row = $statement->fetch();
+			$statement->closeCursor();
+
+			if ($row != false){
+					$user = new Tutor($row['UserID'],
+															$row['FirstName'],
+															$row['LastName'],
+															$row['LNumber'],
+															$row['Password'],
+															$row['EmailAddress'],
+															$row['TutorBio']);
+			 		return $user;
+		 	} else {
+				 return null;
+		  }
+		}
+
 
 }
 ?>

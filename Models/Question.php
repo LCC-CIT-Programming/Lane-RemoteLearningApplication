@@ -1,10 +1,10 @@
 <?php
 class Question {
-    private $studentId, $courseId, $questionId, $subject, $description, $status, $askTime, $openTime, $closeTime;
+    private $userID, $courseNumber, $questionId, $subject, $description, $status, $askTime, $openTime, $closeTime;
 
-    public function __construct($questionId, $studentId, $courseId, $subject, $description, $status, $askTime, $openTime = NULL, $closeTime = NULL) {
-		$this->studentId = $studentId;
-		$this->courseId = $courseId;
+    public function __construct($questionId, $userid, $courseNumber, $subject, $description, $status, $askTime, $openTime = NULL, $closeTime = NULL) {
+		$this->userId = $userid;
+		$this->courseNumber = $courseNumber;
 	  $this->subject= $subject;
     $this->description = $description;
     $this->status = $status;
@@ -15,13 +15,13 @@ class Question {
 		$this->questionId = $questionId;
     }
 
-	public function getStudentID(){
-		return $this->studentId;
+	public function getUserId(){
+		return $this->userId;
 	}
 
 
-	public function getCourseID(){
-		return $this->courseId;
+	public function getCourseNumber(){
+		return $this->courseNumber;
 	}
 
 
