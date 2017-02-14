@@ -49,13 +49,14 @@ INSERT INTO schedule VALUES (4, '2016-11-22 09:00:00', '2016-11-22 11:00:00', 2)
 INSERT INTO schedule VALUES (4, '2016-11-24 14:00:00', '2016-11-24 16:30:00', 4);
 -- SELECT * FROM schedule;
 
-/* TUTOREXPERTISE TABLE */
+/* TUTOREXPERTISE TABLE 
 INSERT INTO tutorexpertise (Course_CourseNumber, UserID) VALUES ('CS 133N', 3);
 INSERT INTO tutorexpertise (Course_CourseNumber, UserID) VALUES ('CS 295N', 3);
 INSERT INTO tutorexpertise (Course_CourseNumber, UserID) VALUES ('CIS 244', 3);
 INSERT INTO tutorexpertise (Course_CourseNumber, UserID) VALUES ('CIS 244', 4);
 INSERT INTO tutorexpertise (Course_CourseNumber, UserID) VALUES ('CS 296P', 4);
 -- SELECT * FROM tutorexpertise;
+*/
 
 /* TERM TABLE */
 INSERT INTO term (TermId, TermName) VALUES (1, 'Fall');
