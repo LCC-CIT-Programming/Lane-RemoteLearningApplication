@@ -1,11 +1,16 @@
 <?php
-try {
 require_once('/Models/AppUser.php');
 require_once('/Models/Student.php');
 require_once('/Models/StudentDB.php');
 require_once('/Models/db.php');
+require_once('/Models/Course.php');
+require_once('/Models/CourseDB.php');
+require_once('/Models/Question.php');
+require_once('/Models/QuestionDB.php');
+require_once('/Models/Tutor.php');
+require_once('/Models/TutorDB.php');
 
-
+try {
 $action = filter_input(INPUT_POST, 'action');
 if ($action == NULL){
 	$action = filter_input(INPUT_GET, 'action');
@@ -16,47 +21,39 @@ if ($action == NULL){
 
 
 switch($action) {
-		case "default":
-				$loginError = "";
-				include("Views/Login.php");
-	  break;
+	case "default":
+			$_SESSION['user'] = null;
+			$loginError = "";
+			include("Views/login.php");
+	break;
 
-		case "login":
-				$username = filter_input(INPUT_POST, "lnumber");
-				$password = filter_input(INPUT_POST, "password");
-				$role = filter_input(INPUT_POST, "isTutor");
+	case "login":
+			$username = filter_input(INPUT_POST, "lnumber");
+			$password = filter_input(INPUT_POST, "password");
+			$role = filter_input(INPUT_POST, "isTutor");
 
-				if ($role == NULL) {
-						//$testStudent = new Student(1, 'test', 'user', 'L00123123', 'testpassword', 'email@email.com', 1);
-						$user = StudentDB::StudentLogin($username, $password);
+			if ($role == NULL) {
+					$user = StudentDB::StudentLogin($username, $password);
 
-						if ($user !== null && isset($user)) {
-								$_SESSION['user'] = $user;
-								//$tutors = array();
-								//$questions = array();
-								include("/Views/Home.php");
-						} else {
-								$_SESSION['user'] = null;
-								$loginError = "Login attempt failed.";
-								include("Views/Login.php");
-						}
+					if ($user !== null && isset($user)) {
+						  $courses = StudentDB::GetStudentCourses($user);
+							$_SESSION['user'] = $user;
+							$_SESSION['courses'] = $courses;
 
-
-				//$_SESSION['user'] = $student;
-				//$visit = new Visit($student->getStudentID(), 1);
-				//$visit->setStartTime(date("Y-m-d h:i:s"));
-			  //$_SESSION['currentVisit'] = $visit;
-				//$courses = StudentDB::GetStudentCourses($student);
-
-
-				//save visit in database
-
-
-		}
-		break;
+							include("/Views/home.php");
+					} else {
+							$_SESSION['user'] = null;
+							$loginError = "Login attempt failed.";
+							include("Views/login.php");
+					}
+			}
+	break;
 	}
-} catch(Exception $e) {
+} catch(PDOException $e) {
+		$error_message = $e->getMessage();
+		include('../Errors/database_error.php');
+		exit();
+}
 
-	}
 
  ?>

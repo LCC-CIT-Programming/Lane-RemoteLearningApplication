@@ -22,7 +22,7 @@
   </div>
 </div>
 
-<body>
+<body style='margin-bottom: 50px;'>
 <!--Nav Bar -->
 <nav class="navbar navbar-default">
   <div class="container-fluid">
@@ -37,7 +37,7 @@
 	  </ul>
 	  <ul class="nav navbar-nav navbar-right">
 		<li><a href="#"><span class="glyphicon glyphicon-envelope"><span class="badge">1</span></span></a></li>
-		<li><a href="Login.php"><span ></span> Logout</a></li>
+		<li><a href="index.php"><span ></span>Logout</a></li>
 	  </ul>
 	</div>
   </div>
@@ -51,11 +51,16 @@
 			<div class=" col-sm-4 form-group">
 			<label class="" for="class">Please tell us what class you are working on.</label>
 			<select class="form-control" id="class">
-        <!-- populate classes with student info -->
-				<option>classs 1</option>
-				<option>classs 2</option>
-				<option>classs 3</option>
-				<option>classs 4</option>
+
+                <?php
+                    $user = $_SESSION['user'];
+                    $courses = $_SESSION['courses'];
+                    foreach($courses as $course)
+                    {
+                        echo '<option>' . $course->getCourseName() . '</option>';
+                    }
+                ?>
+
 			</select>
 			</div>
 			<div class=" col-sm-4 form-group">
@@ -76,32 +81,34 @@
 		<h4><a href="#">Edit Profile</a></h4>
 	  </div>
 
-	  <div class="col-lg-6 well" id="question_div">
-		<table class="table table-condensed">
-			<tr>
-				<th>Subject</th>
-				<th>Description</th>
-				<th>Status</th>
-				<th>Timestamp</th>
-			</tr>
-			<tr>
-				<td name="Subject">CIS101</td>
-				<td name="Description">A cool question about cool stuff</td>
-				<td name="Status">Unanswered</td>
-				<td>11/29/16 9:00 A.M.</td>
-			</tr>
-			<tr>
-				<td name="Subject">CIS151</td>
-				<td name="Description">A  question about stuff</td>
-				<td name="Status">Answered</td>
-				<td>11/29/16 9:00 A.M.</td>
-			</tr>
-			<tr>
-				<td name="Subject">CIS101</td>
-				<td name="Description">A question about stuff</td>
-				<td name="Status">Unanswered</td>
-				<td>11/29/16 9:00 A.M.</td>
-			</tr>
+	  <div class="col-lg-6 well" id="question_div" style="overflow: auto">
+		<table class="table table-condensed table-responsive">
+
+
+      <?php
+          $questions = QuestionDB::getOpenQuestions();
+
+          echo '<tr><th>Questions in queue: ' . count($questions) . '</th><th></th><th></th><th></th></tr>';
+          echo '<tr>
+                  <th>Course</th>
+                  <th>Subject</th>
+                  <th>Question</th>
+                  <th>Time</th>
+               </tr>';
+
+
+          foreach ($questions as $question)
+          {
+              $course = CourseDB::RetrieveCourseByNumber($question->getCourseID());
+              echo '<tr>
+                      <td>' . $course->getCourseName() . '</td>' .
+                     '<td>' . $question->getSubject() . '</td>' .
+                     '<td>' . $question->getDescription() . '</td>' .
+                     '<td>' . $question->getAskTime() . '</td>' .
+                  '</tr>';
+          }
+      ?>
+
 		</table>
 	  </div>
 
@@ -123,37 +130,29 @@
 					  <th>Expertise</th>
 					</tr>
 				  </thead>
-				  <tbody>
-					<tr>
-					  <th><img src="smiley.png" class="smiley"></th>
-					  <td>Gidget Goober</td>
-					  <td>Online</td>
-					  <td>Proficient in C# and shenanigans.</td>
-					</tr>
-					<tr>
-					  <th><img src="smiley.png" class="smiley"></th>
-					  <td>Billy Bob Thornton</td>
-					  <td>In Lab</td>
-					  <td>Jedi Knight of Python, Javascript, and all things geek.</td>
-					</tr>
-					<tr>
-					  <th><img src="smiley.png" class="smiley"></th>
-					  <td>Beyonce</td>
-					  <td>Online</td>
-					  <td>Queen Bee... Duh.</td>
-					</tr>
-				  </tbody>
+
+          <?php
+              $tutors = TutorDB::GetAllTutors();
+
+              foreach ($tutors as $tutor) {
+                  echo '<tr><td></td>
+                        <td>' . $tutor->getFirstName() . ' ' . $tutor->getLastName() . '</td>' .
+                       '<td>' . 'offline' . '</td>' .
+                       '<td>' . $tutor->getTutorBio() . '</td>' .
+                       '</tr>';
+              }
+          ?>
+
 				</table>
 			</div>
 
 	</div>
 </div>
 
-<footer class="container-fluid text-center">
+</body>
+<footer class="container-fluid text-center" style="position: fixed; bottom: 0; width: 100%;">
 		<div class="container">
-			<h4>CITLab &nbsp;<small> Lane Community College &copy; 2016</small></h4
+			<h4>CITLab &nbsp;<small> Lane Community College &copy; 2017</small></h4
 		</div>
 </footer>
-
-</body>
 </html>
