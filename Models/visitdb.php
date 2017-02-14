@@ -36,9 +36,9 @@ public static function RetrieveVisit($VISIT) {
 
       if ($row != false) {
           $visit = new Visit(
-      							   $row['VisitId'],
       							   $row['UserID'],
       							   $row['LocationId'],
+                       $row['VisitId'],
                        $row['StartTime'],
                        $row['EndTime'] );
 		     return $visit;

@@ -4,7 +4,7 @@ include_once('../Models/visitdb.php');
 include_once('../Models/db.php');
 
 function canCreateVisit() {
-  $visit = new Visit(10, 6, 1, date("Y-m-d h:i:s"));
+  $visit = new Visit(7, 2);
   try {
     visitdb::CreateVisit($visit);
     echo "<p style='color:green;'> Creating a visit was successful! </p>";
@@ -14,7 +14,7 @@ function canCreateVisit() {
 }
 
 function canRetrieveVisit() {
-  $visit = new Visit(1, 10, 1, date("Y-m-d h:i:s"));
+  $visit = new Visit(5, 2, 1);
   $retrievedvisit = visitdb::RetrieveVisit($visit);
 
   if ($retrievedvisit->getUserID() == 5) {
@@ -25,11 +25,11 @@ function canRetrieveVisit() {
 }
 
 function canUpdateVisit() {
-  $visit = new Visit(1, 6, 2, date("Y-m-d h:i:s"));
+  $visit = new Visit(5, 1, 1, date("Y-m-d h:i:s"));
   visitdb::UpdateVisit($visit);
   $retrievedvisit = visitdb::RetrieveVisit($visit);
 
-  if ($retrievedvisit->getLocationID() == 2) {
+  if ($retrievedvisit->getLocationID() == 1) {
     echo "<p style='color:green;'> Updating a visit was successful! </p>";
   } else {
     echo "<p style='color:red;'> Updating a visit was not successful! </p>";
@@ -37,7 +37,7 @@ function canUpdateVisit() {
 }
 
 function canDeleteVisit() {
-  $visit = new Visit(16, 10, 1, date("Y-m-d h:i:s"));
+  $visit = new Visit(10, 1, 24, date("Y-m-d h:i:s"));
   visitdb::DeleteVisit($visit);
   $retrievedvisit = visitdb::RetrieveVisit($visit);
 

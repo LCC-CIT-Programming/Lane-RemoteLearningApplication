@@ -89,13 +89,11 @@ public static function UpdateQuestion($question) {
 
 }
 
-
-
   public static function CreateQuestion($question) {
     $db = Database::getDB();
 
-    $studentid = $question->getStudentID();
-  	$courseid = $question->getCourseID();
+    $userid = $question->getUserID();
+  	$coursenumber = $question->getCourseNumber();
     $subject = $question->getSubject();
     $description = $question->getDescription();
     $status = $question->getStatus();
@@ -106,11 +104,11 @@ public static function UpdateQuestion($question) {
     $query = 'INSERT INTO question
               (userid, coursenumber, subject, description, status, askTime, openTime, closeTime)
               VALUES
-              ( :studentid, :courseid,:subject, :description, :status, :askTime, :openTime, :closeTime)';
+              ( :userid, :coursenumber,:subject, :description, :status, :askTime, :openTime, :closeTime)';
 
     $statement = $db->prepare($query);
-    $statement->bindValue(':studentid', $studentid);
-    $statement->bindValue(':courseid', $courseid);
+    $statement->bindValue(':userid', $userid);
+    $statement->bindValue(':coursenumber', $coursenumber);
     $statement->bindValue(':subject', $subject);
     $statement->bindValue(':description', $description);
   	$statement->bindValue(':status', $status);
