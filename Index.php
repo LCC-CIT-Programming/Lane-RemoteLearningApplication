@@ -47,6 +47,23 @@ switch($action) {
 							include("Views/login.php");
 					}
 			}
+			
+			else
+			{
+				$user = TutorDB::TutorLogin($username, $password);
+				if ($user !== null && isset($user))
+				{
+					$userId = $user->GetUserID();
+					$visitId = 1;
+					$startTime = date("Y-m-d h:i:s");
+					$locationId = 1;
+					$visit = new Visit($visitId, $userId, $locationId, $startTime);
+					$_SESSION['visit'] = $visit;
+					$_SESSION['user'] = $user;
+					
+				}
+				
+			}
 	break;
 	}
 } catch(PDOException $e) {
