@@ -132,12 +132,12 @@
 				  </thead>
 
           <?php
-              $tutors = TutorDB::GetAllTutors();
+              $tutors = TutorDB::GetOnlineTutors();
 
               foreach ($tutors as $tutor) {
                   echo '<tr><td></td>
                         <td>' . $tutor->getFirstName() . ' ' . $tutor->getLastName() . '</td>' .
-                       '<td>' . 'offline' . '</td>' .
+                       '<td>' . 'Online' . '</td>' .
                        '<td>' . $tutor->getTutorBio() . '</td>' .
                        '</tr>';
               }

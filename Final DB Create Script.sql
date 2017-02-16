@@ -333,6 +333,16 @@ CREATE TABLE IF NOT EXISTS `CITLabMonitor`.`Resolution` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- View `CITLabMonitor`.`onlinetutors`
+-- -----------------------------------------------------
+CREATE VIEW onlinetutors AS
+SELECT UserID
+FROM visit
+WHERE EndTime IS NULL
+AND UserID IN (SELECT UserID FROM tutor);
+
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
