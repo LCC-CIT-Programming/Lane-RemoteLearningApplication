@@ -1,8 +1,7 @@
 <?php
 class TutorDB {
 
-	//assuming that there needs to be more in the tutor table
-	public static function TutorLogin($username, $password){
+	public static function TutorLogin($USERNAME, $PASSWORD){
 		$query = 'SELECT appuser.*, TutorBio
 							FROM appuser
 							INNER JOIN tutor
@@ -13,8 +12,8 @@ class TutorDB {
 		$db = Database::getDB();
 
 		$statement = $db->prepare($query);
-		$statement->bindValue(":username", $username);
-		$statement->bindValue(":password", $password);
+		$statement->bindValue(":username", $USERNAME);
+		$statement->bindValue(":password", $PASSWORD);
 		$statement->execute();
 		$row = $statement->fetch();
 		$statement->closeCursor();
@@ -171,7 +170,7 @@ public static function GetAllTutors(){
 
 		}
 
-		public static function RetrieveTutorByID($tutorid) {
+		public static function RetrieveTutorByID($TUTORID) {
 
 			$query = 'SELECT *
 								FROM AppUser
@@ -182,7 +181,7 @@ public static function GetAllTutors(){
 			$db = Database::getDB();
 
 			$statement = $db->prepare($query);
-			$statement->bindValue(':userid', $tutorid);
+			$statement->bindValue(':userid', $TUTORID);
 			$statement->execute();
 			$row = $statement->fetch();
 			$statement->closeCursor();

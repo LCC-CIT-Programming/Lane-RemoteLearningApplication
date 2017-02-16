@@ -4,7 +4,7 @@
 <head>
   <title>LCC CIT Lab</title>
 
-  <link rel="stylesheet" href="./Styles/login.css">
+  <link rel="stylesheet" href="../Styles/login.css">
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -49,7 +49,19 @@
 					   <button type="submit" class="btn btn-primary btn-lg">Submit</button>
 					</div>
 					<br />
-					<input  type="checkbox" name="isTutor" value="tutor" id="tutChck">Are you a tutor?
+					<!--<input  type="checkbox" name="isTutor" value="tutor" id="tutChck">Are you a tutor? -->
+					
+					<div class="row">
+					<div class="col-sm-4"></div>
+					<div class="col-sm-4">
+						<select class="form-control" id="staff">
+							<option>Student</option>
+							<option>Tutor</option>
+							<option>Faculty</option>
+						</select>
+					</div>
+					<div class="col-sm-4"></div>
+					</div>
 
 				</div>
 				</form>

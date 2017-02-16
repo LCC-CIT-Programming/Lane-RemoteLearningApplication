@@ -5,7 +5,7 @@
   <title>LCC CIT Lab Student Home</title>
 
   <link rel="stylesheet" type="text/css"
-          href="./Styles/main.css">
+          href="../Styles/main.css">
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -36,8 +36,8 @@
 		<li><a href="ask.php">Questions</a></li>
 	  </ul>
 	  <ul class="nav navbar-nav navbar-right">
-		<li><a href="#"><span class="glyphicon glyphicon-envelope"><span class="badge">1</span></span></a></li>
-		<li><a href="index.php"><span ></span>Logout</a></li>
+		<li><a href="#"><span class="glyphicon glyphicon-envelope"><span class="badge">"<?php echo '1'?>"</span></span></a></li>
+		<li><a href="login.php"><span ></span>Logout</a></li>
 	  </ul>
 	</div>
   </div>
@@ -75,13 +75,13 @@
 	</div>
 	<div class="row">
 
-	  <div class="col-lg-6 well" id="student_div">
-		<!-- <img src="smiley.png" align="left" class="smiley"> -->
+	  <div class="col-lg-3 well" id="student_div">
+		 <img src="../Styles/smiley.png" align="left" class="smiley"> 
 		<h4 class="yourName"><?php echo $user->getFirstName(); ?></h4>
 		<h4><a href="#">Edit Profile</a></h4>
 	  </div>
 
-	  <div class="col-lg-6 well" id="question_div" style="overflow: auto">
+	  <div class="col-lg-8 well" id="question_div" style="overflow: auto">
 		<table class="table table-condensed table-responsive">
 
 
@@ -121,7 +121,7 @@
 			<div class="col-sm-12">
 				<h1 id="tutor_header">Available Tutors</h1>
 				<hr>
-				<table class="table table-hover" id="tutor_list_table">
+				<table class="table table-hover table-striped" id="tutor_list_table">
 				  <thead>
 					<tr>
 					  <th></th>

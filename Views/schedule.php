@@ -5,7 +5,7 @@
   <title>LCC CIT Lab Schedule</title>
  
  <link rel="stylesheet" type="text/css"
-          href="../style/main.css">
+          href="../Styles/main.css">
 		  
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">

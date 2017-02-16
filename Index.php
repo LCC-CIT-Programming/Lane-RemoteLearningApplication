@@ -1,14 +1,14 @@
 <?php
-require_once('/Models/AppUser.php');
-require_once('/Models/Student.php');
-require_once('/Models/StudentDB.php');
+require_once('/Models/appUser.php');
+require_once('/Models/student.php');
+require_once('/Models/studentDB.php');
 require_once('/Models/db.php');
-require_once('/Models/Course.php');
-require_once('/Models/CourseDB.php');
-require_once('/Models/Question.php');
-require_once('/Models/QuestionDB.php');
-require_once('/Models/Tutor.php');
-require_once('/Models/TutorDB.php');
+require_once('/Models/course.php');
+require_once('/Models/courseDB.php');
+require_once('/Models/question.php');
+require_once('/Models/questionDB.php');
+require_once('/Models/tutor.php');
+require_once('/Models/tutorDB.php');
 
 try {
 $action = filter_input(INPUT_POST, 'action');
@@ -48,6 +48,11 @@ switch($action) {
 					}
 			}
 	break;
+	case "ask":
+		
+		include("Views/ask.php");
+	break;
+	
 	}
 } catch(PDOException $e) {
 		$error_message = $e->getMessage();
