@@ -41,7 +41,8 @@ switch($action) {
 						  $courses = StudentDB::GetStudentCourses($user);
 							$_SESSION['user'] = $user;
 							$_SESSION['courses'] = $courses;
-
+							$visit = new Visit($user->GetUserID(), 1, date("Y-m-d h:i:s"));
+							VisitDB::CreateVisit($visit);
 							include("/Views/home.php");
 					} else {
 							$_SESSION['user'] = null;
@@ -49,7 +50,7 @@ switch($action) {
 							include("Views/login.php");
 					}
 				} else {
-						  $user = TutorDB::TutorLogin($username, $password);
+						$user = TutorDB::TutorLogin($username, $password);
 
 						if ($user !== null && isset($user)) {
 								$userID = $user->GetUserID();
@@ -62,6 +63,10 @@ switch($action) {
 					}
 
 			}
+	break;
+
+	case "ask":
+			include("/Views/ask.php");
 	break;
 	}
 } catch(PDOException $e) {

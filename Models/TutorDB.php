@@ -158,7 +158,10 @@ class TutorDB {
 					$tutor = TutorDB::RetrieveTutorByID($row['UserID']);
 					$tutors[] = $tutor;
 				}
-				return $tutors;
+
+				if (isset($tutors))
+					return $tutors;
+				else return null;
 			}
 
 			public static function RetrieveTutorByID($TUTORID) {
