@@ -2,7 +2,7 @@
 class Visit {
     protected $visitID, $userID, $locationID, $startTime, $endTime;
 
-    public function __construct($USERID, $LOCATIONID, $VISITID = null, $STARTTIME = null, $ENDTIME = null) {
+    public function __construct($USERID, $LOCATIONID, $VISITID = NULL, $STARTTIME = NULL, $ENDTIME = NULL) {
         $this->visitID = $VISITID;
         $this->userID = $USERID;
         $this->locationID = $LOCATIONID;

@@ -99,7 +99,7 @@
 
           foreach ($questions as $question)
           {
-              $course = CourseDB::RetrieveCourseByNumber($question->getCourseID());
+              $course = CourseDB::RetrieveCourseByNumber($question->getCourseNumber());
               echo '<tr>
                       <td>' . $course->getCourseName() . '</td>' .
                      '<td>' . $question->getSubject() . '</td>' .

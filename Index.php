@@ -1,14 +1,16 @@
 <?php
-require_once('/Models/AppUser.php');
-require_once('/Models/Student.php');
-require_once('/Models/StudentDB.php');
+require_once('/Models/appuser.php');
+require_once('/Models/student.php');
+require_once('/Models/studentdb.php');
 require_once('/Models/db.php');
-require_once('/Models/Course.php');
-require_once('/Models/CourseDB.php');
-require_once('/Models/Question.php');
-require_once('/Models/QuestionDB.php');
-require_once('/Models/Tutor.php');
-require_once('/Models/TutorDB.php');
+require_once('/Models/course.php');
+require_once('/Models/coursedb.php');
+require_once('/Models/question.php');
+require_once('/Models/questiondb.php');
+require_once('/Models/tutor.php');
+require_once('/Models/tutordb.php');
+require_once('/Models/visit.php');
+require_once('/Models/visitdb.php');
 
 try {
 $action = filter_input(INPUT_POST, 'action');
@@ -46,23 +48,19 @@ switch($action) {
 							$loginError = "Login attempt failed.";
 							include("Views/login.php");
 					}
-			}
-			
-			else
-			{
-				$user = TutorDB::TutorLogin($username, $password);
-				if ($user !== null && isset($user))
-				{
-					$userId = $user->GetUserID();
-					$visitId = 1;
-					$startTime = date("Y-m-d h:i:s");
-					$locationId = 1;
-					$visit = new Visit($visitId, $userId, $locationId, $startTime);
-					$_SESSION['visit'] = $visit;
-					$_SESSION['user'] = $user;
-					
-				}
-				
+				} else {
+						  $user = TutorDB::TutorLogin($username, $password);
+
+						if ($user !== null && isset($user)) {
+								$userID = $user->GetUserID();
+								$startTime = date("Y-m-d h:i:s");
+								$locationID = 1;
+								$visit = new Visit($userID, $locationID, $startTime);
+								$_SESSION['visit'] = $visit;
+								$_SESSION['user'] = $user;
+								VisitDB::CreateVisit($visit);
+					}
+
 			}
 	break;
 	}

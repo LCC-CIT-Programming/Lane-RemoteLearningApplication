@@ -1,7 +1,7 @@
 <?php
 
 class StudentDB {
-	public static function StudentLogin($username, $password) {
+	public static function StudentLogin($USERNAME, $PASSWORD) {
 
       $query = 'SELECT appuser.*, MajorId
                 FROM `appuser`
@@ -16,28 +16,28 @@ class StudentDB {
 		$db = Database::getDB();
 
     $statement = $db->prepare($query);
-    $statement->bindValue(":username", $username);
-		$statement->bindValue(":password", $password);
+    $statement->bindValue(":username", $USERNAME);
+		$statement->bindValue(":password", $PASSWORD);
     $statement->execute();
     $row = $statement->fetch();
     $statement->closeCursor();
 
     if ($row != false){
-		    $user = new Student($row['UserID'],
-									              $row['FirstName'],
-              									$row['LastName'],
-              									$row['LNumber'],
-              									$row['Password'],
-              									$row['EmailAddress'],
-																$row['MajorId']);
+		    $user = new Student($row['FirstName'],
+          									$row['LastName'],
+          									$row['LNumber'],
+          									$row['Password'],
+          									$row['EmailAddress'],
+														$row['MajorId'],
+														$row['UserID']);
 			 return $user;
     	 } else {
     	        return null;
     	 }
     }
 
-	public static function GetStudentCourses($student) {
-	 $userid = $student->getUserID();
+	public static function GetStudentCourses($STUDENT) {
+	 $userID = $STUDENT->getUserID();
 
    $query = 'SELECT * FROM Course
 						 JOIN Section ON Course.CourseNumber = Section.CourseNumber
@@ -48,7 +48,7 @@ class StudentDB {
 		$db = Database::getDB();
 
 	  $statement = $db->prepare($query);
-	  $statement->bindValue(":id", $userid);
+	  $statement->bindValue(":id", $userID);
 	  $statement->execute();
 		$rows = $statement->fetchAll();
 	  $statement->closeCursor();
@@ -65,7 +65,7 @@ class StudentDB {
 	}
 
 
-public static function GetOpenQuestions($student) {
+public static function GetOpenQuestions($STUDENT) {
 		$db = Database::getDB();
 
 		$query = 'SELECT * FROM Question
@@ -74,7 +74,7 @@ public static function GetOpenQuestions($student) {
 							AND (Question.Status = "Open" OR Question.Status = "Processing")';
 
     $statement = $db->prepare($query);
-    $statement->bindValue(":id", $student->getUserID());
+    $statement->bindValue(":id", $STUDENT->getUserID());
     $statement->execute();
 		$rows = $statement->fetchAll();
     $statement->closeCursor();
@@ -83,13 +83,13 @@ public static function GetOpenQuestions($student) {
 
 		if ($rows != false) {
 		foreach ($rows as $row) {
-        $question = new Question($row['QuestionID'],
-							 									 $row['UserID'],
+        $question = new Question($row['UserID'],
 																 $row['CourseNumber'],
 																 $row['Subject'],
 																 $row['Description'],
 																 $row['Status'],
-																 $row['AskTime']);
+																 $row['AskTime'],
+															   $row['QuestionID']);
 
 			if ($row != false)
 					array_push($questions, $question);
@@ -103,16 +103,16 @@ public static function GetOpenQuestions($student) {
 }
 
 
-public static function CreateStudent($student){
+public static function CreateStudent($STUDENT){
 		$db = Database::getDB();
 
-		$firstName = $student->getFirstName();
-		$lastName = $student->getLastName();
-		$lnum = $student->getLNumber();
-		$pass = $student->getPassword();
-		$email = $student->getEmail();
-		$major = $student->getMajorID();
-		//$userid = $student->getUserID();
+		$firstName = $STUDENT->getFirstName();
+		$lastName = $STUDENT->getLastName();
+		$lnum = $STUDENT->getLNumber();
+		$pass = $STUDENT->getPassword();
+		$email = $STUDENT->getEmail();
+		$majorID = $STUDENT->getMajorID();
+
 
 		$query1 = 'INSERT INTO AppUser(FirstName, LastName, LNumber, Password, EmailAddress)
 							 VALUES (:firstName, :lastName, :lnum, :pass, :email)';
@@ -137,20 +137,20 @@ public static function CreateStudent($student){
 		$statement->closeCursor();
 
 		if ($row != false) {
-			$id = $row['UserID'];
+			$ID = $row['UserID'];
 		}
 
 		$query3 = 'INSERT INTO Student(MajorId, UserId)
-							 VALUES(:major, :userid)';
+							 VALUES(:majorid, :userid)';
 
 		$statement = $db->prepare($query3);
-		$statement->bindValue(':major', $major);
-		$statement->bindValue(':userid', $id);
+		$statement->bindValue(':majorid', $majorID);
+		$statement->bindValue(':userid', $ID);
 		$statement->execute();
 		$statement->closeCursor();
 }
 
-public static function RetrieveStudentByID($studentid) {
+public static function RetrieveStudentByID($STUDENTID) {
 
 	$query = 'SELECT *
 						FROM AppUser
@@ -161,59 +161,59 @@ public static function RetrieveStudentByID($studentid) {
 	$db = Database::getDB();
 
 	$statement = $db->prepare($query);
-	$statement->bindValue(':userid', $studentid);
+	$statement->bindValue(':userid', $STUDENTID);
 	$statement->execute();
 	$row = $statement->fetch();
 	$statement->closeCursor();
 
 	if ($row != false){
-			$user = new Student($row['UserID'],
-													$row['FirstName'],
+			$user = new Student($row['FirstName'],
 													$row['LastName'],
 													$row['LNumber'],
 													$row['Password'],
 													$row['EmailAddress'],
-													$row['MajorId']);
+													$row['MajorId'],
+													$row['UserID']);
 	 		return $user;
  	} else {
 		 return null;
   }
 }
 
-public static function UpdateStudent($student){
+public static function UpdateStudent($STUDENT){
 		$db = Database::getDB();
 
-		$firstName = $student->getFirstName();
-		$lastName = $student->getLastName();
-		$lnum = $student->getLNumber();
-		$pass = $student->getPassword();
-		$email = $student->getEmail();
-		$major = $student->getMajorID();
-		$userid = $student->getUserID();
+		$firstName = $STUDENT->getFirstName();
+		$lastName = $STUDENT->getLastName();
+		$lnum = $STUDENT->getLNumber();
+		$pass = $STUDENT->getPassword();
+		$email = $STUDENT->getEmail();
+		$majorID = $STUDENT->getMajorID();
+		$userID = $STUDENT->getUserID();
 
 		$query = 'UPDATE AppUser
-							SET FirstName = :firstName, LastName = :lastName, LNumber = :lnum, Password = :pass, EmailAddress = :email
-							WHERE UserID = :userid;
+							SET FirstName = :firstname, LastName = :lastname, LNumber = :lnum, Password = :pass, EmailAddress = :email
+							WHERE UserID = :userID;
 
 				 			UPDATE Student
-						  SET MajorId = :major
+						  SET MajorId = :majorid
 							WHERE UserID = :userid';
 
 		$statement = $db->prepare($query);
-		$statement->bindValue(':firstName', $firstName);
-		$statement->bindValue(':lastName', $lastName);
+		$statement->bindValue(':firstname', $firstName);
+		$statement->bindValue(':lastname', $lastName);
 		$statement->bindValue(':lnum', $lnum);
 		$statement->bindValue(':pass', $pass);
 		$statement->bindValue(':email', $email);
-		$statement->bindValue(':major', $major);
-		$statement->bindValue(':userid', $userid);
+		$statement->bindValue(':majorid', $majorID);
+		$statement->bindValue(':userid', $userID);
 		$statement->execute();
 		$statement->closeCursor();
 	}
 
-	public static function DeleteStudent($student){
+	public static function DeleteStudent($STUDENT){
 		$db = Database::getDB();
-		$userid = $student->getUserID();
+		$userID = $STUDENT->getUserID();
 
 		$query = 'DELETE FROM Student
 							WHERE UserId = :userid;
@@ -222,7 +222,7 @@ public static function UpdateStudent($student){
 							WHERE UserId = :userid;';
 
 		$statement = $db->prepare($query);
-		$statement->bindValue(':userid', $userid);
+		$statement->bindValue(':userid', $userID);
 		$statement->execute();
 		$statement->closeCursor();
 	}

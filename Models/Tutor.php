@@ -1,19 +1,19 @@
 <?php
 class Tutor extends AppUser{
 
-	private $TutorBio;
-		
-	public function __construct($userID, $firstName, $lastName, $lNumber, $pass, $email, $tutorBio){
-		parent::__construct($userID, $firstName, $lastName, $lNumber, $pass, $email);
-		$this->TutorBio = $tutorBio;
+	private $tutorBio;
+
+	public function __construct($FIRSTNAME, $LASTNAME, $LNUMBER, $PASS, $EMAIL, $TUTORBIO, $USERID = NULL){
+		parent::__construct($FIRSTNAME, $LASTNAME, $LNUMBER, $PASS, $EMAIL, $USERID);
+		$this->tutorBio = $TUTORBIO;
 	}
-	
+
 	public function getTutorBio(){
-		return $this->TutorBio;
+			return $this->tutorBio;
+		}
+
+	public function setTutorBio($VALUE){
+		$this->tutorBio = $VALUE;
 	}
-	
-	public function setTutorBio($value){
-		$this->TutorBio = $value;
-	}	
 }
 ?>
