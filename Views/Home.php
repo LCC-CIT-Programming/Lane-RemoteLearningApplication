@@ -33,7 +33,7 @@
 	  <ul class="nav navbar-nav">
 		<li class="active"><a href="#">Home</a></li>
 		<li><a href="schedule.php">Schedule</a></li>
-		<li><a href="ask.php">Questions</a></li>
+		<li><a href="index.php?action=ask">Questions</a></li>
 	  </ul>
 	  <ul class="nav navbar-nav navbar-right">
 		<li><a href="#"><span class="glyphicon glyphicon-envelope"><span class="badge">1</span></span></a></li>
@@ -53,7 +53,6 @@
 			<select class="form-control" id="class">
 
                 <?php
-                    $user = $_SESSION['user'];
                     $courses = $_SESSION['courses'];
                     foreach($courses as $course)
                     {
@@ -99,7 +98,7 @@
 
           foreach ($questions as $question)
           {
-              $course = CourseDB::RetrieveCourseByNumber($question->getCourseID());
+              $course = CourseDB::RetrieveCourseByNumber($question->getCourseNumber());
               echo '<tr>
                       <td>' . $course->getCourseName() . '</td>' .
                      '<td>' . $question->getSubject() . '</td>' .
@@ -132,15 +131,20 @@
 				  </thead>
 
           <?php
-              $tutors = TutorDB::GetAllTutors();
+              $tutors = TutorDB::GetOnlineTutors();
 
+              if ($tutors != null) {
               foreach ($tutors as $tutor) {
                   echo '<tr><td></td>
                         <td>' . $tutor->getFirstName() . ' ' . $tutor->getLastName() . '</td>' .
-                       '<td>' . 'offline' . '</td>' .
+                       '<td>' . 'Online' . '</td>' .
                        '<td>' . $tutor->getTutorBio() . '</td>' .
                        '</tr>';
               }
+            } else {
+
+              echo '<tr><td>There are no available tutors at this time.</td></tr>';
+            }
           ?>
 
 				</table>

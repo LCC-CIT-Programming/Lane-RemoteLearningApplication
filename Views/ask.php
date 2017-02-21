@@ -3,22 +3,21 @@
 
 <head>
   <title>LCC CIT Lab Student Home</title>
-  
+
   <link rel="stylesheet" type="text/css"
           href="../style/main.css">
-  
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/questionFormFix.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
- 
 </head>
 
 <div class="title">
   <div class="container text-center">
-    <h1>Lane Community College CIT Lab</h1>      
+    <h1>Lane Community College CIT Lab</h1>
   </div>
 </div>
 
@@ -48,12 +47,17 @@
                     <div id="bar"></div>
                     <form class="form-horizontal">
                         <div class="form-group">
-                            <label class="control-label">Select Topic</label>
+                            <label class="control-label">Select your course.</label>
                             <div class="col-md-9">
-                                <select id="topic" name="CourseNumber" class="form-control">
-                                    <option>foo 1</option>
-                                    <option>foo 2</option>
-                                    <option>foo 3</option>
+                                <select id="class" name="CourseNumber" class="form-control">
+                                  <?php
+                                      //$user = $_SESSION['user'];
+                                      $courses = $_SESSION['courses'];
+                                      foreach($courses as $course)
+                                      {
+                                          echo '<option>' . $course->getCourseName() . '</option>';
+                                      }
+                                  ?>
                                 </select>
                             </div>
                         </div>
@@ -65,7 +69,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-12">
-                            <textarea id="description" name="Description" class="form-control"  placeholder="Description"></textarea>     
+                            <textarea id="description" name="Description" class="form-control"  placeholder="Description"></textarea>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -77,6 +81,3 @@
                     </form>
                 </div>
 </div>
-
-
-

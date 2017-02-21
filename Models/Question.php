@@ -1,27 +1,26 @@
 <?php
 class Question {
-    private $studentId, $courseId, $questionId, $subject, $description, $status, $askTime, $openTime, $closeTime;
+    private $userID, $courseNumber, $questionID, $subject, $description, $status, $askTime, $openTime, $closeTime;
 
-    public function __construct($questionId, $studentId, $courseId, $subject, $description, $status, $askTime, $openTime = NULL, $closeTime = NULL) {
-		$this->studentId = $studentId;
-		$this->courseId = $courseId;
-	  $this->subject= $subject;
-    $this->description = $description;
-    $this->status = $status;
-    $this->askTime = $askTime;
-		$this->askTime = $askTime;
-		$this->openTime = $openTime;
-		$this->closeTime = $closeTime;
-		$this->questionId = $questionId;
+    public function __construct($USERID, $COURSENUMBER, $SUBJECT, $DESCRIPTION, $STATUS, $ASKTIME, $QUESTIONID = NULL, $OPENTIME = NULL, $CLOSETIME = NULL) {
+		$this->userId = $USERID;
+		$this->courseNumber = $COURSENUMBER;
+	  $this->subject= $SUBJECT;
+    $this->description = $DESCRIPTION;
+    $this->status = $STATUS;
+    $this->askTime = $ASKTIME;
+		$this->openTime = $OPENTIME;
+		$this->closeTime = $CLOSETIME;
+		$this->questionID = $QUESTIONID;
     }
 
-	public function getStudentID(){
-		return $this->studentId;
+	public function getUserID(){
+		return $this->userID;
 	}
 
 
-	public function getCourseID(){
-		return $this->courseId;
+	public function getCourseNumber(){
+		return $this->courseNumber;
 	}
 
 
@@ -32,7 +31,7 @@ class Question {
 
 
     public function getQuestionID() {
-        return $this->questionId;
+        return $this->questionID;
     }
 
 
@@ -46,32 +45,35 @@ class Question {
         return $this->status;
     }
 
-    public function setStatus($value) {
-        $this->status = $value;
+    public function setStatus($VALUE) {
+        $this->status = $VALUE;
     }
 
 	public function getAskTime() {
         return $this->askTime;
     }
 
-    public function setAskTime($value) {
-        $this->askTime = $value;
+
+    public function setAskTime($VALUE) {
+        $this->askTime = $VALUE;
     }
 
 	public function getOpenTime() {
         return $this->openTime;
     }
 
-    public function setOpenTime($value) {
-        $this->openTime = $value;
+
+    public function setOpenTime($VALUE) {
+        $this->openTime = $VALUE;
     }
 
 	public function getCloseTime() {
         return $this->closeTime;
     }
 
-    public function setCloseTime($value) {
-        $this->closeTime = $value;
+    public function setCloseTime($VALUE) {
+        $this->closeTime = $VALUE;
     }
 }
-   ?>
+
+?>

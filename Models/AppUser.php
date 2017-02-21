@@ -3,61 +3,57 @@
 class AppUser {
     protected $userID, $firstName, $lastName, $lnumber, $pass, $email;
 
-    public function __construct($userID, $firstName, $lastName, $lNumber, $pass, $email) {
-        $this->userID = $userID;
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
-		    $this->lnumber = $lNumber;
-		    $this->pass = $pass;
-		    $this->email = $email;
+    public function __construct($FIRSTNAME, $LASTNAME, $LNUMBER, $PASS, $EMAIL, $USERID = NULL) {
+        $this->userID = $USERID;
+        $this->firstName = $FIRSTNAME;
+        $this->lastName = $LASTNAME;
+		    $this->lnumber = $LNUMBER;
+		    $this->pass = $PASS;
+		    $this->email = $EMAIL;
     }
 
     public function getUserID() {
         return $this->userID;
     }
 
-    // public function setUserID($value) {
-    //     $this->userID = $value;
-    // }
-
     public function getFirstName() {
         return $this->firstName;
     }
 
-    public function setFirstName($value) {
-        $this->firstName = $value;
+
+    public function setFirstName($VALUE) {
+        $this->firstName = $VALUE;
     }
 
 	public function getLastName() {
         return $this->lastName;
     }
 
-    public function setLastName($value) {
-        $this->lastName = $value;
+
+    public function setLastName($VALUE) {
+        $this->lastName = $VALUE;
     }
 
 	public function getLNumber() {
 		return $this->lnumber;
 	}
 
-  // public function setLNumber($value) {
-  //       $this->lnumber = $value;
-  // }
-
 	public function getPassword() {
 		return $this->pass;
 	}
 
-	public function setPassword($value) {
-		   $this->pass = $value;
+
+	public function setPassword($VALUE) {
+		   $this->pass = $VALUE;
 	}
 
 	public function getEmail() {
 		return $this->email;
 	}
 
-	public function setEmail($value) {
-		   $this->email = $value;
+
+	public function setEmail($VALUE) {
+		   $this->email = $VALUE;
 	}
 
 }
