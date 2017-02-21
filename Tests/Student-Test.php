@@ -14,6 +14,7 @@ function canConstructStudent() {
 
 function canGetStudentID() {
   $student = new Student('test', 'user', 'L00123123', 'testpassword', 'email@email.com', 1, 1);
+
   if ($student->getUserID() == 1) {
     echo "<p style='color:green;'> Getting the student id was successful! </p>";
   } else {
@@ -23,6 +24,7 @@ function canGetStudentID() {
 
 function canGetStudentLNumber() {
   $student = new Student('test', 'user', 'L00123123', 'testpassword', 'email@email.com', 1);
+
   if ($student->getLNumber() == 'L00123123') {
     echo "<p style='color:green;'> Getting the student's lnumber was successful! </p>";
   } else {

@@ -14,6 +14,5 @@ class Student extends AppUser {
     public function setMajorID($VALUE) {
         $this->majorID = $VALUE;
     }
-
 }
 ?>

@@ -1,6 +1,7 @@
 <?php
 
 class StudentDB {
+
 	public static function StudentLogin($USERNAME, $PASSWORD) {
 
       $query = 'SELECT appuser.*, MajorId
@@ -10,11 +11,7 @@ class StudentDB {
 			          WHERE appuser.LNumber = :username
                 AND appuser.Password = :password';
 
-
-		//echo $query;
-
 		$db = Database::getDB();
-
     $statement = $db->prepare($query);
     $statement->bindValue(":username", $USERNAME);
 		$statement->bindValue(":password", $PASSWORD);
@@ -35,6 +32,7 @@ class StudentDB {
     	        return null;
     	 }
     }
+
 
 	public static function GetStudentCourses($STUDENT) {
 	 $userID = $STUDENT->getUserID();
@@ -64,7 +62,6 @@ class StudentDB {
 	  return $courses;
 	}
 
-
 public static function GetOpenQuestions($STUDENT) {
 		$db = Database::getDB();
 
@@ -83,6 +80,7 @@ public static function GetOpenQuestions($STUDENT) {
 
 		if ($rows != false) {
 		foreach ($rows as $row) {
+
         $question = new Question($row['UserID'],
 																 $row['CourseNumber'],
 																 $row['Subject'],
@@ -102,7 +100,6 @@ public static function GetOpenQuestions($STUDENT) {
 
 }
 
-
 public static function CreateStudent($STUDENT){
 		$db = Database::getDB();
 
@@ -112,7 +109,6 @@ public static function CreateStudent($STUDENT){
 		$pass = $STUDENT->getPassword();
 		$email = $STUDENT->getEmail();
 		$majorID = $STUDENT->getMajorID();
-
 
 		$query1 = 'INSERT INTO AppUser(FirstName, LastName, LNumber, Password, EmailAddress)
 							 VALUES (:firstName, :lastName, :lnum, :pass, :email)';
@@ -151,7 +147,6 @@ public static function CreateStudent($STUDENT){
 }
 
 public static function RetrieveStudentByID($STUDENTID) {
-
 	$query = 'SELECT *
 						FROM AppUser
 						JOIN Student
@@ -167,6 +162,7 @@ public static function RetrieveStudentByID($STUDENTID) {
 	$statement->closeCursor();
 
 	if ($row != false){
+
 			$user = new Student($row['FirstName'],
 													$row['LastName'],
 													$row['LNumber'],
@@ -211,6 +207,7 @@ public static function UpdateStudent($STUDENT){
 		$statement->closeCursor();
 	}
 
+
 	public static function DeleteStudent($STUDENT){
 		$db = Database::getDB();
 		$userID = $STUDENT->getUserID();
@@ -226,7 +223,6 @@ public static function UpdateStudent($STUDENT){
 		$statement->execute();
 		$statement->closeCursor();
 	}
-
 }
 
 ?>

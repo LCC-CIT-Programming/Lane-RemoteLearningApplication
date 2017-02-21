@@ -25,10 +25,8 @@ function canGetAllTutors() {
   }
 }
 
-
 function canCreateTutor(){
 	$db = Database::getDB();
-
   $tutor = new Tutor('testcreatetutor', 'user', 'L00111111', 'testpassword', 'email@email.com', 'my bio');
   TutorDB::CreateTutor($tutor);
   $createdTutor = TutorDB::TutorLogin('L00111111', 'testpassword');
@@ -42,8 +40,6 @@ function canCreateTutor(){
 
 }
 
-
-
 function canDeleteTutor(){
 	$db = Database::getDB();
   $tutor = TutorDB::TutorLogin('L00111111', 'testpassword');
@@ -56,7 +52,6 @@ function canDeleteTutor(){
     echo "<p style='color:red;'>Deleting a tutor was not successful! </p>";
   }
 }
-
 
 canTutorLogin();
 canGetAllTutors();

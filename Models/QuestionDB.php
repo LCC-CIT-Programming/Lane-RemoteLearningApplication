@@ -29,11 +29,11 @@ class QuestionDB {
 							   $row['CloseTime']
 							   );
 
-
           array_push($questions, $question);
       }
       return $questions;
   }
+
 
 public static function GetQuestion($QUESTION) {
       $db = Database::getDB();
@@ -50,6 +50,7 @@ public static function GetQuestion($QUESTION) {
       $statement->closeCursor();
 
       if ($row != false) {
+
         $question = new Question(
 							   $row['UserID'],
 							   $row['CourseNumber'],
@@ -65,6 +66,7 @@ public static function GetQuestion($QUESTION) {
 		return null;
   }
 
+
 public static function UpdateQuestion($QUESTION) {
       $db = Database::getDB();
 
@@ -77,7 +79,6 @@ public static function UpdateQuestion($QUESTION) {
 	$openTime = $QUESTION->getOpenTime();
 	$closeTime = $QUESTION->getCloseTime();
 	$questionID = $QUESTION->getQuestionID();
-
   $statement->bindValue(":status", $status );
 	$statement->bindValue(":openTime", $openTime );
 	$statement->bindValue(":closeTime", $closeTime );
@@ -86,6 +87,7 @@ public static function UpdateQuestion($QUESTION) {
   $statement->closeCursor();
 
 }
+
 
   public static function CreateQuestion($QUESTION) {
     $db = Database::getDB();
@@ -117,6 +119,7 @@ public static function UpdateQuestion($QUESTION) {
     $statement->closeCursor();
   }
 
+
   public static function DeleteQuestion($QUESTION) {
     $db = Database::getDB();
     $questionID = $QUESTION->getQuestionID();
@@ -129,6 +132,4 @@ public static function UpdateQuestion($QUESTION) {
     $statement->execute();
     $statement->closeCursor();
   }
-
-
 }

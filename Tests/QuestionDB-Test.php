@@ -15,7 +15,6 @@ function canGetOpenQuestions() {
 
 function canGetQuestion() {
   $questions = QuestionDB::GetOpenQuestions();
-
   $question = $questions[0];
   $test = QuestionDB::GetQuestion($question);
   if ($test != null) {

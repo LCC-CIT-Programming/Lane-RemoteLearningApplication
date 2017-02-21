@@ -1,4 +1,5 @@
 <?php
+
 include_once('../Models/appuser.php');
 
 function canConstructAppUser() {
@@ -13,6 +14,7 @@ function canConstructAppUser() {
 
 function canGetAppUserID() {
   $user = new AppUser('test', 'user', 'L00123123', 'testpassword', 'email@email.com', 1);
+
   if ($user->getUserID() == 1) {
     echo "<p style='color:green;'> Getting the app user id was successful! </p>";
   } else {
@@ -20,8 +22,10 @@ function canGetAppUserID() {
   }
 }
 
+
 function canGetAppUserLNumber() {
   $user = new AppUser('test', 'user', 'L00123123', 'testpassword', 'email@email.com');
+
   if ($user->getLNumber() == 'L00123123') {
     echo "<p style='color:green;'> Getting the app user's lnumber was successful! </p>";
   } else {
@@ -42,6 +46,7 @@ function canGetAppUserFirstName() {
 
 function canSetAppUserFirstName() {
   $user = new AppUser('test', 'user', 'L00123123', 'testpassword', 'email@email.com');
+
   $user->setFirstName('newname');
 
   if ($user->getFirstName() == 'newname') {
@@ -84,6 +89,7 @@ function canGetAppUserPassword() {
 
 function canSetAppUserPassword() {
   $user = new AppUser('test', 'user', 'L00123123', 'testpassword', 'email@email.com');
+
   $user->setPassword('newpassword');
 
   if ($user->getPassword() == 'newpassword') {

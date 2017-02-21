@@ -33,9 +33,9 @@ function canGetStudentName($userID){
 	$stmt->execute([$userID]);
 	$name = $stmt->fetchColumn();
 
+
 	if(isset($name)){
 		echo "<p style='color:green;'> Student name is :  $name </p>";
-
 	}
 	else{
 		"<p style='color:red;'> get Student name was not successful </p>";
@@ -43,7 +43,6 @@ function canGetStudentName($userID){
 }
 function canGetStudent($username, $password){
 	$db = Database::getDB();
-
 	$stmt = $db->prepare('SELECT *
 				FROM Appuser
 				WHERE LNumber = ? AND Password =?');
@@ -52,12 +51,12 @@ function canGetStudent($username, $password){
 
 	if(isset($student)){
 		echo "<p style='color:green;'> You got a student !</p>";
-
 	}
 	else{
 		"<p style='color:red;'> get Student name was not successful </p>";
 	}
 }
+
 $userID = 5;
 $username = 'L00000005';
 $password = 'Student1';
@@ -65,4 +64,5 @@ canConnect();
 canUseDBConnection();
 canGetStudentName($userID);
 canGetStudent($username, $password);
+
 ?>

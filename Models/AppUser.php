@@ -20,6 +20,7 @@ class AppUser {
         return $this->firstName;
     }
 
+
     public function setFirstName($VALUE) {
         $this->firstName = $VALUE;
     }
@@ -27,6 +28,7 @@ class AppUser {
 	public function getLastName() {
         return $this->lastName;
     }
+
 
     public function setLastName($VALUE) {
         $this->lastName = $VALUE;
@@ -40,6 +42,7 @@ class AppUser {
 		return $this->pass;
 	}
 
+
 	public function setPassword($VALUE) {
 		   $this->pass = $VALUE;
 	}
@@ -47,6 +50,7 @@ class AppUser {
 	public function getEmail() {
 		return $this->email;
 	}
+
 
 	public function setEmail($VALUE) {
 		   $this->email = $VALUE;

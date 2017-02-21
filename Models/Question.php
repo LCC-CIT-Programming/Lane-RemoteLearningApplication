@@ -53,6 +53,7 @@ class Question {
         return $this->askTime;
     }
 
+
     public function setAskTime($VALUE) {
         $this->askTime = $VALUE;
     }
@@ -60,6 +61,7 @@ class Question {
 	public function getOpenTime() {
         return $this->openTime;
     }
+
 
     public function setOpenTime($VALUE) {
         $this->openTime = $VALUE;

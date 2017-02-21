@@ -53,7 +53,6 @@
 			<select class="form-control" id="class">
 
                 <?php
-                    //$user = $_SESSION['user'];
                     $courses = $_SESSION['courses'];
                     foreach($courses as $course)
                     {
@@ -146,7 +145,6 @@
 
               echo '<tr><td>There are no available tutors at this time.</td></tr>';
             }
-
           ?>
 
 				</table>
