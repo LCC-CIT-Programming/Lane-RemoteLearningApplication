@@ -99,12 +99,25 @@
           foreach ($questions as $question)
           {
               $course = CourseDB::RetrieveCourseByNumber($question->getCourseNumber());
-              echo '<tr>
-                      <td>' . $course->getCourseName() . '</td>' .
+			  //$user = $_SESSION['user'];
+				if ($question->getUserID() == $user->getUserID())
+				{
+					echo '<tr class="success">';
+				}	
+				else 
+				{
+					echo '<tr>';
+					
+					
+					
+				}
+				
+					
+				echo '<td>' . $course->getCourseName() . '</td>' .
                      '<td>' . $question->getSubject() . '</td>' .
                      '<td>' . $question->getDescription() . '</td>' .
                      '<td>' . $question->getAskTime() . '</td>' .
-                  '</tr>';
+					'</tr>';
           }
       ?>
 
