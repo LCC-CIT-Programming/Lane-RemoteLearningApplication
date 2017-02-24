@@ -3,7 +3,7 @@ class Question {
     private $userID, $courseNumber, $questionID, $subject, $description, $status, $askTime, $openTime, $closeTime;
 
     public function __construct($USERID, $COURSENUMBER, $SUBJECT, $DESCRIPTION, $STATUS, $ASKTIME, $QUESTIONID = NULL, $OPENTIME = NULL, $CLOSETIME = NULL) {
-		$this->userId = $USERID;
+		$this->userID = $USERID;
 		$this->courseNumber = $COURSENUMBER;
 	  $this->subject= $SUBJECT;
     $this->description = $DESCRIPTION;
