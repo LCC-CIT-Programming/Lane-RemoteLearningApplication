@@ -25,7 +25,33 @@ public static function RetrieveVisit($VISIT) {
       $db = Database::getDB();
 
       $query = 'SELECT *
-			          FROM visit
+			    FROM visit
+                WHERE visit.UserID = :userid and visit.LocationId = :locationid AND visit.EndTime = null';
+
+      $statement = $db->prepare($query);
+      $statement->bindValue(":locationid", $VISIT->getLocationID());
+	  $statement->bindValue(":userid", $VISIT->getUserID());
+      $statement->execute();
+      $row = $statement->fetch();
+      $statement->closeCursor();
+
+      if ($row != false) {
+          $visit = new Visit(
+      				   $row['UserID'],
+      				   $row['LocationId'],
+                       $row['VisitId'],
+                       $row['StartTime'],
+                       $row['EndTime'] );
+		     return $visit;
+	   } else
+		   return null;
+}
+
+public static function RetrieveVisitByID($VISIT) {
+      $db = Database::getDB();
+
+      $query = 'SELECT *
+			    FROM visit
                 WHERE visit.VisitId = :visitid';
 
       $statement = $db->prepare($query);
@@ -53,12 +79,12 @@ public static function UpdateVisit($VISIT) {
             SET LocationId = :locationid, EndTime = :endtime
 		        WHERE visit.VisitId = :visitid';
 
-  $statement = $db->prepare($query);
-  $statement->bindValue(":locationid", $VISIT->getLocationID());
+	$statement = $db->prepare($query);
+	$statement->bindValue(":locationid", $VISIT->getLocationID());
 	$statement->bindValue(":endtime", $VISIT->getEndTime());
 	$statement->bindValue(":visitid", $VISIT->getVisitID());
-  $statement->execute();
-  $statement->closeCursor();
+	$statement->execute();
+	$statement->closeCursor();
 }
 
 public static function DeleteVisit($VISIT) {

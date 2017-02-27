@@ -11,6 +11,8 @@ require_once('/Models/tutor.php');
 require_once('/Models/tutordb.php');
 require_once('/Models/visit.php');
 require_once('/Models/visitdb.php');
+require_once('/Models/task.php');
+require_once('/Models/taskdb.php');
 
 try {
 session_start();
@@ -45,6 +47,10 @@ switch($action) {
 							$_SESSION['courses'] = $courses;
 							$visit = new Visit($user->GetUserID(), 1, date("Y-m-d h:i:s"));
 							VisitDB::CreateVisit($visit);
+							$visit = VisitDB::RetrieveVisit($visit);
+							$task = new Task($visit->getVisitID(), $courses[0]->getCourseNumber(),date("Y-m-d h:i:s"));
+							TaskDB::CreateTask($task);
+							$task = TaskDB::RetrieveTask($task);
 							include("/Views/home.php");
 					} else {
 							$_SESSION['user'] = null;

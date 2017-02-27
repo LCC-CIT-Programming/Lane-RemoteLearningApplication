@@ -14,8 +14,19 @@ function canCreateVisit() {
 }
 
 function canRetrieveVisit() {
-  $visit = new Visit(5, 2, 1);
+  $visit = new Visit(3, 1);
   $retrievedvisit = visitdb::RetrieveVisit($visit);
+
+  if (isset($retrievedvisit) && ($retrievedvisit->getUserID() == 3)) {
+    echo "<p style='color:green;'> Retrieving a visit was successful! </p>";
+  } else {
+    echo "<p style='color:red;'> Retrieving a visit was not successful! </p>";
+  }
+}
+
+function canRetrieveVisitByID() {
+  $visit = new Visit(5, 2, 1);
+  $retrievedvisit = visitdb::RetrieveVisitByID($visit);
 
   if ($retrievedvisit->getUserID() == 5) {
     echo "<p style='color:green;'> Retrieving a visit was successful! </p>";
@@ -27,7 +38,7 @@ function canRetrieveVisit() {
 function canUpdateVisit() {
   $visit = new Visit(5, 1, 1, date("Y-m-d h:i:s"));
   visitdb::UpdateVisit($visit);
-  $retrievedvisit = visitdb::RetrieveVisit($visit);
+  $retrievedvisit = visitdb::RetrieveVisitByID($visit);
 
   if ($retrievedvisit->getLocationID() == 1) {
     echo "<p style='color:green;'> Updating a visit was successful! </p>";
@@ -37,9 +48,9 @@ function canUpdateVisit() {
 }
 
 function canDeleteVisit() {
-  $visit = new Visit(10, 1, 24, date("Y-m-d h:i:s"));
+  $visit = new Visit(10, 1, 15, date("Y-m-d h:i:s"));
   visitdb::DeleteVisit($visit);
-  $retrievedvisit = visitdb::RetrieveVisit($visit);
+  $retrievedvisit = visitdb::RetrieveVisitByID($visit);
 
   if ($retrievedvisit == null) {
     echo "<p style='color:green;'> Deleting a visit was successful! </p>";
@@ -50,6 +61,7 @@ function canDeleteVisit() {
 
 canCreateVisit();
 canRetrieveVisit();
+canRetrieveVisitByID();
 canUpdateVisit();
 canDeleteVisit();
  ?>
