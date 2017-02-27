@@ -32,12 +32,14 @@
 	<div class="collapse navbar-collapse" id="navbar">
 	  <ul class="nav navbar-nav">
 		<li class="active"><a href="#">Home</a></li>
-		<li><a href="schedule.php">Schedule</a></li>
-		<li><a href="index.php?action=ask">Questions</a></li>
+
+		<li><a href="?action=schedule">Schedule</a></li>
+		<li><a href="?action=ask">Questions</a></li>
+
 	  </ul>
 	  <ul class="nav navbar-nav navbar-right">
-		<li><a href="#"><span class="glyphicon glyphicon-envelope"><span class="badge">1</span></span></a></li>
-		<li><a href="index.php"><span ></span>Logout</a></li>
+		<li><a href="#"><span class="glyphicon glyphicon-envelope"><span class="badge">"<?php echo '1'?>"</span></span></a></li>
+		<li><a href="?action=login"><span ></span>Logout</a></li>
 	  </ul>
 	</div>
   </div>
@@ -74,17 +76,17 @@
 	</div>
 	<div class="row">
 
-	  <div class="col-lg-6 well" id="student_div">
-		<!-- <img src="smiley.png" align="left" class="smiley"> -->
+	  <div class="col-lg-3 well" id="student_div">
+		 <img src="./Styles/smiley.png" align="left" class="smiley"> 
 		<h4 class="yourName"><?php echo $user->getFirstName(); ?></h4>
 		<h4><a href="#">Edit Profile</a></h4>
 	  </div>
 
-	  <div class="col-lg-6 well" id="question_div" style="overflow: auto">
+	  <div class="col-lg-8 well" id="question_div" style="overflow: auto">
 		<table class="table table-condensed table-responsive">
 
 
-      <?php
+        <?php
           $questions = QuestionDB::getOpenQuestions();
 
           echo '<tr><th>Questions in queue: ' . count($questions) . '</th><th></th><th></th><th></th></tr>';
@@ -99,6 +101,7 @@
           foreach ($questions as $question)
           {
               $course = CourseDB::RetrieveCourseByNumber($question->getCourseNumber());
+
 			  //$user = $_SESSION['user'];
 				if ($question->getUserID() == $user->getUserID())
 				{
@@ -133,7 +136,7 @@
 			<div class="col-sm-12">
 				<h1 id="tutor_header">Available Tutors</h1>
 				<hr>
-				<table class="table table-hover" id="tutor_list_table">
+				<table class="table table-hover table-striped" id="tutor_list_table">
 				  <thead>
 					<tr>
 					  <th></th>

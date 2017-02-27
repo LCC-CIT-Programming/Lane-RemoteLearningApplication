@@ -5,7 +5,7 @@
   <title>LCC CIT Lab Schedule</title>
  
  <link rel="stylesheet" type="text/css"
-          href="../style/main.css">
+          href="./Styles/main.css">
 		  
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -30,13 +30,13 @@
 		</div>
 		<div class="collapse navbar-collapse" id="navbar">
 		  <ul class="nav navbar-nav">
-			<li><a href="home.php">Home</a></li>
+			<li><a href="?action=home">Home</a></li>
 			<li class="active"><a href="#">Schedule</a></li>
-			<li><a href="ask.php">Questions</a></li>
+			<li><a href="?action=ask">Questions</a></li>
 		  </ul>
 		  <ul class="nav navbar-nav navbar-right">
 			<li><a href="#"><span class="glyphicon glyphicon-envelope"></span></a></li>
-			<li><a href="login.php"><span ></span> Logout</a></li>
+			<li><a href="?action=logout"><span ></span> Logout</a></li>
 		  </ul>
 		</div>
 	  </div>
