@@ -25,6 +25,32 @@ public static function RetrieveTask($TASK) {
       $db = Database::getDB();
 
       $query = 'SELECT *
+			    FROM task
+                WHERE task.VisitId = :visitid AND task.TtartTime = :starttime';
+
+      $statement = $db->prepare($query);
+      $statement->bindValue(":visitid", $TASK->getVisitID());
+	  $statement->bindValue(":starttime", $TASK->getStartTime());
+      $statement->execute();
+      $row = $statement->fetch();
+      $statement->closeCursor();
+
+      if ($row != false) {
+          $task = new Task(
+					   $row['VisitId'],
+					   $row['CourseNumber'],
+                       $row['StartTime'],
+                       $row['TaskId'],
+                       $row['EndTime'] );
+		     return $task;
+	   } else
+		   return null;
+}
+
+public static function RetrieveTaskByID($TASK) {
+      $db = Database::getDB();
+
+      $query = 'SELECT *
 			          FROM task
                 WHERE task.TaskId = :taskid';
 
