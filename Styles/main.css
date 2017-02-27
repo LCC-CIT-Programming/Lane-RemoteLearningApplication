@@ -88,7 +88,9 @@ td{
 }	
 #student_div
 {
-	height: 200px;
+	
+	margin-left: 3%;
+	margin-right: 3%;
 }
 #question_div
 {
@@ -124,4 +126,8 @@ h4 {
 
 footer{
 	background-color: #d6d8d9;
+}
+
+#returnBtn{
+	background: #03396a !important;
 }
