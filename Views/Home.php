@@ -32,8 +32,10 @@
 	<div class="collapse navbar-collapse" id="navbar">
 	  <ul class="nav navbar-nav">
 		<li class="active"><a href="#">Home</a></li>
+
 		<li><a href="?action=schedule">Schedule</a></li>
 		<li><a href="?action=ask">Questions</a></li>
+
 	  </ul>
 	  <ul class="nav navbar-nav navbar-right">
 		<li><a href="#"><span class="glyphicon glyphicon-envelope"><span class="badge">"<?php echo '1'?>"</span></span></a></li>
@@ -53,7 +55,6 @@
 			<select class="form-control" id="class">
 
                 <?php
-                    $user = $_SESSION['user'];
                     $courses = $_SESSION['courses'];
                     foreach($courses as $course)
                     {
@@ -100,12 +101,26 @@
           foreach ($questions as $question)
           {
               $course = CourseDB::RetrieveCourseByNumber($question->getCourseNumber());
-              echo '<tr>
-                      <td>' . $course->getCourseName() . '</td>' .
+
+			  //$user = $_SESSION['user'];
+				if ($question->getUserID() == $user->getUserID())
+				{
+					echo '<tr class="success">';
+				}	
+				else 
+				{
+					echo '<tr>';
+					
+					
+					
+				}
+				
+					
+				echo '<td>' . $course->getCourseName() . '</td>' .
                      '<td>' . $question->getSubject() . '</td>' .
                      '<td>' . $question->getDescription() . '</td>' .
                      '<td>' . $question->getAskTime() . '</td>' .
-                  '</tr>';
+					'</tr>';
           }
       ?>
 

@@ -5,7 +5,7 @@
   <title>LCC CIT Lab Student Home</title>
   
   <link rel="stylesheet" type="text/css" href="./Styles/main.css">
-  
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -13,12 +13,11 @@
  
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
- 
 </head>
 
 <div class="title">
   <div class="container text-center">
-    <h1>Lane Community College CIT Lab</h1>      
+    <h1>Lane Community College CIT Lab</h1>
   </div>
 </div>
 
@@ -88,8 +87,10 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-12">
+
                             <textarea id="question" name="description" class="form-control"  rows="5" placeholder="Enter your question" required></textarea>     
 							
+
                             </div>
                         </div>
 						<div class="row">
@@ -130,3 +131,4 @@
                     </form>
                 </div>
 </div>
+

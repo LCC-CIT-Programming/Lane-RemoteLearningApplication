@@ -2,7 +2,7 @@
 INSERT INTO major (MajorName) VALUES ('Programming');
 INSERT INTO major (MajorName) VALUES ('CIT');
 INSERT INTO major (MajorName) VALUES ('Networking');
--- SELECT * FROM major; 
+-- SELECT * FROM major;
 
 /* APP USER TABLE */
 INSERT INTO appuser (FirstName, LastName, LNumber, Password, EmailAddress) VALUES ('Mari', 'Good', 'L00000001', 'AppUser1', 'Goodm@lanecc.edu');
@@ -44,12 +44,12 @@ INSERT INTO course VALUES ('CS 295N', 'ASP.Net', 1);
 
 /* SCHEDULE TABLE */
 INSERT INTO schedule VALUES (3, '2016-11-21 12:00:00', '2016-11-21 14:00:00', 1); /* Do we really need the int for day if we can rip it from datetime? */
-INSERT INTO schedule VALUES (3, '2016-11-23 09:00:00', '2016-11-23 12:00:00', 3); 
+INSERT INTO schedule VALUES (3, '2016-11-23 09:00:00', '2016-11-23 12:00:00', 3);
 INSERT INTO schedule VALUES (4, '2016-11-22 09:00:00', '2016-11-22 11:00:00', 2);
 INSERT INTO schedule VALUES (4, '2016-11-24 14:00:00', '2016-11-24 16:30:00', 4);
 -- SELECT * FROM schedule;
 
-/* TUTOREXPERTISE TABLE 
+/* TUTOREXPERTISE TABLE
 INSERT INTO tutorexpertise (Course_CourseNumber, UserID) VALUES ('CS 133N', 3);
 INSERT INTO tutorexpertise (Course_CourseNumber, UserID) VALUES ('CS 295N', 3);
 INSERT INTO tutorexpertise (Course_CourseNumber, UserID) VALUES ('CIS 244', 3);
@@ -70,7 +70,7 @@ INSERT INTO term (TermId, TermName) VALUES (4, 'Summer');
 INSERT INTO section VALUES ('abc123', 2016, 1, 'CS 296P', 1);
 INSERT INTO section VALUES ('def456', 2016, 1, 'CS 133N', 2);
 INSERT INTO section VALUES ('ghi789', 2016, 1, 'CS 295N', 1);
-INSERT INTO section VALUES ('jkl012', 2016, 1, 'CIS 244', 2); 
+INSERT INTO section VALUES ('jkl012', 2016, 1, 'CIS 244', 2);
 -- SELECT * FROM section;
 
 /* STUDENTREGISTRATION TABLE */
@@ -86,10 +86,10 @@ INSERT INTO studentregistration VALUES (9, 'abc123');
 -- SELECT * FROM studentregistration;
 
 /* LOCATION TABLE */
-INSERT INTO location (LocationName, StationId) VALUES ('Lab', 1); 
-INSERT INTO location (LocationName, StationId) VALUES ('Lab', 2); 
-INSERT INTO location (LocationName, StationId) VALUES ('Lab', 3); 
-INSERT INTO location (LocationName, StationId) VALUES ('Lab', 4); 
+INSERT INTO location (LocationName, StationId) VALUES ('Lab', 1);
+INSERT INTO location (LocationName, StationId) VALUES ('Lab', 2);
+INSERT INTO location (LocationName, StationId) VALUES ('Lab', 3);
+INSERT INTO location (LocationName, StationId) VALUES ('Lab', 4);
 INSERT INTO location (LocationName, StationId) VALUES ('Lab', 5);
 INSERT INTO location (LocationName) VALUES ('Home');
 -- SELECT * FROM location;
@@ -97,10 +97,10 @@ INSERT INTO location (LocationName) VALUES ('Home');
 /* VISIT TABLE */
 INSERT INTO visit (StartTime, EndTime, UserID, LocationId) VALUES ( '2016-11-21 14:00:00', '2016-11-21 16:00:00', 5, 1);
 INSERT INTO visit (StartTime, EndTime, UserID, LocationId) VALUES ( '2016-11-24 09:00:00', '2016-11-24 09:30:21', 6, 2);
-INSERT INTO visit (StartTime, EndTime, UserID, LocationId) VALUES ( '2016-11-26 11:03:17', '2016-11-26 12:00:00', 7, 3);
-INSERT INTO visit (StartTime, EndTime, UserID, LocationId) VALUES ( '2016-11-22 12:00:00', '2016-11-22 14:00:00', 8, 4);
-INSERT INTO visit (StartTime, EndTime, UserID, LocationId) VALUES ( '2016-11-23 13:30:00', '2016-11-23 15:00:00', 7, 5);
-INSERT INTO visit (StartTime, EndTime, UserID, LocationId) VALUES ( '2016-11-24 15:28:00', '2016-11-24 17:11:00', 9, 6);
+INSERT INTO visit (StartTime, UserID, LocationId) VALUES ( '2016-11-26 11:03:17', 3, 1);
+INSERT INTO visit (StartTime, EndTime, UserID, LocationId) VALUES ( '2016-11-22 12:00:00', '2016-11-22 14:00:00', 4, 1);
+INSERT INTO visit (StartTime, EndTime, UserID, LocationId) VALUES ( '2016-11-23 13:30:00', '2016-11-23 15:00:00', 7, 2);
+INSERT INTO visit (StartTime, EndTime, UserID, LocationId) VALUES ( '2016-11-24 15:28:00', '2016-11-24 17:11:00', 9, 2);
 -- SELECT * FROM visit;
 
 /* TASK TABLE */

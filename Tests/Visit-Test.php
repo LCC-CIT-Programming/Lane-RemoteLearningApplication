@@ -91,5 +91,4 @@ canGetStartTime();
 canGetEndTime();
 canSetEndTime();
 canSetLocationID();
-
 ?>

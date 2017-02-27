@@ -1,20 +1,22 @@
 <?php
-require_once('./Models/appUser.php');
-require_once('./Models/student.php');
-require_once('./Models/studentDB.php');
-require_once('./Models/db.php');
-require_once('./Models/course.php');
-require_once('./Models/courseDB.php');
-require_once('./Models/question.php');
-require_once('./Models/questionDB.php');
-require_once('./Models/tutor.php');
-require_once('./Models/tutorDB.php');
-require_once('./Models/visit.php');
-require_once('./Models/visitdb.php');
 
-session_start();
+require_once('/Models/appuser.php');
+require_once('/Models/student.php');
+require_once('/Models/studentdb.php');
+require_once('/Models/db.php');
+require_once('/Models/course.php');
+require_once('/Models/coursedb.php');
+require_once('/Models/question.php');
+require_once('/Models/questiondb.php');
+require_once('/Models/tutor.php');
+require_once('/Models/tutordb.php');
+require_once('/Models/visit.php');
+require_once('/Models/visitdb.php');
+
 
 try {
+session_start();
+
 $action = filter_input(INPUT_POST, 'action');
 if ($action == NULL){
 	$action = filter_input(INPUT_GET, 'action');
@@ -22,7 +24,6 @@ if ($action == NULL){
 		$action = 'default';
 	}
 }
-
 
 switch($action) {
 	case "default":
@@ -46,12 +47,27 @@ switch($action) {
 							$visit = new Visit($user->GetUserID(), 1, date("Y-m-d h:i:s"));
 							VisitDB::CreateVisit($visit);
 
-							include("./Views/home.php");
+							include("/Views/home.php");
+
 					} else {
 							$_SESSION['user'] = null;
 							$loginError = "Login attempt failed.";
 							include("./Views/login.php");
 					}
+
+				} else {
+						$user = TutorDB::TutorLogin($username, $password);
+
+						if ($user !== null && isset($user)) {
+								$userID = $user->GetUserID();
+								$startTime = date("Y-m-d h:i:s");
+								$locationID = 1;
+								$visit = new Visit($userID, $locationID, $startTime);
+								$_SESSION['visit'] = $visit;
+								$_SESSION['user'] = $user;
+								VisitDB::CreateVisit($visit);
+					}
+
 			}
 			else {
 				$user = TutorDB::TutorLogin($username, $password);
@@ -116,13 +132,15 @@ switch($action) {
 	case "schedule":
 		include("./Views/schedule.php");
 	break;
-	
+
+	case "ask":
+			include("/Views/ask.php");
+	break;
+    
 	}
 } catch(PDOException $e) {
 		$error_message = $e->getMessage();
 		include('./Errors/database_error.php');
 		exit();
 }
-
-
  ?>

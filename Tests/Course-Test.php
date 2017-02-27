@@ -1,5 +1,5 @@
 <?php
-include_once('../Models/Course.php');
+include_once('../Models/course.php');
 
 function canConstructCourse() {
   $course = new Course('CS 296N', 'ASP.Net Core MVC', 1);
