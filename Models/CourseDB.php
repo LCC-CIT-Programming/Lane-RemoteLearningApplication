@@ -1,10 +1,11 @@
 <?php
 
 class CourseDB {
-	public static function CreateCourse($course) {
-    $CourseNumber = $course->getCourseNumber();
-    $CourseName = $course->getCourseName();
-    $LeadInstructorID = $course->getLeadInstructor();
+
+	public static function CreateCourse($COURSE) {
+    $courseNumber = $COURSE->getCourseNumber();
+    $courseName = $COURSE->getCourseName();
+    $leadInstructorID = $COURSE->getLeadInstructor();
 
     $query = 'INSERT INTO course
               VALUES (:coursenum, :coursename, :leadinstructor)';
@@ -12,17 +13,20 @@ class CourseDB {
 		$db = Database::getDB();
 
     $statement = $db->prepare($query);
-    $statement->bindValue(":coursenum", $CourseNumber);
-		$statement->bindValue(":coursename", $CourseName);
-    $statement->bindValue(":leadinstructor", $LeadInstructorID);
+
+    $statement->bindValue(":coursenum", $courseNumber);
+		$statement->bindValue(":coursename", $courseName);
+    $statement->bindValue(":leadinstructor", $leadInstructorID);
+
     $statement->execute();
     $statement->closeCursor();
   }
 
-  public static function RetrieveCourse($course) {
-    $CourseNumber = $course->getCourseNumber();
-    $CourseName = $course->getCourseName();
-    $LeadInstructorID = $course->getLeadInstructor();
+
+  public static function RetrieveCourse($COURSE) {
+    $courseNumber = $COURSE->getCourseNumber();
+    $courseName = $COURSE->getCourseName();
+    $leadInstructorID = $COURSE->getLeadInstructor();
 
     $query = 'SELECT *
               FROM course
@@ -33,24 +37,27 @@ class CourseDB {
     $db = Database::getDB();
 
     $statement = $db->prepare($query);
-    $statement->bindValue(":coursenum", $CourseNumber);
-    $statement->bindValue(":coursename", $CourseName);
-    $statement->bindValue(":leadinstructor", $LeadInstructorID);
+
+    $statement->bindValue(":coursenum", $courseNumber);
+    $statement->bindValue(":coursename", $courseName);
+    $statement->bindValue(":leadinstructor", $leadInstructorID);
+
     $statement->execute();
     $row = $statement->fetch();
     $statement->closeCursor();
 
     if ($row != false){
 		    $course = new Course($row['CourseNumber'],
-									              $row['CourseName'],
-              									$row['LeadInstructorId']);
+									           $row['CourseName'],
+              							 $row['LeadInstructorId']);
 			 return $course;
    } else {
     	 return null;
    }
   }
 
-	public static function RetrieveCourseByNumber($id) {
+	public static function RetrieveCourseByNumber($ID) {
+
     $query = 'SELECT *
 							FROM course
               WHERE CourseNumber = :coursenum';
@@ -58,25 +65,27 @@ class CourseDB {
     $db = Database::getDB();
 
     $statement = $db->prepare($query);
-		$statement->bindValue(':coursenum', $id);
+		$statement->bindValue(':coursenum', $ID);
 		$statement->execute();
 		$row = $statement->fetch();
 		$statement->closeCursor();
 
 		if ($row != false){
 				$course = new Course($row['CourseNumber'],
-																$row['CourseName'],
-																$row['LeadInstructorId']);
+														 $row['CourseName'],
+														 $row['LeadInstructorId']);
+
 			 return $course;
 	 	} else {
 			 return null;
 	 	}
   }
 
-  public static function UpdateCourseByNumber($course) {
-    $CourseNumber = $course->getCourseNumber();
-    $CourseName = $course->getCourseName();
-    $LeadInstructorID = $course->getLeadInstructor();
+
+  public static function UpdateCourseByNumber($COURSE) {
+    $courseNumber = $COURSE->getCourseNumber();
+    $courseName = $COURSE->getCourseName();
+    $leadInstructorID = $COURSE->getLeadInstructor();
 
     $query = 'UPDATE course
               SET CourseName = :coursename, LeadInstructorId = :leadinstructor
@@ -85,17 +94,17 @@ class CourseDB {
     $db = Database::getDB();
 
     $statement = $db->prepare($query);
-		$statement->bindValue(':coursenum', $CourseNumber);
-		$statement->bindValue(':coursename', $CourseName);
-		$statement->bindValue(':leadinstructor', $LeadInstructorID);
+		$statement->bindValue(':coursenum', $courseNumber);
+		$statement->bindValue(':coursename', $courseName);
+		$statement->bindValue(':leadinstructor', $leadInstructorID);
 		$statement->execute();
 		$statement->closeCursor();
   }
 
-  public static function UpdateCourseByName($course) {
-    $CourseNumber = $course->getCourseNumber();
-    $CourseName = $course->getCourseName();
-    $LeadInstructorID = $course->getLeadInstructor();
+  public static function UpdateCourseByName($COURSE) {
+    $courseNumber = $COURSE->getCourseNumber();
+    $courseName = $COURSE->getCourseName();
+    $leadInstructorID = $COURSE->getLeadInstructor();
 
     $query = 'UPDATE course
               SET CourseNumber = :coursenum, LeadInstructorId = :leadinstructor
@@ -104,17 +113,19 @@ class CourseDB {
     $db = Database::getDB();
 
     $statement = $db->prepare($query);
-    $statement->bindValue(':coursenum', $CourseNumber);
-    $statement->bindValue(':coursename', $CourseName);
-    $statement->bindValue(':leadinstructor', $LeadInstructorID);
+
+    $statement->bindValue(':coursenum', $courseNumber);
+    $statement->bindValue(':coursename', $courseName);
+    $statement->bindValue(':leadinstructor', $leadInstructorID);
     $statement->execute();
     $statement->closeCursor();
   }
 
-  public static function DeleteCourse($course) {
-    $CourseNumber = $course->getCourseNumber();
-    $CourseName = $course->getCourseName();
-    $LeadInstructorID = $course->getLeadInstructor();
+
+  public static function DeleteCourse($COURSE) {
+    $courseNumber = $COURSE->getCourseNumber();
+    $courseName = $COURSE->getCourseName();
+    $leadInstructorID = $COURSE->getLeadInstructor();
 
     $query = 'DELETE FROM course
               WHERE CourseNumber = :coursenum
@@ -124,12 +135,12 @@ class CourseDB {
     $db = Database::getDB();
 
     $statement = $db->prepare($query);
-    $statement->bindValue(':coursenum', $CourseNumber);
-    $statement->bindValue(':coursename', $CourseName);
-    $statement->bindValue(':leadinstructor', $LeadInstructorID);
+    $statement->bindValue(':coursenum', $courseNumber);
+    $statement->bindValue(':coursename', $courseName);
+    $statement->bindValue(':leadinstructor', $leadInstructorID);
     $statement->execute();
     $statement->closeCursor();
   }
-
 }
+
 ?>

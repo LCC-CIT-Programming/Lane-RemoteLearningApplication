@@ -5,7 +5,7 @@
   <title>LCC CIT Lab Student Home</title>
 
   <link rel="stylesheet" type="text/css"
-          href="../Styles/main.css">
+          href="./Styles/main.css">
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -32,12 +32,12 @@
 	<div class="collapse navbar-collapse" id="navbar">
 	  <ul class="nav navbar-nav">
 		<li class="active"><a href="#">Home</a></li>
-		<li><a href="schedule.php">Schedule</a></li>
-		<li><a href="ask.php">Questions</a></li>
+		<li><a href="?action=schedule">Schedule</a></li>
+		<li><a href="?action=ask">Questions</a></li>
 	  </ul>
 	  <ul class="nav navbar-nav navbar-right">
 		<li><a href="#"><span class="glyphicon glyphicon-envelope"><span class="badge">"<?php echo '1'?>"</span></span></a></li>
-		<li><a href="login.php"><span ></span>Logout</a></li>
+		<li><a href="?action=login"><span ></span>Logout</a></li>
 	  </ul>
 	</div>
   </div>
@@ -76,7 +76,7 @@
 	<div class="row">
 
 	  <div class="col-lg-3 well" id="student_div">
-		 <img src="../Styles/smiley.png" align="left" class="smiley"> 
+		 <img src="./Styles/smiley.png" align="left" class="smiley"> 
 		<h4 class="yourName"><?php echo $user->getFirstName(); ?></h4>
 		<h4><a href="#">Edit Profile</a></h4>
 	  </div>
@@ -85,7 +85,7 @@
 		<table class="table table-condensed table-responsive">
 
 
-      <?php
+        <?php
           $questions = QuestionDB::getOpenQuestions();
 
           echo '<tr><th>Questions in queue: ' . count($questions) . '</th><th></th><th></th><th></th></tr>';
@@ -99,7 +99,7 @@
 
           foreach ($questions as $question)
           {
-              $course = CourseDB::RetrieveCourseByNumber($question->getCourseID());
+              $course = CourseDB::RetrieveCourseByNumber($question->getCourseNumber());
               echo '<tr>
                       <td>' . $course->getCourseName() . '</td>' .
                      '<td>' . $question->getSubject() . '</td>' .
@@ -134,6 +134,7 @@
           <?php
               $tutors = TutorDB::GetOnlineTutors();
 
+              if ($tutors != null) {
               foreach ($tutors as $tutor) {
                   echo '<tr><td></td>
                         <td>' . $tutor->getFirstName() . ' ' . $tutor->getLastName() . '</td>' .
@@ -141,6 +142,10 @@
                        '<td>' . $tutor->getTutorBio() . '</td>' .
                        '</tr>';
               }
+            } else {
+
+              echo '<tr><td>There are no available tutors at this time.</td></tr>';
+            }
           ?>
 
 				</table>

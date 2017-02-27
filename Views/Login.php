@@ -4,7 +4,7 @@
 <head>
   <title>LCC CIT Lab</title>
 
-  <link rel="stylesheet" href="../Styles/login.css">
+  <link rel="stylesheet" href="./Styles/login.css">
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -54,10 +54,10 @@
 					<div class="row">
 					<div class="col-sm-4"></div>
 					<div class="col-sm-4">
-						<select class="form-control" id="staff">
-							<option>Student</option>
-							<option>Tutor</option>
-							<option>Faculty</option>
+						<select class="form-control" id="staff" name="roleSelect">
+							<option value="isStudent" name="student">Student</option>
+							<option value="isTutor" name="tutor">Tutor</option>
+							<option value="isFaculty" name="faculty">Faculty</option>
 						</select>
 					</div>
 					<div class="col-sm-4"></div>

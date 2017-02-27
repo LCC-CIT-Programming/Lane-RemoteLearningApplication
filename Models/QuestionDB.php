@@ -18,33 +18,33 @@ class QuestionDB {
       $questions = array();
       foreach ($rows as $row) {
           $question = new Question(
-							   $row['QuestionID'],
 							   $row['UserID'],
 							   $row['CourseNumber'],
                  $row['Subject'],
                  $row['Description'],
                  $row['Status'],
 							   $row['AskTime'],
+                 $row['QuestionID'],
 							   $row['OpenTime'],
 							   $row['CloseTime']
 							   );
-
 
           array_push($questions, $question);
       }
       return $questions;
   }
 
-public static function GetQuestion($question) {
+
+public static function GetQuestion($QUESTION) {
       $db = Database::getDB();
 
       $query = 'SELECT *
 			          FROM question
-                WHERE question.questionID = :questionId';
+                WHERE Question.QuestionID = :questionid';
 
       $statement = $db->prepare($query);
-	    $questionid = $question->getQuestionID();
-      $statement->bindValue(":questionId", $questionid );
+	    $questionID = $QUESTION->getQuestionID();
+      $statement->bindValue(":questionid", $questionID );
       $statement->execute();
       $row = $statement->fetch();
       $statement->closeCursor();
@@ -52,85 +52,84 @@ public static function GetQuestion($question) {
       if ($row != false) {
 
         $question = new Question(
-							   $row['QuestionID'],
 							   $row['UserID'],
 							   $row['CourseNumber'],
                  $row['Subject'],
                  $row['Description'],
                  $row['Status'],
 							   $row['AskTime'],
+                 $row['QuestionID'],
 							   $row['OpenTime'],
-							   $row['CloseTime']
-							   );
+							   $row['CloseTime']);
 		return $question;
 	} else
 		return null;
   }
 
-public static function UpdateQuestion($question) {
+
+public static function UpdateQuestion($QUESTION) {
       $db = Database::getDB();
 
       $query = 'UPDATE question
                 SET status = :status, openTime = :openTime, closeTime = :closeTime
-			          WHERE question.questionID = :questionId';
+			          WHERE question.questionID = :questionid';
 
   $statement = $db->prepare($query);
-	$status = $question->getStatus();
-	$openTime = $question->getOpenTime();
-	$closeTime = $question->getCloseTime();
-	$questionid = $question->getQuestionID();
-
+	$status = $QUESTION->getStatus();
+	$openTime = $QUESTION->getOpenTime();
+	$closeTime = $QUESTION->getCloseTime();
+	$questionID = $QUESTION->getQuestionID();
   $statement->bindValue(":status", $status );
 	$statement->bindValue(":openTime", $openTime );
 	$statement->bindValue(":closeTime", $closeTime );
-	$statement->bindValue(":questionId", $questionid );
+	$statement->bindValue(":questionid", $questionID );
   $statement->execute();
   $statement->closeCursor();
 
 }
 
-  public static function CreateQuestion($question) {
+
+  public static function CreateQuestion($QUESTION) {
     $db = Database::getDB();
 
-    $userid = $question->getUserID();
-  	$coursenumber = $question->getCourseNumber();
-    $subject = $question->getSubject();
-    $description = $question->getDescription();
-    $status = $question->getStatus();
+    $userID = $QUESTION->getUserID();
+  	$courseNumber = $QUESTION->getCourseNumber();
+    $subject = $QUESTION->getSubject();
+    $description = $QUESTION->getDescription();
+    $status = $QUESTION->getStatus();
   	$askTime = date("Y-m-d h:i:s");
-  	$openTime = $question->getOpenTime();
-  	$closeTime = $question->getCloseTime();
+  	$openTime = $QUESTION->getOpenTime();
+  	$closeTime = $QUESTION->getCloseTime();
 
     $query = 'INSERT INTO question
               (userid, coursenumber, subject, description, status, askTime, openTime, closeTime)
               VALUES
-              ( :userid, :coursenumber,:subject, :description, :status, :askTime, :openTime, :closeTime)';
+              ( :userid, :coursenumber,:subject, :description, :status, :asktime, :opentime, :closetime)';
 
     $statement = $db->prepare($query);
-    $statement->bindValue(':userid', $userid);
-    $statement->bindValue(':coursenumber', $coursenumber);
+    $statement->bindValue(':userid', $userID);
+    $statement->bindValue(':coursenumber', $courseNumber);
     $statement->bindValue(':subject', $subject);
     $statement->bindValue(':description', $description);
   	$statement->bindValue(':status', $status);
-  	$statement->bindValue(':askTime', $askTime);
-  	$statement->bindValue(':openTime', $openTime);
-  	$statement->bindValue(':closeTime', $closeTime);
+  	$statement->bindValue(':asktime', $askTime);
+  	$statement->bindValue(':opentime', $openTime);
+  	$statement->bindValue(':closetime', $closeTime);
     $statement->execute();
     $statement->closeCursor();
   }
 
-  public static function DeleteQuestion($question) {
+
+  public static function DeleteQuestion($QUESTION) {
     $db = Database::getDB();
-    $questionid = $question->getQuestionID();
+    $questionID = $QUESTION->getQuestionID();
 
     $query = 'DELETE FROM question
-		          WHERE question.questionID = :questionId';
+		          WHERE question.questionID = :questionid';
 
     $statement = $db->prepare($query);
-  	$statement->bindValue(":questionId", $questionid );
+  	$statement->bindValue(":questionid", $questionID );
     $statement->execute();
     $statement->closeCursor();
   }
-
-
 }
