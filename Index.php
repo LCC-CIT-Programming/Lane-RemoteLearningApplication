@@ -62,7 +62,8 @@ switch($action) {
 							include("./Views/login.php");
 					}
 
-				} else {
+				} 
+				else{
 						$user = TutorDB::TutorLogin($username, $password);
 
 						if ($user !== null && isset($user)) {
@@ -75,20 +76,11 @@ switch($action) {
 								VisitDB::CreateVisit($visit);
 					}
 
-			}
-			else {
-				$user = TutorDB::TutorLogin($username, $password);
+				
 
-				if ($user !== null && isset($user)) {
-						$userID = $user->GetUserID();
-						$startTime = date("Y-m-d h:i:s");
-						$locationID = 1;
-						$visit = new Visit($userID, $locationID, $startTime);
-						$_SESSION['visit'] = $visit;
-						$_SESSION['user'] = $user;
-						VisitDB::CreateVisit($visit);
+	
+		
 			}
-		}
 	break;
 	case "ask":
 		$questionError = "";
