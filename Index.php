@@ -56,13 +56,16 @@ switch($action) {
 						  $courses = StudentDB::GetStudentCourses($user);
 							$_SESSION['user'] = $user;
 							$_SESSION['courses'] = $courses;
+
 							$visit = new Visit($user->GetUserID(), 1, date("Y-m-d h:i:s"));
 							VisitDB::CreateVisit($visit);
+							$visit = VisitDB::RetrieveVisit($visit);
+							$_SESSION['visit'] = $visit;
 
-							//$visit = VisitDB::RetrieveVisit($visit);
-							//$task = new Task($visit->getVisitID(), $courses[0]->getCourseNumber(),date("Y-m-d h:i:s"));
-							//TaskDB::CreateTask($task);
-							//$task = TaskDB::RetrieveTask($task);
+							$task = new Task($visit->getVisitID(), $courses[0]->getCourseNumber(),date("Y-m-d h:i:s"));
+							TaskDB::CreateTask($task);
+							$task = TaskDB::RetrieveTask($task);
+							$_SESSION['task'] = $task;
 
 							include("/Views/home.php");
 
@@ -104,11 +107,9 @@ switch($action) {
 		if ($courseNum == null || $subject == null ||
 			$description == null || $status == null || $askTime == null){
 				$questionError = "Invalid question. Check all fields and try again.";
-
 				$success = "";
 				include("./Views/ask.php");
-
-			}
+		}
 		else{
 			$user = $_SESSION['user'];
 			$userID = $user->GetUserID();
@@ -117,6 +118,15 @@ switch($action) {
 
 			$success = "Question created, ask another?";
 			$questionError = "";
+
+			$task = $_SESSION['task'];
+			$task->setEndTime(date("Y-m-d h:i:s"));
+			taskdb::UpdateTask($task);
+			$startNewTask = new Task($visit->getVisitID(), $courseNum ,date("Y-m-d h:i:s"));
+			taskdb::CreateTask($startNewTask);
+			$task = taskdb::RetrieveTask($startNewTask);
+			$_SESSION['task'] = $task;
+
 			include("./Views/ask.php");
 
 		}

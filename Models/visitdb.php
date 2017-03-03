@@ -25,12 +25,13 @@ public static function RetrieveVisit($VISIT) {
       $db = Database::getDB();
 
       $query = 'SELECT *
-			    FROM visit
-                WHERE visit.UserID = :userid and visit.LocationId = :locationid AND visit.EndTime = null';
+			          FROM visit
+                WHERE visit.UserID = :userid AND visit.LocationId = :locationid AND visit.EndTime IS NULL';
 
       $statement = $db->prepare($query);
       $statement->bindValue(":locationid", $VISIT->getLocationID());
-	  $statement->bindValue(":userid", $VISIT->getUserID());
+	    $statement->bindValue(":userid", $VISIT->getUserID());
+      //$statement->bindValue(":starttime", $VISIT->getStartTime());
       $statement->execute();
       $row = $statement->fetch();
       $statement->closeCursor();
@@ -39,9 +40,9 @@ public static function RetrieveVisit($VISIT) {
           $visit = new Visit(
       				   $row['UserID'],
       				   $row['LocationId'],
-                       $row['VisitId'],
-                       $row['StartTime'],
-                       $row['EndTime'] );
+                 $row['VisitId'],
+                 $row['StartTime'],
+                 $row['EndTime'] );
 		     return $visit;
 	   } else
 		   return null;
@@ -51,7 +52,7 @@ public static function RetrieveVisitByID($VISIT) {
       $db = Database::getDB();
 
       $query = 'SELECT *
-			    FROM visit
+			          FROM visit
                 WHERE visit.VisitId = :visitid';
 
       $statement = $db->prepare($query);
@@ -76,12 +77,13 @@ public static function UpdateVisit($VISIT) {
   $db = Database::getDB();
 
   $query = 'UPDATE visit
-            SET LocationId = :locationid, EndTime = :endtime
+            SET LocationId = :locationid, EndTime = :endtime, StartTime = :starttime
 		        WHERE visit.VisitId = :visitid';
 
 	$statement = $db->prepare($query);
 	$statement->bindValue(":locationid", $VISIT->getLocationID());
 	$statement->bindValue(":endtime", $VISIT->getEndTime());
+  $statement->bindValue(":starttime", $VISIT->getStartTime());
 	$statement->bindValue(":visitid", $VISIT->getVisitID());
 	$statement->execute();
 	$statement->closeCursor();

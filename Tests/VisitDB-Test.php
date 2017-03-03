@@ -14,10 +14,10 @@ function canCreateVisit() {
 }
 
 function canRetrieveVisit() {
-  $visit = new Visit(3, 1);
+  $visit = new Visit(3, 2);
   $retrievedvisit = visitdb::RetrieveVisit($visit);
 
-  if (isset($retrievedvisit) && ($retrievedvisit->getUserID() == 3)) {
+  if (isset($retrievedvisit) && ($retrievedvisit->getVisitID() == 3)) {
     echo "<p style='color:green;'> Retrieving a visit was successful! </p>";
   } else {
     echo "<p style='color:red;'> Retrieving a visit was not successful! </p>";
@@ -25,10 +25,10 @@ function canRetrieveVisit() {
 }
 
 function canRetrieveVisitByID() {
-  $visit = new Visit(5, 2, 1);
+  $visit = new Visit(6, 2, 2);
   $retrievedvisit = visitdb::RetrieveVisitByID($visit);
 
-  if ($retrievedvisit->getUserID() == 5) {
+  if ($retrievedvisit->getUserID() == 6) {
     echo "<p style='color:green;'> Retrieving a visit was successful! </p>";
   } else {
     echo "<p style='color:red;'> Retrieving a visit was not successful! </p>";
@@ -36,11 +36,11 @@ function canRetrieveVisitByID() {
 }
 
 function canUpdateVisit() {
-  $visit = new Visit(5, 1, 1, date("Y-m-d h:i:s"));
+  $visit = new Visit(3, 2, 3, date("Y-m-d h:i:s"));
   visitdb::UpdateVisit($visit);
   $retrievedvisit = visitdb::RetrieveVisitByID($visit);
 
-  if ($retrievedvisit->getLocationID() == 1) {
+  if ($retrievedvisit->getLocationID() == 2) {
     echo "<p style='color:green;'> Updating a visit was successful! </p>";
   } else {
     echo "<p style='color:red;'> Updating a visit was not successful! </p>";
