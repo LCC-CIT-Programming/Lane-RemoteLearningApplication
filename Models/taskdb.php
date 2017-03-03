@@ -25,12 +25,12 @@ public static function RetrieveTask($TASK) {
       $db = Database::getDB();
 
       $query = 'SELECT *
-			    FROM task
-                WHERE task.VisitId = :visitid AND task.TtartTime = :starttime';
+			          FROM task
+                WHERE task.VisitId = :visitid AND task.StartTime = :starttime';
 
       $statement = $db->prepare($query);
       $statement->bindValue(":visitid", $TASK->getVisitID());
-	  $statement->bindValue(":starttime", $TASK->getStartTime());
+	    $statement->bindValue(":starttime", $TASK->getStartTime());
       $statement->execute();
       $row = $statement->fetch();
       $statement->closeCursor();
@@ -39,9 +39,9 @@ public static function RetrieveTask($TASK) {
           $task = new Task(
 					   $row['VisitId'],
 					   $row['CourseNumber'],
-                       $row['StartTime'],
-                       $row['TaskId'],
-                       $row['EndTime'] );
+             $row['StartTime'],
+             $row['TaskId'],
+             $row['EndTime'] );
 		     return $task;
 	   } else
 		   return null;

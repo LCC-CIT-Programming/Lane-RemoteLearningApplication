@@ -19,6 +19,16 @@ require_once('/Models/taskdb.php');
 try {
 session_start();
 
+if (isset($_SESSION['user']))
+		$user = $_SESSION['user'];
+if (isset($_SESSION['courses']))
+		$courses = $_SESSION['courses'];
+if (isset($_SESSION['visit']))
+		$visit = $_SESSION['visit'];
+if (isset($_SESSION['task']))
+		$task = $_SESSION['task'];
+
+
 $action = filter_input(INPUT_POST, 'action');
 if ($action == NULL){
 	$action = filter_input(INPUT_GET, 'action');
@@ -62,7 +72,7 @@ switch($action) {
 							include("./Views/login.php");
 					}
 
-				} 
+				}
 				else{
 						$user = TutorDB::TutorLogin($username, $password);
 
@@ -75,11 +85,6 @@ switch($action) {
 								$_SESSION['user'] = $user;
 								VisitDB::CreateVisit($visit);
 					}
-
-				
-
-	
-		
 			}
 	break;
 	case "ask":
@@ -87,47 +92,47 @@ switch($action) {
 		$success = "";
 		include("./Views/ask.php");
 	break;
-	
+
 	case "ask_question":
 
 		$courseNum = filter_input(INPUT_POST, "courseSelect");
-		$subject = filter_input(INPUT_POST, "subject");	
+		$subject = filter_input(INPUT_POST, "subject");
 		$description = filter_input(INPUT_POST, "description");
 		$status = "open";
 		$askTime = date("Y-m-d h:i:s");
-		
-		if ($courseNum == null || $subject == null || 
+
+		if ($courseNum == null || $subject == null ||
 			$description == null || $status == null || $askTime == null){
 				$questionError = "Invalid question. Check all fields and try again.";
-			
+
 				$success = "";
 				include("./Views/ask.php");
-				
+
 			}
 		else{
 			$user = $_SESSION['user'];
 			$userID = $user->GetUserID();
 			$question = new Question($userID, $courseNum, $subject, $description, $status, $askTime);
 			QuestionDB::CreateQuestion($question);
-			
+
 			$success = "Question created, ask another?";
 			$questionError = "";
 			include("./Views/ask.php");
-			
+
 		}
 	break;
-	
+
 	case "logout":
 			$_SESSION['user'] = null;
 			$loginError = "";
 			session_destroy();
 			include("./Views/login.php");
 	break;
-	
+
 	case "home":
 		include("./Views/home.php");
 	break;
-	
+
 	case "schedule":
 		include("./Views/schedule.php");
 	break;
@@ -135,7 +140,7 @@ switch($action) {
 	case "ask":
 			include("/Views/ask.php");
 	break;
-    
+
 	}
 } catch(PDOException $e) {
 		$error_message = $e->getMessage();

@@ -17,7 +17,7 @@ function canRetrieveTask() {
   $task = new Task(1, 'CIS 244', date("Y-m-d h:i:s"), 2);
   $retrievedtask = taskdb::RetrieveTask($task);
 
-  if ($retrievedtask->getCourseNumber() == 'CS 133N') {
+  if ($retrievedtask->getCourseNumber() == 'CIS 244') {
     echo "<p style='color:green;'> Retrieving a task was successful! </p>";
   } else {
     echo "<p style='color:red;'> Retrieving a task was not successful! </p>";
@@ -27,7 +27,7 @@ function canRetrieveTask() {
 function canUpdateTask() {
   $task = new Task(1, 'CIS 244', date("Y-m-d h:i:s"), 2, date("Y-m-d h:i:s"));
   taskdb::UpdateTask($task);
-  $retrievedtask = taskdb::RetrieveTask($task);
+  $retrievedtask = taskdb::RetrieveTaskByID($task);
 
   if ($retrievedtask->getEndTime() == date("Y-m-d h:i:s")) {
     echo "<p style='color:green;'> Updating a task was successful! </p>";
@@ -39,7 +39,7 @@ function canUpdateTask() {
 function canDeleteTask() {
   $task = new Task(1, 'CIS 244', date("Y-m-d h:i:s"), 3);
   taskdb::DeleteTask($task);
-  $retrievedtask = taskdb::RetrieveTask($task);
+  $retrievedtask = taskdb::RetrieveTaskByID($task);
 
   if ($retrievedtask == null) {
     echo "<p style='color:green;'> Deleting a task was successful! </p>";
