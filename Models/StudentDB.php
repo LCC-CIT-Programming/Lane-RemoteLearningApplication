@@ -207,7 +207,26 @@ public static function UpdateStudent($STUDENT){
 		$statement->closeCursor();
 	}
 
-
+	public static function UpdateProfile($USER)
+	{
+		$db = Database::getDB();
+		
+		$email = $USER->getEmail();
+		$pass = $USER->getPassword();
+		$userID = $USER->getUserID();
+	
+		$query = 'UPDATE AppUser 
+					SET Password = :pass, EmailAddress = :email
+					WHERE UserID = :userid';
+					
+		$statement = $db->prepare($query);
+		$statement->bindValue(':pass', $pass);
+		$statement->bindValue(':email', $email);
+		$statement->bindValue(':userid', $userID);
+		$statement->execute();
+		$statement->closeCursor();
+	}
+	
 	public static function DeleteStudent($STUDENT){
 		$db = Database::getDB();
 		$userID = $STUDENT->getUserID();
@@ -223,6 +242,8 @@ public static function UpdateStudent($STUDENT){
 		$statement->execute();
 		$statement->closeCursor();
 	}
+	
+	
 }
 
 ?>

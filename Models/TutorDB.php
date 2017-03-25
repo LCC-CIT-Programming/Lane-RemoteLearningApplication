@@ -90,6 +90,7 @@ class TutorDB {
 			$query = 'UPDATE Appuser
 								SET FirstName=:firstName, LastName=:lastName, Lnumber=:lnum, Password=:password, Email=:email, TutorBio=:tutorBio
 								WHERE UserID = :userid;
+								
 								UPDATE Tutor
 								SET TutorBio=:tutorBio
 								WHERE UserID=:userid';
@@ -105,6 +106,28 @@ class TutorDB {
 			$statement->execute();
 			$statement->closeCursor();
 		}
+		
+		public static function UpdateProfile($USER)
+	{
+		$db = Database::getDB();
+		
+		$email = $USER->getEmail();
+		$pass = $USER->getPassword();
+		$userID = $USER->getUserID();
+		$summary = $USER->getTutorBio();
+	
+		$query = 'UPDATE AppUser 
+					SET Password = :pass, EmailAddress = :email, TutorBio = :summary
+					WHERE UserID = :userid';
+					
+		$statement = $db->prepare($query);
+		$statement->bindValue(':pass', $pass);
+		$statement->bindValue(':email', $email);
+		$statement->bindValue(':summary',$summary);
+		$statement->bindValue(':userid', $userID);
+		$statement->execute();
+		$statement->closeCursor();
+	}
 
 		public static function DeleteTutor($tutor){
 			$db = Database::getDB();
