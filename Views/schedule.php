@@ -43,46 +43,43 @@
 	</nav>
 
 <body>
-<div class="container-fluid" id="bodyDiv">    
+<div class="container-fluid" style="width:750px;">    
 	  <div class="row content">
-		<div class="col-sm-3 ">
-		  <p><a href="#">Spaceholder</a></p>
-		  <p><a href="#">Tutor Link</a></p>
-		  <p><a href="#">Student Link</a></p>
-		</div>
-		<div class="col-sm-9 text-center" id="tableDiv"> 
-		  <h2 id="tableTitle">Weekly Schedule</h2>
-		  <table class="table-responsive table-striped table-bordered" id="sch_table">
+		
+		<div class="col-sm-12"> 
+		  <h2>Weekly Schedule</h2>
+		  <table class="table table-responsive table-striped table-bordered">
             <thead>
                 <td></td>
-                <td class="days">Monday</td><td class="days">Tuesday</td><td class="days">Wednesday</td><td class="days">Thursday</td><td class="days">Friday</td>
+                <td>Monday</td><td>Tuesday</td><td>Wednesday</td><td>Thursday</td><td>Friday
+				</td><td>Saturday</td><td>Sunday</td>
             </thead>
             <tr>
-                <td class="time">9am</td><td></td><td></td><td></td><td></td><td></td>
+                <td class="time">9am</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
             </tr>
             <tr>
-                <td class="time">10am</td><td></td><td></td><td></td><td></td><td></td>
+                <td class="time">10am</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
             </tr>
             <tr>
-                <td class="time">11am</td><td></td><td></td><td></td><td></td><td></td>
+                <td class="time">11am</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
             </tr>
             <tr>
-                <td class="time">12pm</td><td></td><td></td><td></td><td></td><td></td>
+                <td class="time">12pm</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
             </tr>
             <tr>
-                <td class="time">1pm</td><td></td><td></td><td></td><td></td><td></td>
+                <td class="time">1pm</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
             </tr>
             <tr>
-                <td class="time">2pm</td><td></td><td></td><td></td><td></td><td></td>
+                <td class="time">2pm</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
             </tr>
             <tr>
-                <td class="time">3pm</td><td></td><td></td><td></td><td></td><td></td>
+                <td class="time">3pm</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
             </tr>
             <tr>
-                <td class="time">4pm</td><td></td><td></td><td></td><td></td><td></td>
+                <td class="time">4pm</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
             </tr>
             <tr>
-                <td class="time">5pm</td><td></td><td></td><td></td><td></td><td></td>
+                <td class="time">5pm</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
             </tr>
         </table>  
 		</div>

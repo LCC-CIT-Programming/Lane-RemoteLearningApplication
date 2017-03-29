@@ -17,7 +17,12 @@
 
 <body>
 <div class="container-fluid">
-	<?php $user = $_SESSION['user'];?>
+<!--
+	<?php 
+	//$user = $_SESSION['user'];
+	?>
+	-->
+
   	<div class="title">
 	  <div class="container text-center">
 		<h1>Lane Community College CIT Lab Edit Profile</h1>
@@ -54,17 +59,17 @@
 						for ($i = 6; $i < 25; $i++){
 								if ($i < 12){					
 									echo '<option value="sunST' . $i . $am .'">'
-												. Start . " " . $i  . " " . $am .
+												. 'Start' . " " . $i  . " " . $am .
 												'</option>';	
 								}
 								elseif ($i == 12){
 									echo '<option value="sunST' . $i . $pm .'">'
-												. Start . " " . $i . " " . $pm .
+												. 'Start' . " " . $i . " " . $pm .
 												'</option>';	
 								}
 								else{
 									echo '<option value="sunST' . $i . $pm .'">'
-												. Start . " " . ($i - 12) . " " . $pm .
+												. 'Start' . " " . ($i - 12) . " " . $pm .
 												'</option>';	
 								}
 							}
@@ -75,17 +80,17 @@
 							for ($i = 6; $i < 25; $i++){
 								if ($i < 12){					
 									echo '<option value="sunST' . $i . $am .'">'
-												. End . " " . $i  . " " . $am .
+												. 'End' . " " . $i  . " " . $am .
 												'</option>';	
 								}
 								elseif ($i == 12){
 									echo '<option value="sunST' . $i . $pm .'">'
-												. End . " " . $i . " " . $pm .
+												. 'End' . " " . $i . " " . $pm .
 												'</option>';	
 								}
 								else{
 									echo '<option value="sunST' . $i . $pm .'">'
-												. End . " " . ($i - 12) . " " . $pm .
+												. 'End' . " " . ($i - 12) . " " . $pm .
 												'</option>';	
 								}
 							}

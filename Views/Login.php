@@ -55,9 +55,9 @@
 					<div class="col-sm-4"></div>
 					<div class="col-sm-4">
 						<select class="form-control" id="staff" name="roleSelect">
-							<option value="isStudent" name="student">Student</option>
-							<option value="isTutor" name="tutor">Tutor</option>
-							<option value="isFaculty" name="faculty">Faculty</option>
+							<option value="student" name="student">Student</option>
+							<option value="tutor" name="tutor">Tutor</option>
+							<option value="faculty" name="faculty">Faculty</option>
 						</select>
 					</div>
 					<div class="col-sm-4"></div>

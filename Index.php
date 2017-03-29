@@ -23,6 +23,8 @@ if (isset($_SESSION['visit']))
 		$visit = $_SESSION['visit'];
 if (isset($_SESSION['task']))
 		$task = $_SESSION['task'];
+if (isset($_SESSION['role']))
+		$role = $_SESSION['role'];
 $action = filter_input(INPUT_POST, 'action');
 if ($action == NULL){
 	$action = filter_input(INPUT_GET, 'action');
@@ -40,7 +42,8 @@ switch($action) {
 			$username = filter_input(INPUT_POST, "lnumber");
 			$password = filter_input(INPUT_POST, "password");
 			$role = filter_input(INPUT_POST, "roleSelect");
-			if ($role == "isStudent") {
+			$_SESSION['role']= $role;
+			if ($role == "student") {
 					$user = StudentDB::StudentLogin($username, $password);
 					if ($user !== null && isset($user)) {
 						  $courses = StudentDB::GetStudentCourses($user);
@@ -54,14 +57,14 @@ switch($action) {
 							TaskDB::CreateTask($task);
 							$task = TaskDB::RetrieveTask($task);
 							$_SESSION['task'] = $task;
-							include("/Views/home.php");
+							include("./Views/home.php");
 					} else {
 							$_SESSION['user'] = null;
 							$loginError = "Login attempt failed.";
 							include("./Views/login.php");
 					}
 				}
-				else{
+				else if ($role == "tutor"){
 						$user = TutorDB::TutorLogin($username, $password);
 						if ($user !== null && isset($user)) {
 								$userID = $user->GetUserID();
@@ -71,13 +74,32 @@ switch($action) {
 								$_SESSION['visit'] = $visit;
 								$_SESSION['user'] = $user;
 								VisitDB::CreateVisit($visit);
+								include("./Views/home.php");
+								
+					
+				}
+					else {
+							$_SESSION['user'] = null;
+							$loginError = "Login attempt failed.";
+							include("./Views/login.php");
 					}
-			}
+				}
+				else
+				{
+					include("./Views/home.php");
+				}
+			
 	break;
 	case "ask":
+	if ($role == 'student')
+	{
 		$questionError = "";
 		$success = "";
 		include("./Views/ask.php");
+	}
+	else
+		include("./Views/home.php");
+		
 	break;
 	case "ask_question":
 		$courseNum = filter_input(INPUT_POST, "courseSelect");
@@ -111,7 +133,9 @@ switch($action) {
 	case "logout":
 			$_SESSION['user'] = null;
 			$loginError = "";
+			session_unset();
 			session_destroy();
+			
 			include("./Views/login.php");
 	break;
 	case "home":

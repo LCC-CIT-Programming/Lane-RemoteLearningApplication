@@ -34,12 +34,19 @@
 		<li class="active"><a href="#">Home</a></li>
 
 		<li><a href="?action=schedule">Schedule</a></li>
-		<li><a href="?action=ask">Questions</a></li>
-
+	<?php
+	$role = $_SESSION['role'];
+	if ($role == 'student')
+	{
+	
+		echo "<li><a href='?action=ask'>Questions</a></li>";
+	}
+	?>
 	  </ul>
 	  <ul class="nav navbar-nav navbar-right">
-		<li><a href="#"><span class="glyphicon glyphicon-envelope"><span class="badge">"<?php echo '1'?>"</span></span></a></li>
-		<li><a href="?action=login"><span ></span>Logout</a></li>
+		<!--<li><a href="#"><span class="glyphicon glyphicon-envelope"><span class="badge">"<?php echo '1'?>"</span></span></a></li>
+		-->
+		<li><a href="?action=logout"><span ></span>Logout</a></li>
 	  </ul>
 	</div>
   </div>
@@ -51,18 +58,25 @@
 	  <div class="container" id="status_div">
 			<div class="col-sm-2"></div>
 			<div class=" col-sm-4 form-group">
-			<label class="" for="class">Please tell us what class you are working on.</label>
-			<select class="form-control" id="class">
+			<?php
+	$role = $_SESSION['role'];
+	if ($role == 'student')
+	{
+			echo "<label class='' for='class'>Please tell us what class you are working on.</label>";
+			echo "<select class='form-control' id='class'>";
 
-                <?php
+                
                     $courses = $_SESSION['courses'];
                     foreach($courses as $course)
                     {
                         echo '<option>' . $course->getCourseName() . '</option>';
                     }
-                ?>
+	}
+              ?> 
 
 			</select>
+	
+			 
 			</div>
 			<div class=" col-sm-4 form-group">
 			<label class="" for="location">Where are you working today?</label>
@@ -119,8 +133,12 @@
 				echo '<td>' . $course->getCourseName() . '</td>' .
                      '<td>' . $question->getSubject() . '</td>' .
                      '<td>' . $question->getDescription() . '</td>' .
-                     '<td>' . $question->getAskTime() . '</td>' .
+                     '<td>' . $question->getAskTime() . '</td>' ;
+				if ($question->getUserID() == $user->getUserID() && $role == 'student')
+				{
+					 echo '<td>' . '<button class="btn btn-danger">Cancel</button> ' . '</td>' .
 					'</tr>';
+				}
           }
       ?>
 
