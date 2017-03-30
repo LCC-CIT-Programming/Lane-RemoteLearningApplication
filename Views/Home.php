@@ -38,9 +38,11 @@
 	$role = $_SESSION['role'];
 	if ($role == 'student')
 	{
-	
 		echo "<li><a href='?action=ask'>Questions</a></li>";
 	}
+  else if ($role == 'tutor') {
+  		echo "<li><a href='?action=edit_schedule'>Edit My Schedule</a></li>";
+  	}
 	?>
 	  </ul>
 	  <ul class="nav navbar-nav navbar-right">
@@ -65,18 +67,18 @@
 			echo "<label class='' for='class'>Please tell us what class you are working on.</label>";
 			echo "<select class='form-control' id='class'>";
 
-                
+
                     $courses = $_SESSION['courses'];
                     foreach($courses as $course)
                     {
                         echo '<option>' . $course->getCourseName() . '</option>';
                     }
 	}
-              ?> 
+              ?>
 
 			</select>
-	
-			 
+
+
 			</div>
 			<div class=" col-sm-4 form-group">
 			<label class="" for="location">Where are you working today?</label>
@@ -91,9 +93,9 @@
 	<div class="row">
 
 	  <div class="col-lg-3 well" id="student_div">
-		 <img src="./Styles/smiley.png" align="left" class="smiley"> 
+		 <img src="./Styles/smiley.png" align="left" class="smiley">
 		<h4 class="yourName"><?php echo $user->getFirstName(); ?></h4>
-		<h4><a href="#">Edit Profile</a></h4>
+		<h4><a href="?action=edit">Edit Profile</a></h4>
 	  </div>
 
 	  <div class="col-lg-8 well" id="question_div" style="overflow: auto">
@@ -112,24 +114,19 @@
                </tr>';
 
 
-          foreach ($questions as $question)
-          {
-              $course = CourseDB::RetrieveCourseByNumber($question->getCourseNumber());
-
+        foreach ($questions as $question)
+        {
+          $course = CourseDB::RetrieveCourseByNumber($question->getCourseNumber());
 			  //$user = $_SESSION['user'];
 				if ($question->getUserID() == $user->getUserID())
 				{
 					echo '<tr class="success">';
-				}	
-				else 
+				}
+				else
 				{
 					echo '<tr>';
-					
-					
-					
 				}
-				
-					
+
 				echo '<td>' . $course->getCourseName() . '</td>' .
                      '<td>' . $question->getSubject() . '</td>' .
                      '<td>' . $question->getDescription() . '</td>' .

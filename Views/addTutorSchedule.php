@@ -25,12 +25,10 @@
 	</div>
 	<div class="container-fluid" style="width: 500px">
 
-	<form class="">
+	<form style="margin-bottom: 75px;">
   	<div class = "form-group">
-  	<button class="btn btn-success pull-right add_field" style="border-radius: 50%;"><i class="fa fa-plus" aria-hidden="true"></i></button>
-
       <div class="shifts-container">
-    		<div class = "row">
+    		<div class="row" style="margin-bottom: 10px;">
     			<div class = "col-md-4">
     				<input type="date" name="shifts[]" style="width:100%" />
     			</div>
@@ -41,11 +39,14 @@
     			<div class = "col-md-3">
     				<input type="time" name="shifts[]" style="width:100%"/>
     			</div>
+          <div class="col-md-2 pull-right" style="height: 25px; width: 25px;">
+            <button class="btn btn-success pull-right add_field" style="border-radius: 50%;"><i class="fa fa-plus" aria-hidden="true"></i></button>
+          </div>
     		</div>
       </div>
 		</div>
 
-		<button type="submit" class="btn btn-primary">Add</button>
+		<button type="submit" class="btn btn-primary">Add shifts to my schedule</button>
 		</form>
 
 
@@ -56,9 +57,25 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
-			<?php //foreach time in schedules table for this user, display... ?>
-			</tr>
+			<?php
+        foreach($schedules as $schedule)
+        {
+          $day =  $schedule->getStringWeekDay();
+          $start = new DateTime($schedule->getStartTime());
+          $end = new DateTime($schedule->getEndTime());
+          $fstart = $start->format('H:i A');
+          $fend = $end->format('H:i A');
+
+          echo '<tr><td>';
+              echo $day;
+          echo '</td><td>';
+              echo $fstart;
+          echo '</td><td>';
+            echo $fend;
+          echo '</td></tr>';
+        }
+      //foreach time in schedules table for this user, display...
+      ?>
 		</tbody>
 		</table>
 
@@ -84,8 +101,7 @@ $(document).ready(function() {
         e.preventDefault();
         if(x < max_fields){ //max input box allowed
             x++; //text box increment
-            //$(wrapper).append('<div><input type="text" name="shifts[]"/><a href="#" class="remove_field">Remove</a></div>'); //add input box
-            $(wrapper).append('<div class = "row"> <div class = "col-md-4"><input type="date" name="shifts[]" style="width:100%" /></div>' +
+            $(wrapper).append('<div class="row" style="margin-bottom: 10px;"> <div class = "col-md-4"><input type="date" name="shifts[]" style="width:100%" /></div>' +
             '<div class = "col-md-3"><input type="time" name="shifts[]" style="width:100%"/></div><div class = "col-md-3">' +
             '<input type="time" name="shifts[]" style="width:100%"/></div><a href="#" class="remove_field">Remove</a></div></div>')
         }
