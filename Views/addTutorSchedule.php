@@ -24,25 +24,25 @@
 	</div>
 	<div class="container-fluid" style="margin-top: 20px; width: 500px">
 
-	<form style="margin-bottom: 75px;">
+	<form method="post" action=".?action=edit_schedule" style="margin-bottom: 75px;">
   	<div class = "form-group">
       <div class="shifts-container">
     		<div class="row" style="margin-bottom: 10px;">
     			<div class = "col-md-5">
-    				<input type="date" name="Days[]" id="Date" style="width:100%" />
+    				<input type="date" name="Day" id="Date" style="width:100%" />
     			</div>
 
     			<div class = "col-md-3">
-    				<input type="time" name="Starts[]" id="Start" style="width:100%"/>
+    				<input type="time" name="StartTime" id="Start" style="width:100%"/>
     			</div>
 
     			<div class = "col-md-3">
-    				<input type="time" name="Ends[]" id="End" style="width:100%"/>
+    				<input type="time" name="EndTime" id="End" style="width:100%"/>
     			</div>
 
-          <div class="col-md-1 pull-right" style="height: 25px; width: 25px;">
+          <!-- <div class="col-md-1 pull-right" style="height: 25px; width: 25px;">
             <button class="btn btn-success pull-right add_field" style="border-radius: 50%;">+</button>
-          </div>
+          </div> -->
 
     		</div>
       </div>
@@ -50,7 +50,6 @@
 
 		<button type="submit" class="btn btn-primary">Add shifts to my schedule</button>
 		</form>
-
 
 		<table class="table table-responsive table-condensed">
 		<thead>
@@ -60,6 +59,7 @@
 		</thead>
 		<tbody>
 			<?php
+
         foreach($schedules as $schedule)
         {
           $day =  $schedule->getStringWeekDay();
@@ -91,7 +91,7 @@
 </footer>
 </html>
 
-<script>
+<!-- <script>
 $(document).ready(function() {
     var max_fields = 5; //maximum input boxes allowed
     var wrapper    = $(".shifts-container"); //Fields wrapper
@@ -112,4 +112,4 @@ $(document).ready(function() {
         e.preventDefault(); $(this).parent('div').remove(); x--;
     })
 });
-</script>
+</script> -->

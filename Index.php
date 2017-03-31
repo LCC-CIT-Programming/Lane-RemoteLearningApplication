@@ -49,7 +49,7 @@ try {
 				$username = filter_input(INPUT_POST, "lnumber");
 				$password = filter_input(INPUT_POST, "password");
 				$role = filter_input(INPUT_POST, "roleSelect");
-				$_SESSION['role']= $role;
+				$_SESSION['role'] = $role;
 				if ($role == "student") {
 						$user = StudentDB::StudentLogin($username, $password);
 						if ($user !== null && isset($user)) {
@@ -160,15 +160,27 @@ try {
 
 		case "edit_schedule":
 			if ($role == 'tutor') {
+				if (isset($_POST['Day']) && isset($_POST['StartTime']) && isset($_POST['Endtime']))
+				{
+					//Get User Input
+					$day = filter_input(INPUT_POST, "Day");
+					$start = filter_input(INPUT_POST, "StartTime");
+					$end = filter_input(INPUT_POST, "EndTime");
+
+					$weekDay = $day->format('N');
+					$userID = $user->getUserID();
+
+					$shift = new Schedule($userID, $start, $end, $weekDay);
+					scheduledb::CreateSchedule($shift);
+				}
+
 			  $schedules = scheduledb::GetTutorSchedule($user);
 				$_SESSION['schedule'] = $schedules;
-				$day = filter_input(INPUT_POST, "date");
-				$start = filter_input(INPUT_POST, "startTime");
-				$end = filter_input(INPUT_POST, "endTime");
+
 				include("./Views/addTutorSchedule.php");
 				break;
 		  } else {
-				include("./Views/home.php");
+				include("./Views/Home.php");
 			}
 
 		case "edit_profile":
@@ -217,10 +229,6 @@ try {
 				$success = "Changes have been saved.";
 				include("./Views/tutorEdit.php");
 			}
-		break;
-
-		case "edit_Schedule":
-			include("./Views/tutorSchedule.php");
 		break;
 		}
 	} catch(PDOException $e) {
