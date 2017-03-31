@@ -58,7 +58,7 @@ public static function GetSchedule($SCHEDULE) {
     $scheduleID = $SCHEDULE->getScheduleID();
 
     $query = 'DELETE FROM schedule
-		          WHERE schedule.questionID = :scheduleid';
+		          WHERE schedule.ScheduleID = :scheduleid';
 
     $statement = $db->prepare($query);
   	$statement->bindValue(":scheduleid", $scheduleID );
