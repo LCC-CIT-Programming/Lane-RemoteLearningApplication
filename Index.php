@@ -130,6 +130,10 @@ switch($action) {
 			include("./Views/ask.php");
 		}
 	break;
+	case "update_task":
+	$class = filter_input(INPUT_POST, "class");
+	
+	break;
 	case "logout":
 			$_SESSION['user'] = null;
 			$loginError = "";
