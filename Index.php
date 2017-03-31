@@ -128,11 +128,21 @@ try {
 				$task = $_SESSION['task'];
 				$task->setEndTime(date("Y-m-d h:i:s"));
 				taskdb::UpdateTask($task);
-				$startNewTask = new Task($visit->getVisitID(), $courseNum ,date("Y-m-d h:i:s"));
+				$startNewTask = new Task($visit->getVisitID(), $courseNum , date("Y-m-d h:i:s"));
 				taskdb::CreateTask($startNewTask);
 				$task = taskdb::RetrieveTask($startNewTask);
 				$_SESSION['task'] = $task;
 				include("./Views/ask.php");
+			}
+		break;
+
+		case "cancel_question":
+			$id = filter_input(INPUT_POST, 'id');
+			if(isset($id)) {
+				$temp = new Question(1, 1, 'a', 'a', 'a', date("Y-m-d h:i:s"), $id);
+				$question = QuestionDB::GetQuestion($temp);
+				QuestionDB::DeleteQuestion($question);
+				include("./Views/home.php");
 			}
 		break;
 		case "logout":
