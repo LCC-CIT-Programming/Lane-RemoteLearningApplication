@@ -142,6 +142,13 @@ switch($action) {
 	$_SESSION['task'] = $task;
 	
 	break;
+	case "update_location" :
+	$location = filter_input(INPUT_POST, "locationID");
+	$visit->setLocationID($location);
+	VisitDB::UpdateVisit($visit);
+	echo $visit->getLocationID();
+	echo $visit->getVisitID();
+	break;
 	case "logout":
 			$_SESSION['user'] = null;
 			$loginError = "";
