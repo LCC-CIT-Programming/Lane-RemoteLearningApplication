@@ -11,7 +11,6 @@
 	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
 	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
    </head>
@@ -23,25 +22,28 @@
 		<h1>Lane Community College CIT Lab Edit Schedule</h1>
 	  </div>
 	</div>
-	<div class="container-fluid" style="width: 500px">
+	<div class="container-fluid" style="margin-top: 20px; width: 500px">
 
 	<form style="margin-bottom: 75px;">
   	<div class = "form-group">
       <div class="shifts-container">
     		<div class="row" style="margin-bottom: 10px;">
-    			<div class = "col-md-4">
-    				<input type="date" name="shifts[]" style="width:100%" />
+    			<div class = "col-md-5">
+    				<input type="date" name="Days[]" id="Date" style="width:100%" />
     			</div>
 
     			<div class = "col-md-3">
-    				<input type="time" name="shifts[]" style="width:100%"/>
+    				<input type="time" name="Starts[]" id="Start" style="width:100%"/>
     			</div>
+
     			<div class = "col-md-3">
-    				<input type="time" name="shifts[]" style="width:100%"/>
+    				<input type="time" name="Ends[]" id="End" style="width:100%"/>
     			</div>
-          <div class="col-md-2 pull-right" style="height: 25px; width: 25px;">
-            <button class="btn btn-success pull-right add_field" style="border-radius: 50%;"><i class="fa fa-plus" aria-hidden="true"></i></button>
+
+          <div class="col-md-1 pull-right" style="height: 25px; width: 25px;">
+            <button class="btn btn-success pull-right add_field" style="border-radius: 50%;">+</button>
           </div>
+
     		</div>
       </div>
 		</div>
@@ -74,7 +76,6 @@
             echo $fend;
           echo '</td></tr>';
         }
-      //foreach time in schedules table for this user, display...
       ?>
 		</tbody>
 		</table>
@@ -101,9 +102,9 @@ $(document).ready(function() {
         e.preventDefault();
         if(x < max_fields){ //max input box allowed
             x++; //text box increment
-            $(wrapper).append('<div class="row" style="margin-bottom: 10px;"> <div class = "col-md-4"><input type="date" name="shifts[]" style="width:100%" /></div>' +
-            '<div class = "col-md-3"><input type="time" name="shifts[]" style="width:100%"/></div><div class = "col-md-3">' +
-            '<input type="time" name="shifts[]" style="width:100%"/></div><a href="#" class="remove_field">Remove</a></div></div>')
+            $(wrapper).append('<div class="row" style="margin-bottom: 10px;"> <div class = "col-md-5"><input type="date" name="Days[]" id="Day" style="width:100%" /></div>' +
+            '<div class = "col-md-3"><input type="time" name="Starts[]" id="Start" style="width:100%"/></div><div class = "col-md-3">' +
+            '<input type="time" name="Ends[]" id="End" style="width:100%"/></div><a href="#" class="col-md-1 remove_field">Remove</a></div></div>')
         }
     });
 
