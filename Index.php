@@ -158,21 +158,35 @@ try {
 			include("./Views/edit.php");
 		break;
 
+		case "delete_schedule":
+			$id = filter_input(INPUT_POST, 'id');
+			if(isset($id)) {
+				$temp = new Schedule(1, date("Y-m-d H:i:s", time()), date("Y-m-d H:i:s", time()), 1, $id);
+				$schedule = scheduledb::GetSchedule($temp);
+				scheduledb::DeleteSchedule($schedule);
+				$schedules = scheduledb::GetTutorSchedule($user);
+				$_SESSION['schedule'] = $schedules;
+				include("./Views/addTutorSchedule.php");
+			}
+		break;
+
 		case "edit_schedule":
 			if ($role == 'tutor') {
+
 					$date = filter_input(INPUT_POST, "Day");
 					$start = filter_input(INPUT_POST, "StartTime");
 					$end = filter_input(INPUT_POST, "EndTime");
 
-					$startTime = date("Y-m-d H:i:s", strtotime($start));
-					$endTime = date("Y-m-d H:i:s", strtotime($end));
-					$weekDay = date('N', strtotime($date));
+					if(isset($start) && isset($end)) {
+						$startTime = date("Y-m-d H:i:s", strtotime($start));
+						$endTime = date("Y-m-d H:i:s", strtotime($end));
+						$weekDay = date('N', strtotime($date));
 
-					$userID = $user->getUserID();
+						$userID = $user->getUserID();
 
-					$shift = new Schedule($userID, $startTime, $endTime, $weekDay);
-					scheduledb::CreateSchedule($shift);
-
+						$shift = new Schedule($userID, $startTime, $endTime, $weekDay);
+						scheduledb::CreateSchedule($shift);
+					}
 			  $schedules = scheduledb::GetTutorSchedule($user);
 				$_SESSION['schedule'] = $schedules;
 

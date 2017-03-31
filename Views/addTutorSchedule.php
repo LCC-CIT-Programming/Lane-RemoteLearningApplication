@@ -54,15 +54,11 @@
 		<table class="table table-responsive table-condensed">
 		<thead>
 			<tr>
-				<th>Day</th><th>Start time</th><th>End time</th>
+				<th>Day</th><th>Start time</th><th>End time</th><th></th>
 			</tr>
 		</thead>
 		<tbody>
 			<?php
-        if (isset($_SESSION['test'])) {
-          echo $_SESSION['test'] + 'empty?';
-        }
-
         foreach($schedules as $schedule)
         {
           $day =  $schedule->getStringWeekDay();
@@ -77,6 +73,12 @@
               echo $fstart;
           echo '</td><td>';
             echo $fend;
+          echo '</td><td>';
+          echo '<form action="?action=delete_schedule" method="post">';
+          echo '<input type="hidden" name="id" value="';
+          echo $schedule->getScheduleID();
+          echo '?>">';
+          echo '<input class="btn btn-danger" type="submit" name="submit" value="Delete"></form>';
           echo '</td></tr>';
         }
       ?>
@@ -116,3 +118,14 @@ $(document).ready(function() {
     })
 });
 </script> -->
+
+<script>
+$('.delete').click(function() {
+   $.ajax({
+      type: "POST",
+      url: "?action=delete_schedule",
+      data: { id : this.value }
+   });
+
+    });
+</script>
