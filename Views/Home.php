@@ -143,7 +143,7 @@ $(document).ready(function() {
                       url: ".?action=update_task",
                       type: "POST",
                       data: {"courseNumber": $(this).val()},
-                      success: function(data) { alert(data);}
+                     // success: function(data) { alert(data);}
              });
       });
 });

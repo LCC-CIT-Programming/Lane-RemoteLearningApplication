@@ -124,14 +124,22 @@ switch($action) {
 			$task->setEndTime(date("Y-m-d h:i:s"));
 			taskdb::UpdateTask($task);
 			$startNewTask = new Task($visit->getVisitID(), $courseNum ,date("Y-m-d h:i:s"));
-			taskdb::CreateTask($startNewTask);
-			$task = taskdb::RetrieveTask($startNewTask);
+			TaskDB::CreateTask($startNewTask);
+			$task = TaskDB::RetrieveTask($startNewTask);
 			$_SESSION['task'] = $task;
 			include("./Views/ask.php");
 		}
 	break;
 	case "update_task":
 	$courseNumber = filter_input(INPUT_POST, "courseNumber");
+	
+	$task->setEndTime(date("Y-m-d h:i:s"));
+	TaskDB::UpdateTask($task);
+	
+	$newTask = new Task($visit->getVisitID(), $courseNumber, date("Y-m-d h:i:s"));
+	TaskDB::CreateTask($newTask);
+	$task = TaskDB::RetrieveTask($newTask);
+	$_SESSION['task'] = $task;
 	
 	break;
 	case "logout":
