@@ -26,8 +26,7 @@ class Schedule {
   	}
 
     public function getStringWeekDay() {
-      $days = Array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
-
+      $days = Array('', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
       return $days[$this->weekDay];
     }
   }
