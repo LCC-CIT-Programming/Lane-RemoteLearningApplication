@@ -1,4 +1,6 @@
+
 <?php include 'header.php'; ?>
+
 
 <!-- Container for student content -->
 <div class="container-fluid" id="main_content_div">
@@ -81,8 +83,11 @@
                      '<td>' . $question->getAskTime() . '</td>' ;
 				if ($question->getUserID() == $user->getUserID() && $role == 'student')
 				{
-					 echo '<td>' . '<button class="btn btn-danger">Cancel</button> ' . '</td>' .
-					'</tr>';
+          echo '<td><form action="?action=cancel_question" method="post">';
+          echo '<input type="hidden" name="id" value="';
+          echo $question->getQuestionID();
+          echo '?>">';
+          echo '<input class="btn btn-danger" type="submit" name="submit" value="Cancel"></form></td></tr>';
 				}
           }
       ?>

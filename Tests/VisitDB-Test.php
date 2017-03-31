@@ -36,11 +36,11 @@ function canRetrieveVisitByID() {
 }
 
 function canUpdateVisit() {
-  $visit = new Visit(3, 2, 3, date("Y-m-d h:i:s"));
+  $visit = new Visit(3, 2, 3, date("Y-m-d h:i:s"), date("Y-m-d h:i:s", time()));
   visitdb::UpdateVisit($visit);
   $retrievedvisit = visitdb::RetrieveVisitByID($visit);
 
-  if ($retrievedvisit->getLocationID() == 2) {
+  if ($retrievedvisit->getEndTime() == date("Y-m-d h:i:s", time())) {
     echo "<p style='color:green;'> Updating a visit was successful! </p>";
   } else {
     echo "<p style='color:red;'> Updating a visit was not successful! </p>";

@@ -270,10 +270,12 @@ ENGINE = InnoDB;
 -- Table `CITLabMonitor`.`Schedule`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `CITLabMonitor`.`Schedule` (
+  `ScheduleID` INT NOT NULL AUTO_INCREMENT,
   `UserID` INT NOT NULL,
-  `StartTime` DATETIME NULL DEFAULT NULL,
-  `EndTime` DATETIME NULL DEFAULT NULL,
-  `WeekDay` INT NULL DEFAULT NULL,
+  `StartTime` DATETIME NOT NULL,
+  `EndTime` DATETIME NOT NULL,
+  `WeekDay` INT NOT NULL,
+   PRIMARY KEY(`ScheduleID`),
   INDEX `fk_Schedule_Tutor1_idx` (`UserID` ASC),
   CONSTRAINT `fk_Schedule_Tutor1`
     FOREIGN KEY (`UserID`)
