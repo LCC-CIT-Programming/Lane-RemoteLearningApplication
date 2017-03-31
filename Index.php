@@ -131,7 +131,7 @@ switch($action) {
 		}
 	break;
 	case "update_task":
-	$class = filter_input(INPUT_POST, "class");
+	$courseNumber = filter_input(INPUT_POST, "courseNumber");
 	
 	break;
 	case "logout":
