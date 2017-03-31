@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
 </head>
 
@@ -33,16 +33,18 @@
 	</div>
 	<div class="collapse navbar-collapse" id="navbar">
 	  <ul class="nav navbar-nav">
-		<li class="active"><a href="#">Home</a></li>
+		<li><a href="?action=home">Home</a></li>
 
 		<li><a href="?action=schedule">Schedule</a></li>
 	<?php
 	$role = $_SESSION['role'];
 	if ($role == 'student')
 	{
-	
 		echo "<li><a href='?action=ask'>Questions</a></li>";
 	}
+  else if ($role == 'tutor') {
+  		echo "<li><a href='?action=edit_schedule'>Edit My Schedule</a></li>";
+  	}
 	?>
 	  </ul>
 	  <ul class="nav navbar-nav navbar-right">
