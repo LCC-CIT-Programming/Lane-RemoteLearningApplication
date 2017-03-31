@@ -31,8 +31,8 @@
 			<div class=" col-sm-4 form-group">
 			<label class="" for="location">Where are you working today?</label>
 			<select class="form-control" id="location">
-				<option>CIT Lab</option>
-				<option>Elsewhere</option>
+				<option value="1">CIT Lab</option>
+				<option value ="2">Elsewhere</option>
 			</select>
 			</div>
 			<div class="col-sm-2"></div>
@@ -146,6 +146,18 @@ $(document).ready(function() {
                      // success: function(data) { alert(data);}
              });
       });
+	  $("#location").change( function(){
+		  var SelectedValue = $(this).val();
+		 // document.write(SelectedValue);
+           console.log("Event happened" + " " + SelectedValue);
+              $.ajax({
+                      url: ".?action=update_location",
+                      type: "POST",
+                      data: {"locationID": $(this).val()},
+                     success: function(data) { alert(data);}
+					  });
+					   });
+	  
 });
 </script>
 
