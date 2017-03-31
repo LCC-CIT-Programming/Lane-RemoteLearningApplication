@@ -141,12 +141,17 @@ try {
 			if(isset($id)) {
 				$temp = new Question(1, 1, 'a', 'a', 'a', date("Y-m-d h:i:s"), $id);
 				$question = QuestionDB::GetQuestion($temp);
-				QuestionDB::DeleteQuestion($question);
+				$question->setStatus('Resolved');
+				$question->setCloseTime(date("Y-m-d h:i:s", time()));
+				QuestionDB::UpdateQuestion($question);
 				include("./Views/home.php");
 			}
 		break;
 		case "logout":
-				$_SESSION['user'] = null;
+				$task->setEndTime(date("Y-m-d h:i:s", time()));
+				taskdb::UpdateTask($task);
+				$visit->setEndTime(date("Y-m-d h:i:s", time()));
+				visitdb::UpdateVisit($visit);
 				$loginError = "";
 				session_unset();
 				session_destroy();

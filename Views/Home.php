@@ -137,7 +137,7 @@
           echo '<input type="hidden" name="id" value="';
           echo $question->getQuestionID();
           echo '?>">';
-          echo '<input class="btn btn-danger" type="submit" name="submit" value="Delete"></form></td></tr>';
+          echo '<input class="btn btn-danger" type="submit" name="submit" value="Cancel"></form></td></tr>';
 				}
           }
       ?>
