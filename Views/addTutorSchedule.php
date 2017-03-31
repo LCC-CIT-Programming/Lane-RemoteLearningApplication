@@ -48,7 +48,7 @@
       </div>
 		</div>
 
-		<button type="submit" class="btn btn-primary">Add shifts to my schedule</button>
+		<button type="submit" class="btn btn-primary">Add shift to my schedule</button>
 		</form>
 
 		<table class="table table-responsive table-condensed">
@@ -59,6 +59,9 @@
 		</thead>
 		<tbody>
 			<?php
+        if (isset($_SESSION['test'])) {
+          echo $_SESSION['test'] + 'empty?';
+        }
 
         foreach($schedules as $schedule)
         {

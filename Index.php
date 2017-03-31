@@ -160,19 +160,18 @@ try {
 
 		case "edit_schedule":
 			if ($role == 'tutor') {
-				if (isset($_POST['Day']) && isset($_POST['StartTime']) && isset($_POST['Endtime']))
-				{
-					//Get User Input
-					$day = filter_input(INPUT_POST, "Day");
+					$date = filter_input(INPUT_POST, "Day");
 					$start = filter_input(INPUT_POST, "StartTime");
 					$end = filter_input(INPUT_POST, "EndTime");
 
-					$weekDay = $day->format('N');
+					$startTime = date("Y-m-d H:i:s", strtotime($start));
+					$endTime = date("Y-m-d H:i:s", strtotime($end));
+					$weekDay = date('N', strtotime($date));
+
 					$userID = $user->getUserID();
 
-					$shift = new Schedule($userID, $start, $end, $weekDay);
+					$shift = new Schedule($userID, $startTime, $endTime, $weekDay);
 					scheduledb::CreateSchedule($shift);
-				}
 
 			  $schedules = scheduledb::GetTutorSchedule($user);
 				$_SESSION['schedule'] = $schedules;

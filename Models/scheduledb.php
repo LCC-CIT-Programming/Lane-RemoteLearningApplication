@@ -1,7 +1,7 @@
 <?php
 class ScheduleDB {
 
-public static function GetSchedule($SHEDULE) {
+public static function GetSchedule($SCHEDULE) {
       $db = Database::getDB();
 
       $query = 'SELECT *
