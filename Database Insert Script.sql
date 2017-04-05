@@ -28,6 +28,10 @@ INSERT INTO tutor (UserID) VALUES (4);
 -- SELECT * FROM tutor;
 
 /* STUDENT TABLE */
+INSERT INTO student (MajorID, UserID) VALUES (1, 1);
+INSERT INTO student (MajorID, UserID) VALUES (1, 2);
+INSERT INTO student (MajorID, UserID) VALUES (2, 3);
+INSERT INTO student (MajorID, UserID) VALUES (3, 4);
 INSERT INTO student (MajorID, UserID) VALUES (1, 5);
 INSERT INTO student (MajorID, UserID) VALUES (2, 6);
 INSERT INTO student (MajorID, UserID) VALUES (3, 7);
@@ -43,10 +47,10 @@ INSERT INTO course VALUES ('CS 295N', 'ASP.Net', 1);
 -- SELECT * FROM course;
 
 /* SCHEDULE TABLE */
-INSERT INTO schedule VALUES (3, '2016-11-21 12:00:00', '2016-11-21 14:00:00', 1); /* Do we really need the int for day if we can rip it from datetime? */
-INSERT INTO schedule VALUES (3, '2016-11-23 09:00:00', '2016-11-23 12:00:00', 3);
-INSERT INTO schedule VALUES (4, '2016-11-22 09:00:00', '2016-11-22 11:00:00', 2);
-INSERT INTO schedule VALUES (4, '2016-11-24 14:00:00', '2016-11-24 16:30:00', 4);
+INSERT INTO schedule (UserID, StartTime, EndTime, WeekDay) VALUES (3, '2016-11-21 12:00:00', '2016-11-21 14:00:00', 1);
+INSERT INTO schedule (UserID, StartTime, EndTime, WeekDay) VALUES (3, '2016-11-23 09:00:00', '2016-11-23 12:00:00', 3);
+INSERT INTO schedule (UserID, StartTime, EndTime, WeekDay) VALUES (4, '2016-11-22 09:00:00', '2016-11-22 11:00:00', 2);
+INSERT INTO schedule (UserID, StartTime, EndTime, WeekDay) VALUES (4, '2016-11-24 14:00:00', '2016-11-24 16:30:00', 4);
 -- SELECT * FROM schedule;
 
 /* TUTOREXPERTISE TABLE
@@ -77,12 +81,12 @@ INSERT INTO section VALUES ('jkl012', 2016, 1, 'CIS 244', 2);
 INSERT INTO studentregistration VALUES (6, 'abc123');
 INSERT INTO studentregistration VALUES (7, 'def456');
 INSERT INTO studentregistration VALUES (5, 'ghi789');
-INSERT INTO studentregistration VALUES (8, 'abc123');
+INSERT INTO studentregistration VALUES (2, 'abc123');
 INSERT INTO studentregistration VALUES (7, 'ghi789');
 INSERT INTO studentregistration VALUES (6, 'jkl012');
-INSERT INTO studentregistration VALUES (9, 'ghi789');
-INSERT INTO studentregistration VALUES (9, 'jkl012');
-INSERT INTO studentregistration VALUES (9, 'abc123');
+INSERT INTO studentregistration VALUES (3, 'ghi789');
+INSERT INTO studentregistration VALUES (3, 'jkl012');
+INSERT INTO studentregistration VALUES (1, 'abc123');
 -- SELECT * FROM studentregistration;
 
 /* LOCATION TABLE */

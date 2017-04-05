@@ -62,7 +62,7 @@
                </tr>';
 
 
-        foreach ($questions as $question)
+         foreach ($questions as $question)
         {
           $course = CourseDB::RetrieveCourseByNumber($question->getCourseNumber());
 			  //$user = $_SESSION['user'];
@@ -74,17 +74,20 @@
 				{
 					echo '<tr>';
 				}
-
 				echo '<td>' . $course->getCourseName() . '</td>' .
                      '<td>' . $question->getSubject() . '</td>' .
                      '<td>' . $question->getDescription() . '</td>' .
                      '<td>' . $question->getAskTime() . '</td>' ;
 				if ($question->getUserID() == $user->getUserID() && $role == 'student')
 				{
-					 echo '<td>' . '<button class="btn btn-danger">Cancel</button> ' . '</td>' .
-					'</tr>';
+          echo '<td><form action="?action=cancel_question" method="post">';
+          echo '<input type="hidden" name="id" value="';
+          echo $question->getQuestionID();
+          echo '?>">';
+          echo '<input class="btn btn-danger" type="submit" name="submit" value="Cancel"></form></td></tr>';
 				}
           }
+      
       ?>
 
 		</table>

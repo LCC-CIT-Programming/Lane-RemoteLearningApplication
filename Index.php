@@ -13,6 +13,8 @@ require_once('/Models/visit.php');
 require_once('/Models/visitdb.php');
 require_once('/Models/task.php');
 require_once('/Models/taskdb.php');
+require_once('/Models/schedule.php');
+require_once('/Models/scheduledb.php');
 try {
 session_start();
 if (isset($_SESSION['user']))
@@ -149,28 +151,74 @@ switch($action) {
 	echo $visit->getLocationID();
 	echo $visit->getVisitID();
 	break;
+	
+	case "cancel_question":
+			$id = filter_input(INPUT_POST, 'id');
+			if(isset($id)) {
+				$temp = new Question(1, 1, 'a', 'a', 'a', date("Y-m-d h:i:s"), $id);
+				$question = QuestionDB::GetQuestion($temp);
+				$question->setStatus('Resolved');
+				$question->setCloseTime(date("Y-m-d h:i:s", time()));
+				QuestionDB::UpdateQuestion($question);
+				include("./Views/home.php");
+			}
+		break;
+		
 	case "logout":
-			$_SESSION['user'] = null;
-			$loginError = "";
-			session_unset();
-			session_destroy();
-			
-			include("./Views/login.php");
-	break;
+				$task->setEndTime(date("Y-m-d h:i:s", time()));
+				taskdb::UpdateTask($task);
+				$visit->setEndTime(date("Y-m-d h:i:s", time()));
+				visitdb::UpdateVisit($visit);
+				$loginError = "";
+				session_unset();
+				session_destroy();
+				include("./Views/login.php");
+		break;
 	case "home":
 		include("./Views/home.php");
 	break;
 	case "schedule":
 		include("./Views/schedule.php");
 	break;
-	case "ask":
-			include("/Views/ask.php");
-	break;
+	
 	case "edit":
 		$success = "";
 		$passError = "";
 		include("./Views/edit.php");
 	break;
+	case "delete_schedule":
+			$id = filter_input(INPUT_POST, 'id');
+			if(isset($id)) {
+				$temp = new Schedule(1, date("Y-m-d H:i:s", time()), date("Y-m-d H:i:s", time()), 1, $id);
+				$schedule = scheduledb::GetSchedule($temp);
+				scheduledb::DeleteSchedule($schedule);
+				$schedules = scheduledb::GetTutorSchedule($user);
+				$_SESSION['schedule'] = $schedules;
+				include("./Views/addTutorSchedule.php");
+			}
+		break;
+		case "edit_schedule":
+			if ($role == 'tutor') {
+					$date = filter_input(INPUT_POST, "Day");
+					$start = filter_input(INPUT_POST, "StartTime");
+					$end = filter_input(INPUT_POST, "EndTime");
+					if(isset($start) && isset($end)) {
+						$startTime = date("Y-m-d H:i:s", strtotime($start));
+						$endTime = date("Y-m-d H:i:s", strtotime($end));
+						$weekDay = date('N', strtotime($date));
+						$userID = $user->getUserID();
+						$shift = new Schedule($userID, $startTime, $endTime, $weekDay);
+						scheduledb::CreateSchedule($shift);
+					}
+			  $schedules = scheduledb::GetTutorSchedule($user);
+				$_SESSION['schedule'] = $schedules;
+				include("./Views/addTutorSchedule.php");
+				break;
+		  } else {
+				include("./Views/Home.php");
+			}
+			break;
+
 	
 	case "edit_profile":
 		$success = "";
