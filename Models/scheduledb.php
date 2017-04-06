@@ -22,6 +22,36 @@ public static function GetSchedule($SCHEDULE) {
 	} else
 		return null;
   }
+  
+  public static function GetAllSchedules() {
+      $db = Database::getDB();
+      $query = 'SELECT *
+			    FROM schedule';
+				
+      $statement = $db->prepare($query);
+	  $scheduleID = $SCHEDULE->getScheduleID();
+      $statement->bindValue(":scheduleid", $scheduleID );
+      $statement->execute();
+      $rows = $statement->fetchAll();
+      $statement->closeCursor();
+	  
+      if ($rows != false) {
+		  $schedule = array();
+		  foreach($rows as $row) {
+			$shift = new Schedule(
+						$row['UserID'],
+						$row['StartTime'],
+						$row['EndTime'],
+						$row['WeekDay'],
+						$row['ScheduleID']);
+			
+			array_push($schedule, $shift);
+			}
+		return $schedule;
+	} else
+		return null;
+  }
+  
   public static function CreateSchedule($SCHEDULE) {
     $db = Database::getDB();
     $userID = $SCHEDULE->getUserID();

@@ -148,10 +148,10 @@ public static function CreateStudent($STUDENT){
 
 public static function RetrieveStudentByID($STUDENTID) {
 	$query = 'SELECT *
-						FROM AppUser
-						JOIN Student
-						ON AppUser.UserID = Student.UserID
-						WHERE AppUser.UserID = :userid';
+				FROM AppUser
+				JOIN Student
+				ON AppUser.UserID = Student.UserID
+				WHERE AppUser.UserID = :userid';
 
 	$db = Database::getDB();
 
