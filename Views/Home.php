@@ -1,5 +1,7 @@
 <?php include 'header.php'; ?>
 
+
+
 <!-- Container for student content -->
 <div class="container-fluid" id="main_content_div">
 	<div class="row">
@@ -10,7 +12,7 @@
 	$role = $_SESSION['role'];
 	if ($role == 'student')
 	{
-			
+
 			echo "<label class='' for='class' >Please tell us what class you are working on.</label>";
 			echo "<select class='form-control' id='class'>";
 
@@ -20,7 +22,7 @@
                     {
                         echo '<option value = "' . $course->getCourseNumber().'" >' . $course->getCourseName() . '</option>';
                     }
-			
+
 	}
               ?>
 
@@ -86,8 +88,12 @@
           echo '?>">';
           echo '<input class="btn btn-danger" type="submit" name="submit" value="Cancel"></form></td></tr>';
 				}
+				elseif ($role == 'tutor')
+				{
+					echo '<td><button id="details" value="'. $question->getQuestionID() . '"type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Details</button></td></tr>';
+				}
           }
-      
+
       ?>
 
 		</table>
@@ -136,6 +142,38 @@
 </div>
 <?php include 'footer.php'; ?>
 
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <p id="test">
+			<?php
+			$questionDetails = $_SESSION['questionDetails'];
+			if ($questionDetails !== null) {
+				echo $questionDetails->getCourseNumber();
+				echo $questionDetails->getSubject();
+				echo $questionDetails->getDescription();
+				echo $questionDetails->getAskTime();
+			}
+			else echo 'Error displaying question.';
+			?>
+		</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <script>
 $(document).ready(function() {
       $("#class").change( function(){
@@ -157,11 +195,23 @@ $(document).ready(function() {
                       url: ".?action=update_location",
                       type: "POST",
                       data: {"locationID": $(this).val()},
-                     success: function(data) { alert(data);}
+                      //success: function(data) { alert(data);}
 					  });
 					   });
-	  
+		$("#details").click(function()
+		{
+			var questionID = $(this).val();
+			$.ajax({
+					url: ".?action=home",
+					type: "POST",
+					data: {"viewQuestion": $(this).val()},
+				    //success: function(data) { alert(data);}
+					});
+
+			$("#test").append(test);
+
+		}
+	);
+
 });
 </script>
-
-

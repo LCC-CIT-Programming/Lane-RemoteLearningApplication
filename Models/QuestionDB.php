@@ -65,6 +65,34 @@ public static function GetQuestion($QUESTION) {
 	} else
 		return null;
   }
+  public static function GetQuestionByID($QUESTION_ID) {
+        $db = Database::getDB();
+
+        $query = 'SELECT *
+  			      FROM question
+                  WHERE Question.QuestionID = :questionid';
+
+        $statement = $db->prepare($query);
+        $statement->bindValue(":questionid", $QUESTION_ID );
+        $statement->execute();
+        $row = $statement->fetch();
+        $statement->closeCursor();
+
+        if ($row != false) {
+          $question = new Question(
+  				   $row['UserID'],
+  			       $row['CourseNumber'],
+                   $row['Subject'],
+                   $row['Description'],
+                   $row['Status'],
+  				   $row['AskTime'],
+                   $row['QuestionID'],
+  				   $row['OpenTime'],
+  				   $row['CloseTime']);
+  		return $question;
+  	} else
+  		return null;
+    }
 
 
 public static function UpdateQuestion($QUESTION) {

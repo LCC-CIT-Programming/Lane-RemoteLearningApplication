@@ -182,6 +182,9 @@ switch($action) {
 				include("./Views/login.php");
 		break;
 	case "home":
+		$viewQuestion = filter_input(INPUT_POST,'viewQuestion');
+		$questionDetails = QuestionDB::GetQuestionByID($viewQuestion);
+		$_SESSION['questionDetails'] = $questionDetails;
 		include("./Views/home.php");
 	break;
 	case "schedule":
