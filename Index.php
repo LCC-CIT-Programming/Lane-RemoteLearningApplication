@@ -77,8 +77,8 @@ switch($action) {
 								$_SESSION['user'] = $user;
 								VisitDB::CreateVisit($visit);
 								include("./Views/home.php");
-								
-					
+
+
 				}
 					else {
 							$_SESSION['user'] = null;
@@ -90,7 +90,7 @@ switch($action) {
 				{
 					include("./Views/home.php");
 				}
-			
+
 	break;
 	case "ask":
 	if ($role == 'student')
@@ -101,7 +101,7 @@ switch($action) {
 	}
 	else
 		include("./Views/home.php");
-		
+
 	break;
 	case "ask_question":
 		$courseNum = filter_input(INPUT_POST, "courseSelect");
@@ -109,7 +109,12 @@ switch($action) {
 		$description = filter_input(INPUT_POST, "description");
 		$status = "open";
 		$askTime = date("Y-m-d h:i:s");
-		if ($courseNum == null || $subject == null ||
+		if (strpos($user->getEmail(), '@my.lanecc.edu') == false) {
+			$questionError = "You must use your my.lanecc.edu email. See your profile to edit account information.";
+			$success = "";
+			include("./Views/ask.php");
+		}
+		else if ($courseNum == null || $subject == null ||
 			$description == null || $status == null || $askTime == null){
 				$questionError = "Invalid question. Check all fields and try again.";
 				$success = "";
@@ -134,15 +139,15 @@ switch($action) {
 	break;
 	case "update_task":
 	$courseNumber = filter_input(INPUT_POST, "courseNumber");
-	
+
 	$task->setEndTime(date("Y-m-d h:i:s"));
 	TaskDB::UpdateTask($task);
-	
+
 	$newTask = new Task($visit->getVisitID(), $courseNumber, date("Y-m-d h:i:s"));
 	TaskDB::CreateTask($newTask);
 	$task = TaskDB::RetrieveTask($newTask);
 	$_SESSION['task'] = $task;
-	
+
 	break;
 	case "update_location" :
 	$location = filter_input(INPUT_POST, "locationID");
@@ -151,7 +156,7 @@ switch($action) {
 	echo $visit->getLocationID();
 	echo $visit->getVisitID();
 	break;
-	
+
 	case "cancel_question":
 			$id = filter_input(INPUT_POST, 'id');
 			if(isset($id)) {
@@ -163,10 +168,12 @@ switch($action) {
 				include("./Views/home.php");
 			}
 		break;
-		
+
 	case "logout":
+			if ($role == 'student') {
 				$task->setEndTime(date("Y-m-d h:i:s", time()));
 				taskdb::UpdateTask($task);
+			}
 				$visit->setEndTime(date("Y-m-d h:i:s", time()));
 				visitdb::UpdateVisit($visit);
 				$loginError = "";
@@ -180,7 +187,7 @@ switch($action) {
 	case "schedule":
 		include("./Views/schedule.php");
 	break;
-	
+
 	case "edit":
 		$success = "";
 		$passError = "";
@@ -219,14 +226,14 @@ switch($action) {
 			}
 			break;
 
-	
+
 	case "edit_profile":
 		$success = "";
 		$passError = "";
 		$email = filter_input(INPUT_POST, "email");
 		$pass1 = filter_input(INPUT_POST, "newPwd1");
 		$pass2 = filter_input(INPUT_POST, "newPwd2");
-		if ($pass1 != $pass2){	
+		if ($pass1 != $pass2){
 			$passError = "Sorry the passwords do not match, please try again.";
 			$success = "";
 			include("./Views/edit.php");
@@ -236,13 +243,13 @@ switch($action) {
 			$userID = $user->GetUserID();
 			$user->setEmail($email);
 			$user->setPassword($pass1);
-			
+
 			StudentDB::UpdateProfile($user);
 			$success = "Changes have been saved.";
 			include("./Views/edit.php");
-		}	
+		}
 	break;
-		
+
 	case "edit_TutProfile":
 		$success = "";
 		$passError = "";
@@ -250,7 +257,7 @@ switch($action) {
 		$pass1 = filter_input(INPUT_POST, "newPwd1");
 		$pass2 = filter_input(INPUT_POST, "newPwd2");
 		$summary = filter_input(INPUT_POST, "summary");
-		if ($pass1 != $pass2){	
+		if ($pass1 != $pass2){
 			$passError = "Sorry the passwords do not match, please try again.";
 			$success = "";
 			include("./Views/tutorEdit.php");
@@ -261,13 +268,13 @@ switch($action) {
 			$user->setEmail($email);
 			$user->setPassword($pass1);
 			$user->setTutorBio($summary);
-			
+
 			TutorDB::UpdateProfile($user);
 			$success = "Changes have been saved.";
 			include("./Views/tutorEdit.php");
-		}	
+		}
 	break;
-	
+
 	case "edit_Schedule":
 		include("./Views/tutorSchedule.php");
 	break;
