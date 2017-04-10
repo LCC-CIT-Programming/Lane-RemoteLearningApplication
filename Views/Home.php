@@ -1,7 +1,5 @@
 <?php include 'header.php'; ?>
 
-
-
 <!-- Container for student content -->
 <div class="container-fluid" id="main_content_div">
 	<div class="row">
@@ -90,7 +88,7 @@
 				}
 				elseif ($role == 'tutor')
 				{
-					echo '<td><button id="details" value="'. $question->getQuestionID() . '"type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Details</button></td></tr>';
+					echo '<td><button value="'. $question->getQuestionID() . '"type="button" class="btn btn-info details" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myModal">Details</button></td></tr>';
 				}
           }
 
@@ -101,6 +99,7 @@
 
 	</div>
 </div>
+
 <!-- Container for Tutor List -->
 <div class="container-fluid" id="tutor_list_table_div">
 	<div class="row">
@@ -149,14 +148,13 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Modal Header</h4>
+        <h4 class="modal-title">Question Details</h4>
       </div>
       <div class="modal-body">
         <p id="test">
 			<?php
-			$questionDetails = $_SESSION['questionDetails'];
-			if ($questionDetails !== null) {
+			if (isset($_SESSION['questionDetails'])) {
+				$questionDetails = $_SESSION['questionDetails'];
 				echo $questionDetails->getCourseNumber();
 				echo $questionDetails->getSubject();
 				echo $questionDetails->getDescription();
@@ -167,7 +165,7 @@
 		</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button id="closeDetails" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
 
@@ -177,41 +175,25 @@
 <script>
 $(document).ready(function() {
       $("#class").change( function(){
-		  var SelectedValue = $(this).val();
-		 // document.write(SelectedValue);
-           console.log("Event happened" + " " + SelectedValue);
               $.ajax({
                       url: ".?action=update_task",
                       type: "POST",
                       data: {"courseNumber": $(this).val()},
-                     // success: function(data) { alert(data);}
              });
       });
 	  $("#location").change( function(){
-		  var SelectedValue = $(this).val();
-		 // document.write(SelectedValue);
-           console.log("Event happened" + " " + SelectedValue);
               $.ajax({
                       url: ".?action=update_location",
                       type: "POST",
                       data: {"locationID": $(this).val()},
-                      //success: function(data) { alert(data);}
-					  });
-					   });
-		$("#details").click(function()
-		{
-			var questionID = $(this).val();
+			  });
+	  });
+	  $(".details").click(function(){
 			$.ajax({
-					url: ".?action=home",
+					url: ".?action=details",
 					type: "POST",
 					data: {"viewQuestion": $(this).val()},
-				    //success: function(data) { alert(data);}
-					});
-
-			$("#test").append(test);
-
-		}
-	);
-
+			});
+	  });
 });
 </script>

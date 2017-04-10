@@ -6,7 +6,7 @@ class QuestionDB {
       $db = Database::getDB();
 
       $query = 'SELECT *
-			           FROM question
+			    FROM question
                 WHERE question.Status = "Open"
                 ORDER BY askTime';
 
@@ -18,16 +18,15 @@ class QuestionDB {
       $questions = array();
       foreach ($rows as $row) {
           $question = new Question(
-							   $row['UserID'],
-							   $row['CourseNumber'],
+			     $row['UserID'],
+			     $row['CourseNumber'],
                  $row['Subject'],
                  $row['Description'],
                  $row['Status'],
-							   $row['AskTime'],
+			     $row['AskTime'],
                  $row['QuestionID'],
-							   $row['OpenTime'],
-							   $row['CloseTime']
-							   );
+				 $row['OpenTime'],
+			     $row['CloseTime']);
 
           array_push($questions, $question);
       }
@@ -52,15 +51,15 @@ public static function GetQuestion($QUESTION) {
       if ($row != false) {
 
         $question = new Question(
-							   $row['UserID'],
-							   $row['CourseNumber'],
-                 $row['Subject'],
-                 $row['Description'],
-                 $row['Status'],
-							   $row['AskTime'],
-                 $row['QuestionID'],
-							   $row['OpenTime'],
-							   $row['CloseTime']);
+						 $row['UserID'],
+						 $row['CourseNumber'],
+						 $row['Subject'],
+						 $row['Description'],
+						 $row['Status'],
+						 $row['AskTime'],
+						 $row['QuestionID'],
+						 $row['OpenTime'],
+						 $row['CloseTime']);
 		return $question;
 	} else
 		return null;
@@ -102,17 +101,17 @@ public static function UpdateQuestion($QUESTION) {
                 SET status = :status, openTime = :openTime, closeTime = :closeTime
 			          WHERE question.questionID = :questionid';
 
-  $statement = $db->prepare($query);
+	$statement = $db->prepare($query);
 	$status = $QUESTION->getStatus();
 	$openTime = $QUESTION->getOpenTime();
 	$closeTime = $QUESTION->getCloseTime();
 	$questionID = $QUESTION->getQuestionID();
-  $statement->bindValue(":status", $status );
+	$statement->bindValue(":status", $status );
 	$statement->bindValue(":openTime", $openTime );
 	$statement->bindValue(":closeTime", $closeTime );
 	$statement->bindValue(":questionid", $questionID );
-  $statement->execute();
-  $statement->closeCursor();
+	$statement->execute();
+	$statement->closeCursor();
 
 }
 
