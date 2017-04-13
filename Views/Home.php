@@ -150,6 +150,7 @@
       <div class="modal-header">
         <h4 class="modal-title">Question Details</h4>
       </div>
+
       <div class="modal-body row">
         <div id="modal-body">
 			<?php
@@ -164,6 +165,7 @@
 			else echo 'Error displaying question.';
 			?>
 		</div>
+
       </div>
       <div class="modal-footer">
         <button id="closeDetails" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
