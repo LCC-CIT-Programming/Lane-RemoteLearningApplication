@@ -159,6 +159,7 @@
 				echo "<p class='col-xs-12'><strong>Subject: </strong>" . $questionDetails->getSubject() . "</p>";
 				echo "<p class='col-xs-12'><strong>Question: </strong>" . $questionDetails->getDescription() . "</p>";
 				echo "<p class='col-xs-12'><strong>Ask Time: </strong>" . $questionDetails->getAskTime() . "</p>";
+				/* display the students name */
 			}
 			else echo 'Error displaying question.';
 			?>
