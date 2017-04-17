@@ -186,6 +186,7 @@ CREATE TABLE IF NOT EXISTS `CITLabMonitor`.`Visit` (
   `EndTime` DATETIME NULL DEFAULT NULL,
   `UserID` INT NOT NULL,
   `LocationId` INT NOT NULL,
+  `Role` VARCHAR(15) NOT NULL,
   PRIMARY KEY (`VisitId`),
   INDEX `Visit_User_FK_idx` (`UserID` ASC),
   INDEX `Visit_Location_FK_idx` (`LocationId` ASC),
@@ -343,7 +344,8 @@ CREATE VIEW onlinetutors AS
 SELECT UserID
 FROM visit
 WHERE EndTime IS NULL
-AND UserID IN (SELECT UserID FROM tutor);
+AND (Role = 'Tutor' OR Role = 'Faculty');
+-- AND UserID IN (SELECT UserID FROM tutor);
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
