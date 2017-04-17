@@ -67,7 +67,6 @@ try {
                     TaskDB::CreateTask($task);
                     $task = TaskDB::RetrieveTask($task);
                     $_SESSION['task'] = $task;
-                            //include("./Views/home.php");
                             header('Location: ?action=home');
                 } else {
                     $_SESSION['user'] = null;
