@@ -41,8 +41,8 @@
     if ($role == 'student') {
         echo "<li><a href='?action=ask'>Questions</a></li>";
     } elseif ($role == 'tutor') {
-      echo "<li><a href='?action=edit_schedule'>Edit My Schedule</a></li>";
-  }
+        echo "<li><a href='?action=edit_schedule'>Edit My Schedule</a></li>";
+    }
     ?>
 	  </ul>
 	  <ul class="nav navbar-nav navbar-right">
