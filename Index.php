@@ -208,7 +208,7 @@ try {
                 scheduledb::DeleteSchedule($schedule);
                 $schedules = scheduledb::GetTutorSchedule($user);
                 $_SESSION['schedule'] = $schedules;
-                include("./Views/addTutorSchedule.php");
+                include("./Views/tutor_schedule.php");
             }
         break;
         case "edit_schedule":
@@ -226,7 +226,7 @@ try {
                 }
                 $schedules = scheduledb::GetTutorSchedule($user);
                 $_SESSION['schedule'] = $schedules;
-                include("./Views/addTutorSchedule.php");
+                include("./Views/tutor_schedule.php");
                 break;
             } else {
                 include("./Views/Home.php");
@@ -256,31 +256,7 @@ try {
             include("./Views/edit.php");
         }
     break;
-
-    case "edit_TutProfile":
-        $success = "";
-        $passError = "";
-        $email = filter_input(INPUT_POST, "email");
-        $pass1 = filter_input(INPUT_POST, "newPwd1");
-        $pass2 = filter_input(INPUT_POST, "newPwd2");
-        $summary = filter_input(INPUT_POST, "summary");
-        if ($pass1 != $pass2) {
-            $passError = "Sorry the passwords do not match, please try again.";
-            $success = "";
-            include("./Views/tutorEdit.php");
-        } else {
-            $user = $_SESSION['user'];
-            $userID = $user->GetUserID();
-            $user->setEmail($email);
-            $user->setPassword($pass1);
-            $user->setTutorBio($summary);
-
-            TutorDB::UpdateProfile($user);
-            $success = "Changes have been saved.";
-            include("./Views/tutorEdit.php");
-        }
-    break;
-
+    
     case "edit_Schedule":
         include("./Views/tutorSchedule.php");
     break;
