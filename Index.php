@@ -81,7 +81,6 @@ try {
                         VisitDB::CreateVisit($visit);
                         $visit = VisitDB::RetrieveVisit($visit);
                         $_SESSION['visit'] = $visit;
-                                //include("./Views/home.php");
                                 header('Location: ?action=home');
                     } else {
                         $_SESSION['user'] = null;

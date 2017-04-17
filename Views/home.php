@@ -242,7 +242,11 @@ $(document).ready(function() {
 
 			$('#openQuestion').click(function() {
 				var val = $(this).val();
-	      $.post('/CIT-Project/', { action:'question_details', openQuestion:val });
+	      $.post('/CIT-Project/', { action:'question_details', openQuestion:val }, function(ret) {
+						var data = JSON.parse(ret);
+				 		var modal = $('#myModal');
+
+				});
 			});
 
 });
