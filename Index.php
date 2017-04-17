@@ -185,14 +185,11 @@ try {
     break;
 
     case "question_details":
-          $questionID = filter_input(INPUT_POST, "acceptQuestion");
 
+          $questionID = filter_input(INPUT_POST, "acceptQuestion");
           if ($questionID == null) {
             $questionID = filter_input(INPUT_POST, "viewQuestion");
-            // echo '<script>console.log("' + $questionID + '");</script>';
           }
-
-
 
         $questionDetails = QuestionDB::GetQuestionByID($questionID);
         $studentDetails = StudentDB::RetrieveStudentByID($questionDetails->getUserID());
@@ -203,7 +200,8 @@ try {
                                 "questionID" => $questionDetails->getQuestionID(),
                                 "askTime" => $questionDetails->getAskTime(),
                                 "studentFirstName" => $studentDetails->getFirstName(),
-                                "studentLastName" => $studentDetails->getLastName());
+                                "studentLastName" => $studentDetails->getLastName(),
+                                "studentEmail" => $studentDetails->getEmail());
         echo json_encode($questionJSON);
         break;
 
