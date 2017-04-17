@@ -15,7 +15,9 @@ require_once('/Models/task.php');
 require_once('/Models/taskdb.php');
 require_once('/Models/schedule.php');
 require_once('/Models/scheduledb.php');
+
 try {
+	
 session_start();
 if (isset($_SESSION['user']))
 		$user = $_SESSION['user'];
@@ -27,6 +29,7 @@ if (isset($_SESSION['task']))
 		$task = $_SESSION['task'];
 if (isset($_SESSION['role']))
 		$role = $_SESSION['role'];
+	
 $action = filter_input(INPUT_POST, 'action');
 if ($action == NULL){
 	$action = filter_input(INPUT_GET, 'action');
@@ -34,6 +37,7 @@ if ($action == NULL){
 		$action = 'default';
 	}
 }
+
 switch($action) {
 	case "default":
 			$_SESSION['user'] = null;
@@ -48,7 +52,7 @@ switch($action) {
 			if ($role == "student") {
 					$user = StudentDB::StudentLogin($username, $password);
 					if ($user !== null && isset($user)) {
-						  $courses = StudentDB::GetStudentCourses($user);
+						    $courses = StudentDB::GetStudentCourses($user);
 							$_SESSION['user'] = $user;
 							$_SESSION['courses'] = $courses;
 							$visit = new Visit($user->GetUserID(), 1, date("Y-m-d h:i:s"));
@@ -59,7 +63,8 @@ switch($action) {
 							TaskDB::CreateTask($task);
 							$task = TaskDB::RetrieveTask($task);
 							$_SESSION['task'] = $task;
-							include("./Views/home.php");
+							//include("./Views/home.php");
+							header('Location: ?action=home');
 					} else {
 							$_SESSION['user'] = null;
 							$loginError = "Login attempt failed.";
@@ -68,17 +73,14 @@ switch($action) {
 				}
 				else if ($role == "tutor"){
 						$user = TutorDB::TutorLogin($username, $password);
-						if ($user !== null && isset($user)) {
-								$userID = $user->GetUserID();
-								$startTime = date("Y-m-d h:i:s");
-								$locationID = 1;
-								$visit = new Visit($userID, $locationID, $startTime);
-								$_SESSION['visit'] = $visit;
+						if ($user !== null && isset($user)) {							
 								$_SESSION['user'] = $user;
+								$visit = new Visit($user->GetUserID(), 1, date("Y-m-d h:i:s"));
 								VisitDB::CreateVisit($visit);
-								include("./Views/home.php");
-
-
+								$visit = VisitDB::RetrieveVisit($visit);
+								$_SESSION['visit'] = $visit;
+								//include("./Views/home.php");
+								header('Location: ?action=home');
 				}
 					else {
 							$_SESSION['user'] = null;
@@ -181,12 +183,17 @@ switch($action) {
 				session_destroy();
 				include("./Views/login.php");
 		break;
+		
 	case "home":
-		$viewQuestion = filter_input(INPUT_POST,'viewQuestion');
-		$questionDetails = QuestionDB::GetQuestionByID($viewQuestion);
-		$_SESSION['questionDetails'] = $questionDetails;
 		include("./Views/home.php");
 	break;
+	
+	case "details":
+		$viewQuestion = filter_input(INPUT_POST, "viewQuestion");
+		$questionDetails = QuestionDB::GetQuestionByID($viewQuestion);
+		$_SESSION['questionDetails'] = $questionDetails;
+		break;	
+		
 	case "schedule":
 		include("./Views/schedule.php");
 	break;
@@ -240,13 +247,13 @@ switch($action) {
 			$passError = "Sorry the passwords do not match, please try again.";
 			$success = "";
 			include("./Views/edit.php");
-		}
-		else{
+		} else{
 			$user = $_SESSION['user'];
 			$userID = $user->GetUserID();
 			$user->setEmail($email);
-			$user->setPassword($pass1);
-
+			if ($pass1 != "") {
+				$user->setPassword($pass1);
+			}
 			StudentDB::UpdateProfile($user);
 			$success = "Changes have been saved.";
 			include("./Views/edit.php");
