@@ -185,7 +185,6 @@ try {
     break;
 
     case "question_details":
-
           $questionID = filter_input(INPUT_POST, "acceptQuestion");
           if ($questionID == null) {
             $questionID = filter_input(INPUT_POST, "viewQuestion");
@@ -202,6 +201,18 @@ try {
                                 "studentFirstName" => $studentDetails->getFirstName(),
                                 "studentLastName" => $studentDetails->getLastName(),
                                 "studentEmail" => $studentDetails->getEmail());
+
+        if (filter_input(INPUT_POST, "openQuestion") !== null) {
+          $questionDetails->setStatus('Open');
+          $questionDetails->setOpenTime(null);
+          QuestionDB::UpdateQuestion($questionDetails);
+        }
+         else if (filter_input(INPUT_POST, "acceptQuestion") !== null) {
+          $questionDetails->setStatus('In-Process');
+          $questionDetails->setOpenTime(date("Y-m-d h:i:s", time()));
+          QuestionDB::UpdateQuestion($questionDetails);
+        }
+
         echo json_encode($questionJSON);
         break;
 

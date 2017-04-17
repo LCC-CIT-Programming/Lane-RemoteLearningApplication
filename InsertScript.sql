@@ -117,7 +117,7 @@ INSERT INTO task (VisitId, CourseNumber, StartTime, EndTime) VALUES ( 4, 'CS 295
 INSERT INTO question ( UserID, Subject, Description, Status, AskTime, OpenTime, CloseTime, CourseNumber) VALUES (5, 'Lab 5', 'How do I make it work?', 'Escalated', '2016-11-22 14:10:00', '2016-11-22 14:20:00', '2016-11-22 14:30:00', 'CIS 244');
 INSERT INTO question ( UserID, Subject, Description, Status, AskTime, CourseNumber) VALUES (6, 'loops', 'What is the syntax for a loop in c#?', 'Open', '2016-11-22 14:10:00', 'CS 133N');
 INSERT INTO question ( UserID, Subject, Description, Status, AskTime, OpenTime, CloseTime, CourseNumber) VALUES (7, 'sql statements', 'How do I auto increment values in mysql?', 'Resolved', '2016-11-22 14:10:00', '2016-11-22 14:20:00', '2016-11-22 14:30:00', 'CS 296P');
-INSERT INTO question ( UserID, Subject, Description, Status, AskTime, OpenTime, CourseNumber) VALUES (8, 'Ajax in ASP.net', 'How do I execute ajax to a restful api?', 'Processing', '2016-11-22 14:10:00', '2016-11-22 14:20:00', 'CS 295N');
+INSERT INTO question ( UserID, Subject, Description, Status, AskTime, OpenTime, CourseNumber) VALUES (8, 'Ajax in ASP.net', 'How do I execute ajax to a restful api?', 'In-Process', '2016-11-22 14:10:00', '2016-11-22 14:20:00', 'CS 295N');
 -- SELECT * FROM question;
 
 /* RESOLUTION TABLE */

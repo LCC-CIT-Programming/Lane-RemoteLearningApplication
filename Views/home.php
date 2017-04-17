@@ -204,6 +204,9 @@ $(document).ready(function() {
 	        modal.find('#askTime').html(data.askTime);
 					modal.find('#studentName').html(data.studentFirstName + " " + data.studentLastName);
 					modal.find('#acceptQuestion').val(data.questionID);
+					modal.find('#resolveQuestion').val(data.questionID);
+					modal.find('#escalateQuestion').val(data.questionID);
+					modal.find('#openQuestion').val(data.questionID);
 					modal.find('#acceptQuestion').show();
 					modal.find('#closeDetails').show();
 					modal.find('#emailRow').hide();
@@ -236,5 +239,11 @@ $(document).ready(function() {
 
 				  });
 			});
+
+			$('#openQuestion').click(function() {
+				var val = $(this).val();
+	      $.post('/CIT-Project/', { action:'question_details', openQuestion:val });
+			});
+
 });
 </script>
