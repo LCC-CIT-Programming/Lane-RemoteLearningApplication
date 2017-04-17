@@ -14,7 +14,7 @@
 	<div class="row">
       <!-- left column -->
       <div class="col-md-3">
-	   <h2 class="text-center"><?php echo ($user->getFirstName(). " " . $user->getLastName());?></h2>   
+	   <h2 class="text-center"><?php echo($user->getFirstName(). " " . $user->getLastName());?></h2>   
         <div class="text-center">
           <img src="./Styles/smiley.png
 		  " class="avatar img-circle" alt="avatar">

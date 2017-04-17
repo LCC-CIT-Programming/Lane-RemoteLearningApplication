@@ -7,21 +7,17 @@
 			<div class="col-sm-2"></div>
 			<div class=" col-sm-4 form-group">
 			<?php
-	$role = $_SESSION['role'];
-	if ($role == 'student')
-	{
-
-			echo "<label class='' for='class' >Please tell us what class you are working on.</label>";
-			echo "<select class='form-control' id='class'>";
+    $role = $_SESSION['role'];
+    if ($role == 'student') {
+        echo "<label class='' for='class' >Please tell us what class you are working on.</label>";
+        echo "<select class='form-control' id='class'>";
 
 
-                    $courses = $_SESSION['courses'];
-                    foreach($courses as $course)
-                    {
-                        echo '<option value = "' . $course->getCourseNumber().'" >' . $course->getCourseName() . '</option>';
-                    }
-
-	}
+        $courses = $_SESSION['courses'];
+        foreach ($courses as $course) {
+            echo '<option value = "' . $course->getCourseNumber().'" >' . $course->getCourseName() . '</option>';
+        }
+    }
               ?>
 
 			</select>
@@ -62,35 +58,28 @@
                </tr>';
 
 
-         foreach ($questions as $question)
-        {
-          $course = CourseDB::RetrieveCourseByNumber($question->getCourseNumber());
-			  //$user = $_SESSION['user'];
-				if ($question->getUserID() == $user->getUserID())
-				{
-					echo '<tr class="success">';
-				}
-				else
-				{
-					echo '<tr>';
-				}
-				echo '<td>' . $course->getCourseName() . '</td>' .
+         foreach ($questions as $question) {
+             $course = CourseDB::RetrieveCourseByNumber($question->getCourseNumber());
+              //$user = $_SESSION['user'];
+                if ($question->getUserID() == $user->getUserID()) {
+                    echo '<tr class="success">';
+                } else {
+                    echo '<tr>';
+                }
+             echo '<td>' . $course->getCourseName() . '</td>' .
                      '<td>' . $question->getSubject() . '</td>' .
                      '<td>' . $question->getDescription() . '</td>' .
                      '<td>' . $question->getAskTime() . '</td>' ;
-				if ($question->getUserID() == $user->getUserID() && $role == 'student')
-				{
-          echo '<td><form action="?action=cancel_question" method="post">';
-          echo '<input type="hidden" name="id" value="';
-          echo $question->getQuestionID();
-          echo '?>">';
-          echo '<input class="btn btn-danger" type="submit" name="submit" value="Cancel"></form></td></tr>';
-				}
-				elseif ($role == 'tutor')
-				{
-					echo '<td><button value="'. $question->getQuestionID() . '"type="button" class="btn btn-info details" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myModal">Details</button></td></tr>';
-				}
-          }
+             if ($question->getUserID() == $user->getUserID() && $role == 'student') {
+                 echo '<td><form action="?action=cancel_question" method="post">';
+                 echo '<input type="hidden" name="id" value="';
+                 echo $question->getQuestionID();
+                 echo '?>">';
+                 echo '<input class="btn btn-danger" type="submit" name="submit" value="Cancel"></form></td></tr>';
+             } elseif ($role == 'tutor') {
+                 echo '<td><button value="'. $question->getQuestionID() . '"type="button" class="btn btn-info details" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myModal">Details</button></td></tr>';
+             }
+         }
 
       ?>
 
@@ -121,17 +110,16 @@
               $tutors = TutorDB::GetOnlineTutors();
 
               if ($tutors != null) {
-              foreach ($tutors as $tutor) {
-                  echo '<tr><td></td>
+                  foreach ($tutors as $tutor) {
+                      echo '<tr><td></td>
                         <td>' . $tutor->getFirstName() . ' ' . $tutor->getLastName() . '</td>' .
                        '<td>' . 'Online' . '</td>' .
                        '<td>' . $tutor->getTutorBio() . '</td>' .
                        '</tr>';
+                  }
+              } else {
+                  echo '<tr><td>There are no available tutors at this time.</td></tr>';
               }
-            } else {
-
-              echo '<tr><td>There are no available tutors at this time.</td></tr>';
-            }
           ?>
 
 				</table>
@@ -154,16 +142,17 @@
       <div class="modal-body row">
         <div id="modal-body">
 			<?php
-			if (isset($_SESSION['questionDetails'])) {
-				$questionDetails = $_SESSION['questionDetails'];
-				echo "<p class='col-xs-12'><strong>Course: </strong>" .$questionDetails->getCourseNumber() . "</p>";
-				echo "<p class='col-xs-12'><strong>Subject: </strong>" . $questionDetails->getSubject() . "</p>";
-				echo "<p class='col-xs-12'><strong>Question: </strong>" . $questionDetails->getDescription() . "</p>";
-				echo "<p class='col-xs-12'><strong>Ask Time: </strong>" . $questionDetails->getAskTime() . "</p>";
-				/* display the students name */
-			}
-			else echo 'Error displaying question.';
-			?>
+            if (isset($_SESSION['questionDetails'])) {
+                $questionDetails = $_SESSION['questionDetails'];
+                echo "<p class='col-xs-12'><strong>Course: </strong>" .$questionDetails->getCourseNumber() . "</p>";
+                echo "<p class='col-xs-12'><strong>Subject: </strong>" . $questionDetails->getSubject() . "</p>";
+                echo "<p class='col-xs-12'><strong>Question: </strong>" . $questionDetails->getDescription() . "</p>";
+                echo "<p class='col-xs-12'><strong>Ask Time: </strong>" . $questionDetails->getAskTime() . "</p>";
+                /* display the students name */
+            } else {
+                echo 'Error displaying question.';
+            }
+            ?>
 		</div>
 
       </div>

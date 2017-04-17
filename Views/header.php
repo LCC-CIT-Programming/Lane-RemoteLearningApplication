@@ -37,15 +37,13 @@
 
 		<li><a href="?action=schedule">Schedule</a></li>
 	<?php
-	$role = $_SESSION['role'];
-	if ($role == 'student')
-	{
-		echo "<li><a href='?action=ask'>Questions</a></li>";
-	}
-  else if ($role == 'tutor') {
-  		echo "<li><a href='?action=edit_schedule'>Edit My Schedule</a></li>";
-  	}
-	?>
+    $role = $_SESSION['role'];
+    if ($role == 'student') {
+        echo "<li><a href='?action=ask'>Questions</a></li>";
+    } elseif ($role == 'tutor') {
+        echo "<li><a href='?action=edit_schedule'>Edit My Schedule</a></li>";
+    }
+    ?>
 	  </ul>
 	  <ul class="nav navbar-nav navbar-right">
 		<li><a href="?action=logout"><span ></span>Logout</a></li>

@@ -11,16 +11,16 @@
                                 <select id="course" name="courseSelect" class="form-control">
 
 									<?php
-										$user = $_SESSION['user'];
-										$courses = $_SESSION['courses'];
-									 foreach ($courses as $course) :
-										{
-											echo '<option value="' . $course->getCourseNumber() . '">'
-												. $course->getCourseName() .
-												'</option>';
-										}
-										endforeach;
-									?>
+                                        $user = $_SESSION['user'];
+                                        $courses = $_SESSION['courses'];
+                                     foreach ($courses as $course) :
+                                        {
+                                            echo '<option value="' . $course->getCourseNumber() . '">'
+                                                . $course->getCourseName() .
+                                                '</option>';
+                                        }
+                                        endforeach;
+                                    ?>
 
                                 </select>
                             </div>

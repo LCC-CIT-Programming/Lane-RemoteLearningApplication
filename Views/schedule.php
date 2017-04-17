@@ -11,32 +11,28 @@
 				</td>
             </thead>
 		  <?php
-			$ampm = 'am';
-			for($time = 9; $time<=17; $time++)
-			{
+            $ampm = 'am';
+            for ($time = 9; $time<=17; $time++) {
+                if ($time == 12) {
+                    $ampm = 'pm';
+                    $hour = $time;
+                } elseif ($time >= 13) {
+                    $ampm = 'pm';
+                    $hour = $time-12;
+                } else {
+                    $ampm = 'am';
+                    $hour = $time;
+                };
 
-				if ($time == 12) {
-					$ampm = 'pm';
-					$hour = $time;
-				}
-				else if ($time >= 13) {
-					$ampm = 'pm';
-					$hour = $time-12;
-				} else
-				{
-					$ampm = 'am';
-					$hour = $time;
-				};
-
-				echo '<tr><th scope="row">' . $hour . ' ' . $ampm . '</th>
+                echo '<tr><th scope="row">' . $hour . ' ' . $ampm . '</th>
 					 <td id="'. $time . '1"></td>
 					 <td id="'. $time . '2"></td>
 					 <td id="'. $time . '3"></td>
 					 <td id="'. $time . '4"></td>
 					 <td id="'. $time . '5"></td>
 				</tr>';
-			}
-		  ?>
+            }
+          ?>
 
         </table>
 		</div>
@@ -47,21 +43,21 @@
 <script>
 	$(document).ready(function() {
 		<?php $schedules = ScheduleDB::GetAllSchedules();
-			foreach($schedules as $schedule)
-			{
-				$day = $schedule->getWeekDay();
-				$start = $schedule->getStartTime();
-				$end = $schedule->getEndTime();
-				$fStart = Date('G', strtotime($start));
-				$fEnd = Date('G', strtotime($end));
-				$tutor = TutorDB::RetrieveTutorByID($schedule->getUserID());
-				$name = $tutor->getFirstName();
+            foreach ($schedules as $schedule) {
+                $day = $schedule->getWeekDay();
+                $start = $schedule->getStartTime();
+                $end = $schedule->getEndTime();
+                $fStart = Date('G', strtotime($start));
+                $fEnd = Date('G', strtotime($end));
+                $tutor = TutorDB::RetrieveTutorByID($schedule->getUserID());
+                $name = $tutor->getFirstName();
 
-				for ($i = $fStart; $i <= $fEnd; $i++)
-				{
-		?>
+                for ($i = $fStart; $i <= $fEnd; $i++) {
+                    ?>
 	    			$("#<?php echo $i . $day; ?>").append("<p style='width:100%;'><?php echo $name; ?></p>");
-		  <?php } } ?>
+		  <?php 
+                }
+            } ?>
 	});
 
 
