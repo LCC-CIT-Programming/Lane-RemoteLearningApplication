@@ -1,18 +1,21 @@
 <?php
-class Student extends AppUser {
+class Student extends AppUser
+{
     private $majorID;
 
-    public function __construct($FIRSTNAME, $LASTNAME, $LNUMBER, $PASS, $EMAIL, $MAJORID, $USERID = NULL) {
+    public function __construct($FIRSTNAME, $LASTNAME, $LNUMBER, $PASS, $EMAIL, $MAJORID, $USERID = null)
+    {
         parent::__construct($FIRSTNAME, $LASTNAME, $LNUMBER, $PASS, $EMAIL, $USERID);
-		    $this->majorID = $MAJORID;
+        $this->majorID = $MAJORID;
     }
 
-    public function getMajorID() {
+    public function getMajorID()
+    {
         return $this->majorID;
     }
 
-    public function setMajorID($VALUE) {
+    public function setMajorID($VALUE)
+    {
         $this->majorID = $VALUE;
     }
 }
-?>

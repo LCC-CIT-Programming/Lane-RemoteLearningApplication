@@ -1,42 +1,53 @@
 <?php
-class Visit {
-    protected $visitID, $userID, $locationID, $startTime, $endTime;
+class Visit
+{
+    protected $visitID;
+    protected $userID;
+    protected $locationID;
+    protected $startTime;
+    protected $endTime;
 
-    public function __construct($USERID, $LOCATIONID, $VISITID = NULL, $STARTTIME = NULL, $ENDTIME = NULL) {
+    public function __construct($USERID, $LOCATIONID, $VISITID = null, $STARTTIME = null, $ENDTIME = null)
+    {
         $this->visitID = $VISITID;
         $this->userID = $USERID;
         $this->locationID = $LOCATIONID;
-		    $this->startTime = $STARTTIME;
-		    $this->endTime = $ENDTIME;
+        $this->startTime = $STARTTIME;
+        $this->endTime = $ENDTIME;
     }
 
-    public function getVisitID() {
+    public function getVisitID()
+    {
         return $this->visitID;
     }
 
-    public function getUserID() {
+    public function getUserID()
+    {
         return $this->userID;
     }
 
-    public function getLocationID() {
+    public function getLocationID()
+    {
         return $this->locationID;
     }
 
-    public function setLocationID($VALUE) {
-      $this->locationID = $VALUE;
+    public function setLocationID($VALUE)
+    {
+        $this->locationID = $VALUE;
     }
 
-    public function getStartTime() {
+    public function getStartTime()
+    {
         return $this->startTime;
     }
 
-    public function getEndTime() {
+    public function getEndTime()
+    {
         return $this->endTime;
     }
 
-    public function setEndTime($VALUE) {
+    public function setEndTime($VALUE)
+    {
         $this->endTime = $VALUE;
     }
-
 }
-?>

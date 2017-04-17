@@ -1,42 +1,53 @@
 <?php
-class Task {
-    protected $visitID, $courseNumber, $startTime, $endTime, $taskID;
+class Task
+{
+    protected $visitID;
+    protected $courseNumber;
+    protected $startTime;
+    protected $endTime;
+    protected $taskID;
 
-    public function __construct($VISITID, $COURSENUMBER, $STARTTIME, $TASKID = NULL, $ENDTIME = NULL) {
+    public function __construct($VISITID, $COURSENUMBER, $STARTTIME, $TASKID = null, $ENDTIME = null)
+    {
         $this->visitID = $VISITID;
         $this->courseNumber = $COURSENUMBER;
         $this->taskID = $TASKID;
-		    $this->startTime = $STARTTIME;
-		    $this->endTime = $ENDTIME;
+        $this->startTime = $STARTTIME;
+        $this->endTime = $ENDTIME;
     }
 
-    public function getVisitID() {
+    public function getVisitID()
+    {
         return $this->visitID;
     }
 
-    public function getCourseNumber() {
+    public function getCourseNumber()
+    {
         return $this->courseNumber;
     }
 
-    public function getStartTime() {
+    public function getStartTime()
+    {
         return $this->startTime;
     }
 
-    public function getTaskID() {
+    public function getTaskID()
+    {
         return $this->taskID;
     }
 
-    public function setTaskID($VALUE) {
-      $this->taskID = $VALUE;
+    public function setTaskID($VALUE)
+    {
+        $this->taskID = $VALUE;
     }
 
-    public function getEndTime() {
+    public function getEndTime()
+    {
         return $this->endTime;
     }
 
-    public function setEndTime($VALUE) {
+    public function setEndTime($VALUE)
+    {
         $this->endTime = $VALUE;
     }
-
 }
-?>

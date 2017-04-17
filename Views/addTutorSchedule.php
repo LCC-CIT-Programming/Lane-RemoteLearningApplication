@@ -42,26 +42,25 @@
 		</thead>
 		<tbody>
 			<?php
-        foreach($schedules as $schedule)
-        {
-          $day =  $schedule->getStringWeekDay();
-          $start = new DateTime($schedule->getStartTime());
-          $end = new DateTime($schedule->getEndTime());
-          $fstart = $start->format('H:i A');
-          $fend = $end->format('H:i A');
-          echo '<tr><td>';
-              echo $day;
-          echo '</td><td>';
-              echo $fstart;
-          echo '</td><td>';
+        foreach ($schedules as $schedule) {
+            $day =  $schedule->getStringWeekDay();
+            $start = new DateTime($schedule->getStartTime());
+            $end = new DateTime($schedule->getEndTime());
+            $fstart = $start->format('H:i A');
+            $fend = $end->format('H:i A');
+            echo '<tr><td>';
+            echo $day;
+            echo '</td><td>';
+            echo $fstart;
+            echo '</td><td>';
             echo $fend;
-          echo '</td><td>';
-          echo '<form action="?action=delete_schedule" method="post">';
-          echo '<input type="hidden" name="id" value="';
-          echo $schedule->getScheduleID();
-          echo '?>">';
-          echo '<input class="btn btn-danger" type="submit" name="submit" value="Delete"></form>';
-          echo '</td></tr>';
+            echo '</td><td>';
+            echo '<form action="?action=delete_schedule" method="post">';
+            echo '<input type="hidden" name="id" value="';
+            echo $schedule->getScheduleID();
+            echo '?>">';
+            echo '<input class="btn btn-danger" type="submit" name="submit" value="Delete"></form>';
+            echo '</td></tr>';
         }
       ?>
 		</tbody>

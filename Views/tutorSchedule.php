@@ -19,8 +19,8 @@
 <div class="container-fluid">
 <!--
 	<?php 
-	//$user = $_SESSION['user'];
-	?>
+    //$user = $_SESSION['user'];
+    ?>
 	-->
 
   	<div class="title">
@@ -49,56 +49,52 @@
 			<tr> <!-- deal with possible 2 shifts-->
 				
 				<?php 
-					$am = "am";
-					$pm = "pm";
-					$days = array('Sun','Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat');
-					
-					for ($d =0; $d <= 6; $d++){
-						echo '<td>';
-						echo '<select class="form-control form-inline" name="startTime' . $days[$d] . '">';
-						for ($i = 6; $i < 25; $i++){
-								if ($i < 12){					
-									echo '<option value="sunST' . $i . $am .'">'
-												. 'Start' . " " . $i  . " " . $am .
-												'</option>';	
-								}
-								elseif ($i == 12){
-									echo '<option value="sunST' . $i . $pm .'">'
-												. 'Start' . " " . $i . " " . $pm .
-												'</option>';	
-								}
-								else{
-									echo '<option value="sunST' . $i . $pm .'">'
-												. 'Start' . " " . ($i - 12) . " " . $pm .
-												'</option>';	
-								}
-							}
-							echo '</select>';
-							echo '</br >';
-							
-							echo '<select class="form-control form-inline" name="endTime' . $days[$d] . '">';
-							for ($i = 6; $i < 25; $i++){
-								if ($i < 12){					
-									echo '<option value="sunST' . $i . $am .'">'
-												. 'End' . " " . $i  . " " . $am .
-												'</option>';	
-								}
-								elseif ($i == 12){
-									echo '<option value="sunST' . $i . $pm .'">'
-												. 'End' . " " . $i . " " . $pm .
-												'</option>';	
-								}
-								else{
-									echo '<option value="sunST' . $i . $pm .'">'
-												. 'End' . " " . ($i - 12) . " " . $pm .
-												'</option>';	
-								}
-							}
-						echo '</select>';
-						echo '</td>';
-					}
+                    $am = "am";
+                    $pm = "pm";
+                    $days = array('Sun','Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat');
+                    
+                    for ($d =0; $d <= 6; $d++) {
+                        echo '<td>';
+                        echo '<select class="form-control form-inline" name="startTime' . $days[$d] . '">';
+                        for ($i = 6; $i < 25; $i++) {
+                            if ($i < 12) {
+                                echo '<option value="sunST' . $i . $am .'">'
+                                                . 'Start' . " " . $i  . " " . $am .
+                                                '</option>';
+                            } elseif ($i == 12) {
+                                echo '<option value="sunST' . $i . $pm .'">'
+                                                . 'Start' . " " . $i . " " . $pm .
+                                                '</option>';
+                            } else {
+                                echo '<option value="sunST' . $i . $pm .'">'
+                                                . 'Start' . " " . ($i - 12) . " " . $pm .
+                                                '</option>';
+                            }
+                        }
+                        echo '</select>';
+                        echo '</br >';
+                            
+                        echo '<select class="form-control form-inline" name="endTime' . $days[$d] . '">';
+                        for ($i = 6; $i < 25; $i++) {
+                            if ($i < 12) {
+                                echo '<option value="sunST' . $i . $am .'">'
+                                                . 'End' . " " . $i  . " " . $am .
+                                                '</option>';
+                            } elseif ($i == 12) {
+                                echo '<option value="sunST' . $i . $pm .'">'
+                                                . 'End' . " " . $i . " " . $pm .
+                                                '</option>';
+                            } else {
+                                echo '<option value="sunST' . $i . $pm .'">'
+                                                . 'End' . " " . ($i - 12) . " " . $pm .
+                                                '</option>';
+                            }
+                        }
+                        echo '</select>';
+                        echo '</td>';
+                    }
 
-				?>
+                ?>
 				
 			</tr>
 		</table>
