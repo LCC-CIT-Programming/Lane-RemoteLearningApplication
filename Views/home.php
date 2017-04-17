@@ -141,23 +141,21 @@
 
       <div class="modal-body row">
         <div id="modal-body">
-			<?php
-            if (isset($_SESSION['questionDetails'])) {
-                $questionDetails = $_SESSION['questionDetails'];
-                echo "<p class='col-xs-12'><strong>Course: </strong>" .$questionDetails->getCourseNumber() . "</p>";
-                echo "<p class='col-xs-12'><strong>Subject: </strong>" . $questionDetails->getSubject() . "</p>";
-                echo "<p class='col-xs-12'><strong>Question: </strong>" . $questionDetails->getDescription() . "</p>";
-                echo "<p class='col-xs-12'><strong>Ask Time: </strong>" . $questionDetails->getAskTime() . "</p>";
-                /* display the students name */
-            } else {
-                echo 'Error displaying question.';
-            }
-            ?>
-		</div>
+				<table>
+					<tr class="col-xs-12"><th class="col-xs-2" style="min-width: 100px;">Course:</th><td class="col-xs-10" id='courseNumber'></td></tr>
+					<tr class="col-xs-12"><th class="col-xs-2" style="min-width: 100px;">Subject:</th><td class="col-xs-10" id='subject'></td></tr>
+					<tr class="col-xs-12"><th class="col-xs-2" style="min-width: 100px;">Question:</th><td class="col-xs-10" id='question'></td></tr>
+					<tr class="col-xs-12"><th class="col-xs-2" style="min-width: 100px;">Ask Time:</th><td class="col-xs-10" id='askTime'></td></tr>
+					<tr class="col-xs-12"><th class="col-xs-2" style="min-width: 100px;">Student Name:</th><td class="col-xs-10" id='studentName'></td></tr>
+					<!-- display the students name -->
+				</table>
 
+				</div>
       </div>
+
       <div class="modal-footer">
-        <button id="closeDetails" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button id="acceptQuestion" type="button" class="btn btn-success" data-dismiss="modal">Accept</button>
+        <button id="closeDetails" type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
       </div>
     </div>
 
@@ -180,12 +178,19 @@ $(document).ready(function() {
                       data: {"locationID": $(this).val()},
 			  });
 	  });
-	  $(".details").click(function(){
-			$.ajax({
-					url: ".?action=details",
-					type: "POST",
-					data: {"viewQuestion": $(this).val()},
-			});
-	  });
+		$('.details').click(function() {
+	      var val = $(this).val();
+	      $.post('/CIT-Project/', { action:'view_question', viewQuestion:val }, function(ret) {
+	        var data = JSON.parse(ret);
+	        //OPEN modal
+	        var modal = $('#myModal');
+	        modal.modal();
+	        modal.find('#courseNumber').html(data.courseNumber);
+	        modal.find('#subject').html(data.subject);
+	        modal.find('#question').html(data.question);
+	        modal.find('#askTime').html(data.askTime);
+					modal.find('#studentName').html(data.studentFirstName + " " + data.studentLastName);
+	      });
+	    });
 });
 </script>
