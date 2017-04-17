@@ -6,12 +6,14 @@ class Visit
     protected $locationID;
     protected $startTime;
     protected $endTime;
+    protected $role;
 
-    public function __construct($USERID, $LOCATIONID, $VISITID = null, $STARTTIME = null, $ENDTIME = null)
+    public function __construct($USERID, $LOCATIONID, $ROLE, $VISITID = null, $STARTTIME = null, $ENDTIME = null)
     {
         $this->visitID = $VISITID;
         $this->userID = $USERID;
         $this->locationID = $LOCATIONID;
+        $this->role = $ROLE;
         $this->startTime = $STARTTIME;
         $this->endTime = $ENDTIME;
     }
@@ -34,6 +36,11 @@ class Visit
     public function setLocationID($VALUE)
     {
         $this->locationID = $VALUE;
+    }
+
+    public function getRole()
+    {
+        return $this->role;
     }
 
     public function getStartTime()

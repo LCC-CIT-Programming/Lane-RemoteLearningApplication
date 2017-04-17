@@ -8,16 +8,18 @@ class VisitDB
         $userID = $VISIT->getUserID();
         $locationID = $VISIT->getLocationID();
         $startTime = date("Y-m-d h:i:s");
+        $role = $VISIT->getRole();
 
         $query = 'INSERT INTO visit
-              (UserID, LocationId, StartTime)
+              (UserID, LocationId, StartTime, Role)
               VALUES
-              ( :userid, :locationid,:starttime)';
+              ( :userid, :locationid, :starttime, :role )';
 
         $statement = $db->prepare($query);
         $statement->bindValue(':userid', $userID);
         $statement->bindValue(':locationid', $locationID);
         $statement->bindValue(':starttime', $startTime);
+        $statement->bindValue(':role', $role);
         $statement->execute();
         $statement->closeCursor();
     }
@@ -33,15 +35,15 @@ class VisitDB
         $statement = $db->prepare($query);
         $statement->bindValue(":locationid", $VISIT->getLocationID());
         $statement->bindValue(":userid", $VISIT->getUserID());
-      //$statement->bindValue(":starttime", $VISIT->getStartTime());
-      $statement->execute();
+        $statement->execute();
         $row = $statement->fetch();
         $statement->closeCursor();
 
         if ($row != false) {
             $visit = new Visit(
-                         $row['UserID'],
-                         $row['LocationId'],
+                 $row['UserID'],
+                 $row['LocationId'],
+                 $row['Role'],
                  $row['VisitId'],
                  $row['StartTime'],
                  $row['EndTime']);
@@ -67,8 +69,9 @@ class VisitDB
 
         if ($row != false) {
             $visit = new Visit(
-                                     $row['UserID'],
-                                     $row['LocationId'],
+                       $row['UserID'],
+                       $row['LocationId'],
+                       $row['Role'],
                        $row['VisitId'],
                        $row['StartTime'],
                        $row['EndTime']);

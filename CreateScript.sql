@@ -344,7 +344,8 @@ CREATE VIEW onlinetutors AS
 SELECT UserID
 FROM visit
 WHERE EndTime IS NULL
-AND UserID IN (SELECT UserID FROM tutor);
+AND (Role = 'Tutor' OR Role = 'Faculty');
+-- AND UserID IN (SELECT UserID FROM tutor);
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

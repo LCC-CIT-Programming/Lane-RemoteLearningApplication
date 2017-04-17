@@ -59,7 +59,7 @@ try {
                     $courses = StudentDB::GetStudentCourses($user);
                     $_SESSION['user'] = $user;
                     $_SESSION['courses'] = $courses;
-                    $visit = new Visit($user->GetUserID(), 1, date("Y-m-d h:i:s"));
+                    $visit = new Visit($user->GetUserID(), 1, $role, date("Y-m-d h:i:s"));
                     VisitDB::CreateVisit($visit);
                     $visit = VisitDB::RetrieveVisit($visit);
                     $_SESSION['visit'] = $visit;
@@ -77,7 +77,7 @@ try {
                     $user = TutorDB::TutorLogin($username, $password);
                     if ($user !== null && isset($user)) {
                         $_SESSION['user'] = $user;
-                        $visit = new Visit($user->GetUserID(), 1, date("Y-m-d h:i:s"));
+                        $visit = new Visit($user->GetUserID(), 1, $role, date("Y-m-d h:i:s"));
                         VisitDB::CreateVisit($visit);
                         $visit = VisitDB::RetrieveVisit($visit);
                         $_SESSION['visit'] = $visit;
@@ -89,7 +89,7 @@ try {
                         include("./Views/login.php");
                     }
                 } else {
-                    include("./Views/home.php");
+                    include("./Views/login.php");
                 }
 
     break;
