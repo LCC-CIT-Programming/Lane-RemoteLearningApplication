@@ -184,14 +184,23 @@ try {
         include("./Views/home.php");
     break;
 
-    case "view_question":
-        $viewQuestion = filter_input(INPUT_POST, "viewQuestion");
-        $questionDetails = QuestionDB::GetQuestionByID($viewQuestion);
+    case "question_details":
+          $questionID = filter_input(INPUT_POST, "acceptQuestion");
+
+          if ($questionID == null) {
+            $questionID = filter_input(INPUT_POST, "viewQuestion");
+            // echo '<script>console.log("' + $questionID + '");</script>';
+          }
+
+
+
+        $questionDetails = QuestionDB::GetQuestionByID($questionID);
         $studentDetails = StudentDB::RetrieveStudentByID($questionDetails->getUserID());
         $questionJSON = array(
                                 "courseNumber" => $questionDetails->getCourseNumber(),
                                 "subject" => $questionDetails->getSubject(),
                                 "question" => $questionDetails->getDescription(),
+                                "questionID" => $questionDetails->getQuestionID(),
                                 "askTime" => $questionDetails->getAskTime(),
                                 "studentFirstName" => $studentDetails->getFirstName(),
                                 "studentLastName" => $studentDetails->getLastName());

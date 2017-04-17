@@ -140,22 +140,28 @@
       </div>
 
       <div class="modal-body row">
-        <div id="modal-body">
-				<table>
+        <div id="modalBody">
+				<!-- <table>
 					<tr class="col-xs-12"><th class="col-xs-2" style="min-width: 100px;">Course:</th><td class="col-xs-10" id='courseNumber'></td></tr>
 					<tr class="col-xs-12"><th class="col-xs-2" style="min-width: 100px;">Subject:</th><td class="col-xs-10" id='subject'></td></tr>
 					<tr class="col-xs-12"><th class="col-xs-2" style="min-width: 100px;">Question:</th><td class="col-xs-10" id='question'></td></tr>
 					<tr class="col-xs-12"><th class="col-xs-2" style="min-width: 100px;">Ask Time:</th><td class="col-xs-10" id='askTime'></td></tr>
 					<tr class="col-xs-12"><th class="col-xs-2" style="min-width: 100px;">Student Name:</th><td class="col-xs-10" id='studentName'></td></tr>
-					<!-- display the students name -->
-				</table>
+					display the students name
+				</table> -->
 
 				</div>
       </div>
 
       <div class="modal-footer">
-				<button id="acceptQuestion" type="button" class="btn btn-success" data-dismiss="modal">Accept</button>
-        <button id="closeDetails" type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				<div id="modalButtons">
+					<button id="acceptQuestion" type="button" class="btn btn-success">Accept</button>
+        	<button id="closeDetails" type="button" class="btn btn-danger" data-dismiss="modal" >Close</button>
+					<button id="resolveQuestion" type="button" class="btn btn-success" data-dismiss="modal">Resolved</button>
+        	<button id="escalateQuestion" type="button" class="btn btn-warning" data-dismiss="modal">Escalate</button>
+					<button id="openQuestion" type="button" class="btn btn-danger" data-dismiss="modal">Re-Open</button>
+
+			  </div>
       </div>
     </div>
 
@@ -171,6 +177,7 @@ $(document).ready(function() {
                       data: {"courseNumber": $(this).val()},
              });
       });
+
 	  $("#location").change( function(){
               $.ajax({
                       url: ".?action=update_location",
@@ -178,19 +185,73 @@ $(document).ready(function() {
                       data: {"locationID": $(this).val()},
 			  });
 	  });
+
 		$('.details').click(function() {
 	      var val = $(this).val();
-	      $.post('/CIT-Project/', { action:'view_question', viewQuestion:val }, function(ret) {
+
+				//POST QUESTIONID TO ACTION
+	      $.post('/CIT-Project/', { action:'question_details', viewQuestion:val }, function(ret) {
 	        var data = JSON.parse(ret);
-	        //OPEN modal
+
+					//OPEN MODAL
 	        var modal = $('#myModal');
 	        modal.modal();
+
+					//CREATE A TABLE TO HOLD DETAILED INFORMATION
+					modal.find('#modalBody').html('<table>' +
+										'<tr class="col-xs-12"><th class="col-xs-2" style="min-width: 100px;">Course:</th><td class="col-xs-10" id="courseNumber"></td></tr>' +
+										'<tr class="col-xs-12"><th class="col-xs-2" style="min-width: 100px;">Subject:</th><td class="col-xs-10" id="subject"></td></tr>' +
+										'<tr class="col-xs-12"><th class="col-xs-2" style="min-width: 100px;">Question:</th><td class="col-xs-10" id="question"></td></tr>' +
+										'<tr class="col-xs-12"><th class="col-xs-2" style="min-width: 100px;">Ask Time:</th><td class="col-xs-10" id="askTime"></td></tr>' +
+										'<tr class="col-xs-12"><th class="col-xs-2" style="min-width: 100px;">Student Name:</th><td class="col-xs-10" id="studentName"></td></tr>' +
+										'</table>');
+
+					//ADD INFORMATION TO TABLE
 	        modal.find('#courseNumber').html(data.courseNumber);
 	        modal.find('#subject').html(data.subject);
 	        modal.find('#question').html(data.question);
 	        modal.find('#askTime').html(data.askTime);
 					modal.find('#studentName').html(data.studentFirstName + " " + data.studentLastName);
+					modal.find('#acceptQuestion').val(data.questionID);
+					modal.find('#acceptQuestion').show();
+					modal.find('#closeDetails').show();
+					modal.find('#resolveQuestion').hide();
+					modal.find('#escalateQuestion').hide();
+					modal.find('#openQuestion').hide();
 	      });
 	    });
+
+			$('#acceptQuestion').click(function() {
+				var val = $(this).val();
+
+				//POST QUESTIONID TO ACTION
+	      $.post('/CIT-Project/', { action:'question_details', acceptQuestion:val }, function(ret) {
+	        var data = JSON.parse(ret);
+
+					var modal = $('#myModal');
+					
+					modal.find('#modalBody').html('<table>' +
+										'<tr class="col-xs-12"><th class="col-xs-2" style="min-width: 100px;">Course:</th><td class="col-xs-10" id="courseNumber"></td></tr>' +
+										'<tr class="col-xs-12"><th class="col-xs-2" style="min-width: 100px;">Subject:</th><td class="col-xs-10" id="subject"></td></tr>' +
+										'<tr class="col-xs-12"><th class="col-xs-2" style="min-width: 100px;">Question:</th><td class="col-xs-10" id="question"></td></tr>' +
+										'<tr class="col-xs-12"><th class="col-xs-2" style="min-width: 100px;">Ask Time:</th><td class="col-xs-10" id="askTime"></td></tr>' +
+										'<tr class="col-xs-12"><th class="col-xs-2" style="min-width: 100px;">Student Name:</th><td class="col-xs-10" id="studentName"></td></tr>' +
+										'</table>');
+
+					modal.find('#courseNumber').html(data.courseNumber);
+	        modal.find('#subject').html(data.subject);
+	        modal.find('#question').html(data.question);
+	        modal.find('#askTime').html(data.askTime);
+					modal.find('#studentName').html(data.studentFirstName + " " + data.studentLastName);
+					modal.find('#acceptQuestion').hide();
+					modal.find('#closeDetails').hide();
+					modal.find('#resolveQuestion').show();
+					modal.find('#escalateQuestion').show();
+					modal.find('#openQuestion').show();
+
+					// modal.find('#modalButtons').html('<button id="acceptQuestion" type="button" class="btn btn-success" value=' + data.questionID + '>New Button</button>' +
+					// 		 '<button id="closeDetails" type="button" class="btn btn-danger" data-dismiss="modal">Close</button>');
+						 });
+			});
 });
 </script>
