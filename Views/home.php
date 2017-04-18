@@ -43,12 +43,9 @@
 	  </div>
 
 	  <div class="col-lg-8 well" id="question_div" style="overflow: auto">
-		<table class="table table-condensed table-responsive">
-
-
+		<table class="table table-condensed table-responsive" id="questionsTable">
         <?php
           $questions = QuestionDB::getOpenQuestions();
-
           echo '<tr><th>Questions in queue: ' . count($questions) . '</th><th></th><th></th><th></th></tr>';
           echo '<tr>
                   <th>Course</th>
@@ -56,8 +53,6 @@
                   <th>Question</th>
                   <th>Time</th>
                </tr>';
-
-
          foreach ($questions as $question) {
              $course = CourseDB::RetrieveCourseByNumber($question->getCourseNumber());
               //$user = $_SESSION['user'];
@@ -135,18 +130,19 @@
 
     <!-- Modal content-->
     <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Question Details</h4>
+      <div class="modal-header text-center">
+        <p style="font-size: 24px; font-family: 'Cinzel', serif; font-weight:bold;">Question Details</p>
       </div>
 
       <div class="modal-body row">
-        <div id="modal-body">
+        <div id="modalBody">
 				<table>
-					<tr class="col-xs-12"><th class="col-xs-2" style="min-width: 100px;">Course:</th><td class="col-xs-10" id='courseNumber'></td></tr>
-					<tr class="col-xs-12"><th class="col-xs-2" style="min-width: 100px;">Subject:</th><td class="col-xs-10" id='subject'></td></tr>
-					<tr class="col-xs-12"><th class="col-xs-2" style="min-width: 100px;">Question:</th><td class="col-xs-10" id='question'></td></tr>
-					<tr class="col-xs-12"><th class="col-xs-2" style="min-width: 100px;">Ask Time:</th><td class="col-xs-10" id='askTime'></td></tr>
-					<tr class="col-xs-12"><th class="col-xs-2" style="min-width: 100px;">Student Name:</th><td class="col-xs-10" id='studentName'></td></tr>
+					<tr class="col-xs-12"><th class="col-xs-3" style="min-width: 120px;">Student Name:</th><td class="col-xs-9" id="studentName"></td></tr>
+					<tr class="col-xs-12" id="emailRow"><th class="col-xs-3" style="min-width: 120px;">Student Email:</th><td class="col-xs-9" id="studentEmail"></td></tr>
+					<tr class="col-xs-12"><th class="col-xs-3" style="min-width: 120px;">Ask Time:</th><td class="col-xs-9" id="askTime"></td></tr>
+					<tr class="col-xs-12"><th class="col-xs-3" style="min-width: 120px;">Course:</th><td class="col-xs-9" id="courseNumber"></td></tr>
+					<tr class="col-xs-12"><th class="col-xs-3" style="min-width: 120px;">Subject:</th><td class="col-xs-9" id="subject"></td></tr>
+					<tr class="col-xs-12"><th class="col-xs-3" style="min-width: 120px;">Question:</th><td class="col-xs-9" id="question"></td></tr>
 					<!-- display the students name -->
 				</table>
 
@@ -154,8 +150,13 @@
       </div>
 
       <div class="modal-footer">
-				<button id="acceptQuestion" type="button" class="btn btn-success" data-dismiss="modal">Accept</button>
-        <button id="closeDetails" type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				<div id="modalButtons">
+					<button id="acceptQuestion" type="button" class="btn btn-success">Accept</button>
+        	<button id="closeDetails" type="button" class="btn btn-danger" data-dismiss="modal" >Close</button>
+					<button id="resolveQuestion" type="button" class="btn btn-success" data-dismiss="modal">Resolved</button>
+        	<button id="escalateQuestion" type="button" class="btn btn-warning" data-dismiss="modal">Escalate</button>
+					<button id="openQuestion" type="button" class="btn btn-danger" data-dismiss="modal">Re-Open</button>
+			  </div>
       </div>
     </div>
 
@@ -171,6 +172,7 @@ $(document).ready(function() {
                       data: {"courseNumber": $(this).val()},
              });
       });
+
 	  $("#location").change( function(){
               $.ajax({
                       url: ".?action=update_location",
@@ -178,19 +180,75 @@ $(document).ready(function() {
                       data: {"locationID": $(this).val()},
 			  });
 	  });
+
 		$('.details').click(function() {
 	      var val = $(this).val();
-	      $.post('/CIT-Project/', { action:'view_question', viewQuestion:val }, function(ret) {
+
+				//POST QUESTIONID TO ACTION
+	      $.post('/CIT-Project/', { action:'question_details', viewQuestion:val }, function(ret) {
 	        var data = JSON.parse(ret);
-	        //OPEN modal
+
+					//OPEN MODAL
 	        var modal = $('#myModal');
 	        modal.modal();
+
+					//ADD INFORMATION TO TABLE
 	        modal.find('#courseNumber').html(data.courseNumber);
 	        modal.find('#subject').html(data.subject);
 	        modal.find('#question').html(data.question);
 	        modal.find('#askTime').html(data.askTime);
 					modal.find('#studentName').html(data.studentFirstName + " " + data.studentLastName);
+					modal.find('#acceptQuestion').val(data.questionID);
+					modal.find('#resolveQuestion').val(data.questionID);
+					modal.find('#escalateQuestion').val(data.questionID);
+					modal.find('#openQuestion').val(data.questionID);
+					modal.find('#acceptQuestion').show();
+					modal.find('#closeDetails').show();
+					modal.find('#emailRow').hide();
+					modal.find('#resolveQuestion').hide();
+					modal.find('#escalateQuestion').hide();
+					modal.find('#openQuestion').hide();
 	      });
 	    });
+
+			$('#acceptQuestion').click(function() {
+				var val = $(this).val();
+
+				//POST QUESTIONID TO ACTION
+	      $.post('/CIT-Project/', { action:'accept_question', acceptQuestion:val }, function(ret) {
+	        var data = JSON.parse(ret);
+					var modal = $('#myModal');
+
+					modal.find('#courseNumber').html(data.courseNumber);
+	        modal.find('#subject').html(data.subject);
+	        modal.find('#question').html(data.question);
+	        modal.find('#askTime').html(data.askTime);
+					modal.find('#studentName').html(data.studentFirstName + " " + data.studentLastName);
+					modal.find('#studentEmail').html(data.studentEmail);
+					modal.find('#acceptQuestion').hide();
+					modal.find('#closeDetails').hide();
+					modal.find('#emailRow').show();
+					modal.find('#resolveQuestion').show();
+					modal.find('#escalateQuestion').show();
+					modal.find('#openQuestion').show();
+
+				  });
+			});
+
+			$('#openQuestion').click(function() {
+				var val = $(this).val();
+	      $.post('/CIT-Project/', { action:'reopen_question', openQuestion:val });
+			});
+
+			$('#escalateQuestion').click(function() {
+				var val = $(this).val();
+	      $.post('/CIT-Project/', { action:'escalate_question', escalateQuestion:val });
+			});
+
+			$('#resolveQuestion').click(function() {
+				var val = $(this).val();
+	      $.post('/CIT-Project/', { action:'resolve_question', resolveQuestion:val });
+			});
+
 });
 </script>

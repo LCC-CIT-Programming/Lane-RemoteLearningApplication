@@ -81,7 +81,6 @@ try {
                         VisitDB::CreateVisit($visit);
                         $visit = VisitDB::RetrieveVisit($visit);
                         $_SESSION['visit'] = $visit;
-                                //include("./Views/home.php");
                                 header('Location: ?action=home');
                     } else {
                         $_SESSION['user'] = null;
@@ -184,19 +183,71 @@ try {
         include("./Views/home.php");
     break;
 
-    case "view_question":
-        $viewQuestion = filter_input(INPUT_POST, "viewQuestion");
-        $questionDetails = QuestionDB::GetQuestionByID($viewQuestion);
+    case "question_details":
+        $questionID = filter_input(INPUT_POST, "viewQuestion");
+        $questionDetails = QuestionDB::GetQuestionByID($questionID);
         $studentDetails = StudentDB::RetrieveStudentByID($questionDetails->getUserID());
         $questionJSON = array(
                                 "courseNumber" => $questionDetails->getCourseNumber(),
                                 "subject" => $questionDetails->getSubject(),
                                 "question" => $questionDetails->getDescription(),
+                                "questionID" => $questionDetails->getQuestionID(),
                                 "askTime" => $questionDetails->getAskTime(),
                                 "studentFirstName" => $studentDetails->getFirstName(),
-                                "studentLastName" => $studentDetails->getLastName());
+                                "studentLastName" => $studentDetails->getLastName(),
+                                "studentEmail" => $studentDetails->getEmail());
         echo json_encode($questionJSON);
-        break;
+    break;
+
+    case "accept_question":
+          $questionID = filter_input(INPUT_POST, "acceptQuestion");
+          $questionDetails = QuestionDB::GetQuestionByID($questionID);
+          $studentDetails = StudentDB::RetrieveStudentByID($questionDetails->getUserID());
+          $questionJSON = array(
+                                  "courseNumber" => $questionDetails->getCourseNumber(),
+                                  "subject" => $questionDetails->getSubject(),
+                                  "question" => $questionDetails->getDescription(),
+                                  "questionID" => $questionDetails->getQuestionID(),
+                                  "askTime" => $questionDetails->getAskTime(),
+                                  "studentFirstName" => $studentDetails->getFirstName(),
+                                  "studentLastName" => $studentDetails->getLastName(),
+                                  "studentEmail" => $studentDetails->getEmail());
+
+          echo json_encode($questionJSON);
+
+          $questionDetails->setStatus('In-Process');
+          $questionDetails->setOpenTime(date("Y-m-d h:i:s", time()));
+          QuestionDB::UpdateQuestion($questionDetails);
+    break;
+
+    case "reopen_question":
+      if (filter_input(INPUT_POST, "openQuestion") !== null) {
+          $questionID = filter_input(INPUT_POST, "openQuestion");
+          $questionDetails = QuestionDB::GetQuestionByID($questionID);
+          $questionDetails->setStatus('Open');
+          $questionDetails->setOpenTime(null);
+          QuestionDB::UpdateQuestion($questionDetails);
+      }
+    break;
+
+    case "escalate_question":
+      if (filter_input(INPUT_POST, "escalateQuestion") !== null) {
+          $questionID = filter_input(INPUT_POST, "escalateQuestion");
+          $questionDetails = QuestionDB::GetQuestionByID($questionID);
+          $questionDetails->setStatus('Escalated');
+          QuestionDB::UpdateQuestion($questionDetails);
+      }
+    break;
+
+    case "resolve_question":
+      if (filter_input(INPUT_POST, "resolveQuestion") !== null) {
+          $questionID = filter_input(INPUT_POST, "resolveQuestion");
+          $questionDetails = QuestionDB::GetQuestionByID($questionID);
+          $questionDetails->setStatus('Resolved');
+          $questionDetails->setCloseTime(date("Y-m-d h:i:s", time()));
+          QuestionDB::UpdateQuestion($questionDetails);
+      }
+    break;
 
     case "schedule":
         include("./Views/schedule.php");

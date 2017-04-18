@@ -1,10 +1,5 @@
 <?php include 'header.php'; ?>
 
-<div class="title">
-	  <div class="container text-center">
-		<h1>Lane Community College CIT Lab Edit Schedule</h1>
-	  </div>
-	</div>
 	<div class="container-fluid" style="margin-top: 20px; width: 500px">
 
 	<form method="post" action=".?action=edit_schedule" style="margin-bottom: 75px;">
