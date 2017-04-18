@@ -43,12 +43,9 @@
 	  </div>
 
 	  <div class="col-lg-8 well" id="question_div" style="overflow: auto">
-		<table class="table table-condensed table-responsive">
-
-
+		<table class="table table-condensed table-responsive" id="questionsTable">
         <?php
           $questions = QuestionDB::getOpenQuestions();
-
           echo '<tr><th>Questions in queue: ' . count($questions) . '</th><th></th><th></th><th></th></tr>';
           echo '<tr>
                   <th>Course</th>
@@ -56,8 +53,6 @@
                   <th>Question</th>
                   <th>Time</th>
                </tr>';
-
-
          foreach ($questions as $question) {
              $course = CourseDB::RetrieveCourseByNumber($question->getCourseNumber());
               //$user = $_SESSION['user'];
@@ -220,7 +215,7 @@ $(document).ready(function() {
 				var val = $(this).val();
 
 				//POST QUESTIONID TO ACTION
-	      $.post('/CIT-Project/', { action:'question_details', acceptQuestion:val }, function(ret) {
+	      $.post('/CIT-Project/', { action:'accept_question', acceptQuestion:val }, function(ret) {
 	        var data = JSON.parse(ret);
 					var modal = $('#myModal');
 
@@ -242,11 +237,17 @@ $(document).ready(function() {
 
 			$('#openQuestion').click(function() {
 				var val = $(this).val();
-	      $.post('/CIT-Project/', { action:'question_details', openQuestion:val }, function(ret) {
-						var data = JSON.parse(ret);
-				 		var modal = $('#myModal');
+	      $.post('/CIT-Project/', { action:'reopen_question', openQuestion:val });
+			});
 
-				});
+			$('#escalateQuestion').click(function() {
+				var val = $(this).val();
+	      $.post('/CIT-Project/', { action:'escalate_question', escalateQuestion:val });
+			});
+
+			$('#resolveQuestion').click(function() {
+				var val = $(this).val();
+	      $.post('/CIT-Project/', { action:'resolve_question', resolveQuestion:val });
 			});
 
 });

@@ -184,11 +184,7 @@ try {
     break;
 
     case "question_details":
-          $questionID = filter_input(INPUT_POST, "acceptQuestion");
-          if ($questionID == null) {
-            $questionID = filter_input(INPUT_POST, "viewQuestion");
-          }
-
+        $questionID = filter_input(INPUT_POST, "viewQuestion");
         $questionDetails = QuestionDB::GetQuestionByID($questionID);
         $studentDetails = StudentDB::RetrieveStudentByID($questionDetails->getUserID());
         $questionJSON = array(
@@ -200,20 +196,58 @@ try {
                                 "studentFirstName" => $studentDetails->getFirstName(),
                                 "studentLastName" => $studentDetails->getLastName(),
                                 "studentEmail" => $studentDetails->getEmail());
+        echo json_encode($questionJSON);
+    break;
 
-        if (filter_input(INPUT_POST, "openQuestion") !== null) {
-          $questionDetails->setStatus('Open');
-          $questionDetails->setOpenTime(null);
-          QuestionDB::UpdateQuestion($questionDetails);
-        }
-         else if (filter_input(INPUT_POST, "acceptQuestion") !== null) {
+    case "accept_question":
+          $questionID = filter_input(INPUT_POST, "acceptQuestion");
+          $questionDetails = QuestionDB::GetQuestionByID($questionID);
+          $studentDetails = StudentDB::RetrieveStudentByID($questionDetails->getUserID());
+          $questionJSON = array(
+                                  "courseNumber" => $questionDetails->getCourseNumber(),
+                                  "subject" => $questionDetails->getSubject(),
+                                  "question" => $questionDetails->getDescription(),
+                                  "questionID" => $questionDetails->getQuestionID(),
+                                  "askTime" => $questionDetails->getAskTime(),
+                                  "studentFirstName" => $studentDetails->getFirstName(),
+                                  "studentLastName" => $studentDetails->getLastName(),
+                                  "studentEmail" => $studentDetails->getEmail());
+
+          echo json_encode($questionJSON);
+
           $questionDetails->setStatus('In-Process');
           $questionDetails->setOpenTime(date("Y-m-d h:i:s", time()));
           QuestionDB::UpdateQuestion($questionDetails);
-        }
+    break;
 
-        echo json_encode($questionJSON);
-        break;
+    case "reopen_question":
+      if (filter_input(INPUT_POST, "openQuestion") !== null) {
+          $questionID = filter_input(INPUT_POST, "openQuestion");
+          $questionDetails = QuestionDB::GetQuestionByID($questionID);
+          $questionDetails->setStatus('Open');
+          $questionDetails->setOpenTime(null);
+          QuestionDB::UpdateQuestion($questionDetails);
+      }
+    break;
+
+    case "escalate_question":
+      if (filter_input(INPUT_POST, "escalateQuestion") !== null) {
+          $questionID = filter_input(INPUT_POST, "escalateQuestion");
+          $questionDetails = QuestionDB::GetQuestionByID($questionID);
+          $questionDetails->setStatus('Escalated');
+          QuestionDB::UpdateQuestion($questionDetails);
+      }
+    break;
+
+    case "resolve_question":
+      if (filter_input(INPUT_POST, "resolveQuestion") !== null) {
+          $questionID = filter_input(INPUT_POST, "resolveQuestion");
+          $questionDetails = QuestionDB::GetQuestionByID($questionID);
+          $questionDetails->setStatus('Resolved');
+          $questionDetails->setCloseTime(date("Y-m-d h:i:s", time()));
+          QuestionDB::UpdateQuestion($questionDetails);
+      }
+    break;
 
     case "schedule":
         include("./Views/schedule.php");
