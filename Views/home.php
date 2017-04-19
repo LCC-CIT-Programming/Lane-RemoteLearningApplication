@@ -244,10 +244,6 @@ $(document).on('click', '.details', function() {
 
 
 function loadTable() {
-
-	var modal = $('#myModal');
-	modal.modal();
-
 	$.post('/CIT-Project/', { action:'display_questions' }, function(ret) {
 			var data = JSON.parse(ret);
 			if (data != null) {

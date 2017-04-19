@@ -34,7 +34,6 @@ class QuestionDB
         return $questions;
     }
 
-
     public static function GetQuestion($QUESTION)
     {
         $db = Database::getDB();
