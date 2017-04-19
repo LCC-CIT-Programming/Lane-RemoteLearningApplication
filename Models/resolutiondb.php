@@ -82,12 +82,13 @@ class ResolutionDB
         $db = Database::getDB();
 
         $statement = $db->prepare($query);
-        $statement->bindValue(":questionid", $questionID);
         $statement->execute();
         $rows = $statement->fetchAll();
         $statement->closeCursor();
 
         $resolutions = array();
+
+        if ($rows != null) {
         foreach ($rows as $row) {
             $resolution = new Resolution($row['QuestionId'],
                                          $row['UserID'],

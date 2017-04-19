@@ -207,6 +207,19 @@ try {
         echo json_encode($questionTableData);
     break;
 
+    case "check_accepted":
+        $resolution = ResolutionDB::RetrieveUnfinishedResolutions();
+        $tutor = TutorDB::RetrieveTutorByID($resolution->getUserID());
+        $question = QuestionDB::GetQuestionByID($resolution->getQuestionID());
+
+        $acceptedQuestionInfo = array("tutorFName" => $tutor->getFirstName(),
+                                      "tutorLName" => $tutor->getLastName(),
+                                      "description" => $question->getDescription(),
+                                      "openTime" => $question->getOpenTime());
+
+        echo json_encode($acceptedQuestionInfo);
+    break;
+
     case "question_details":
         $questionID = filter_input(INPUT_POST, "viewQuestion");
         $questionDetails = QuestionDB::GetQuestionByID($questionID);

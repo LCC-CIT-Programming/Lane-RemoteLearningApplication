@@ -51,3 +51,53 @@
 	</div>
   </div>
 </nav>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <p style="font-size: 24px; font-family: 'Cinzel', serif; font-weight:bold;">Question Accepted!</p>
+      </div>
+
+      <div class="modal-body row">
+        <div id="modalBody">
+
+          <h1 id="tutorName"></h1>
+          <p>Meet me at hangouts.google.com!</p>
+
+				</div>
+      </div>
+
+      <div class="modal-footer">
+				<div id="modalButtons">
+					<button id="resolveQuestion" type="button" class="btn btn-success" data-dismiss="modal">Resolved</button>
+			  </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+      CheckAcceptedQuestions();
+      setInterval(function() {
+        CheckAcceptedQuestions();
+      }, 30000);
+    });
+
+    function CheckAcceptedQuestions() {
+      $.post('/CIT-Project/', { action:'check_accepted' }, function(ret) {
+          var data = JSON.parse(ret);
+          if (data != null) {
+            $('#myModal').modal('show');
+            $('#tutorName').empty();
+            $('#tutorName').append = data.tutorFName;
+          }
+
+    });
+  }
+</script>
