@@ -183,6 +183,28 @@ try {
         include("./Views/home.php");
     break;
 
+    case "display_questions":
+        $questions = QuestionDB::getOpenQuestions();
+        $loggedInUser = $_SESSION['user'];
+
+        $questionTableData = array();
+
+        foreach ($questions as $question) {
+            $course = CourseDB::RetrieveCourseByNumber($question->getCourseNumber());
+            $singleQuestion = array("courseName" => $course->getCourseName(),
+                                    "subject" => $question->getSubject(),
+                                    "description" => $question->getDescription(),
+                                    "askTime" => $question->getAskTime(),
+                                    "questionID" => $question->getQuestionID(),
+                                    "askUserID" => $question->getUserID(),
+                                    "userID" => $loggedInUser->getUserID(),
+                                    "userRole" => $role);
+
+           array_push($questionTableData, $singleQuestion);
+        }
+        echo json_encode($questionTableData);
+    break;
+
     case "question_details":
         $questionID = filter_input(INPUT_POST, "viewQuestion");
         $questionDetails = QuestionDB::GetQuestionByID($questionID);
@@ -196,6 +218,7 @@ try {
                                 "studentFirstName" => $studentDetails->getFirstName(),
                                 "studentLastName" => $studentDetails->getLastName(),
                                 "studentEmail" => $studentDetails->getEmail());
+
         echo json_encode($questionJSON);
     break;
 
