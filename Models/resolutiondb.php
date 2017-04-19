@@ -73,6 +73,34 @@ class ResolutionDB
         }
     }
 
+    public static function RetrieveUnfinishedResolutions()
+    {
+        $query = 'SELECT *
+                  FROM Resolution
+                  WHERE Resolution IS NULL';
+
+        $db = Database::getDB();
+
+        $statement = $db->prepare($query);
+        $statement->bindValue(":questionid", $questionID);
+        $statement->execute();
+        $rows = $statement->fetchAll();
+        $statement->closeCursor();
+
+        $resolutions = array();
+        foreach ($rows as $row) {
+            $resolution = new Resolution($row['QuestionId'],
+                                         $row['UserID'],
+                                         $row['Resolution']);
+            array_push($resolutions, $resolution);
+        }
+            return $resolutions;
+        } else {
+            return null;
+        }
+    }
+
+
     public static function UpdateResolution($RESOLUTION)
     {
         $questionID = $RESOLUTION->getQuestionID();
