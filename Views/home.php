@@ -153,31 +153,6 @@ $(document).ready(function() {
 			loadTable();
 		}, 30000);
 
-
-
-
-	 //
-	 //         if ($question->getUserID() == $user->getUserID()) {
-	 //             echo '<tr class="success">';
-	 //         } else {
-	 //             echo '<tr>';
-	 //         }
-	 //      echo '<td>' . $course->getCourseName() . '</td>' .
-	 //              '<td>' . $question->getSubject() . '</td>' .
-	 //              '<td>' . $question->getDescription() . '</td>' .
-	 //              '<td>' . $question->getAskTime() . '</td>' ;
-	 //      if ($question->getUserID() == $user->getUserID() && $role == 'student') {
-	 //          echo '<td><form action="?action=cancel_question" method="post">';
-	 //          echo '<input type="hidden" name="id" value="';
-	 //          echo $question->getQuestionID();
-	 //          echo '?>">';
-	 //          echo '<input class="btn btn-danger" type="submit" name="submit" value="Cancel"></form></td></tr>';
-	 //      } elseif ($role == 'tutor') {
-	 //          echo '<td><button value="'. $question->getQuestionID() . '"type="button" class="btn btn-info details" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myModal">Details</button></td></tr>';
-	 //      }
-	 //  }
-
-
     $("#class").change( function(){
             $.ajax({
                     url: ".?action=update_task",
@@ -269,6 +244,10 @@ $(document).on('click', '.details', function() {
 
 
 function loadTable() {
+
+	var modal = $('#myModal');
+	modal.modal();
+
 	$.post('/CIT-Project/', { action:'display_questions' }, function(ret) {
 			var data = JSON.parse(ret);
 			if (data != null) {
@@ -289,15 +268,12 @@ function loadTable() {
 																 '<td>' + data[key]['description'] + '</td>' +
 																 '<td>' + data[key]['askTime'] + '</td>';
 
-
 					if (data[key]['askUserID'] == data[key]['userID'] && data[key]['userRole'] == "student") $("#tableBody").append(myRowStart);
 					else  $("#tableBody").append(rowStart);
 					$("#tableBody").append(questionInfo);
 					if (data[key]['askUserID'] == data[key]['userID'] && data[key]['userRole'] == "student") $('#tableBody').append(cancel);
 					if (data[key]['userRole'] == "tutor" || data[key]['userRole'] == "faculty") $('#tableBody').append(details);
 					$("#tableBody").append('<tr>');
-
-
 				});
 			}
 			else {
