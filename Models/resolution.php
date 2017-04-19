@@ -5,11 +5,11 @@ class Resolution
     private $userID;
     private $resoltion;
 
-    public function __construct($USERID, $USERID, $SUBJECT)
+    public function __construct($QUESTIONID, $USERID, $RESOLUTION = null)
     {
         $this->questionID = $QUESTIONID;
         $this->userID = $USERID;
-        $this->subject= $SUBJECT;
+        $this->resolution= $RESOLUTION;
     }
 
     public function getQuestionID()

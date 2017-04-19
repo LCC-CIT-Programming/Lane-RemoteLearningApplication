@@ -49,6 +49,30 @@ class ResolutionDB
         }
     }
 
+    public static function RetrieveResolutionByID($QUESTIONID)
+    {
+        $query = 'SELECT *
+                  FROM Resolution
+                  WHERE QuestionId = :questionid';
+
+        $db = Database::getDB();
+
+        $statement = $db->prepare($query);
+        $statement->bindValue(":questionid", $QUESTIONID);
+        $statement->execute();
+        $row = $statement->fetch();
+        $statement->closeCursor();
+
+        if ($row != false) {
+            $resolution = new Resolution($row['QuestionId'],
+                                         $row['UserID'],
+                                         $row['Resolution']);
+            return $resolution;
+        } else {
+            return null;
+        }
+    }
+
     public static function UpdateResolution($RESOLUTION)
     {
         $questionID = $RESOLUTION->getQuestionID();

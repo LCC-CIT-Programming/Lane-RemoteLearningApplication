@@ -15,6 +15,8 @@ require_once('/Models/task.php');
 require_once('/Models/taskdb.php');
 require_once('/Models/schedule.php');
 require_once('/Models/scheduledb.php');
+require_once('/Models/resolution.php');
+require_once('/Models/resolutiondb.php');
 
 try {
     session_start();
@@ -226,6 +228,7 @@ try {
           $questionID = filter_input(INPUT_POST, "acceptQuestion");
           $questionDetails = QuestionDB::GetQuestionByID($questionID);
           $studentDetails = StudentDB::RetrieveStudentByID($questionDetails->getUserID());
+
           $questionJSON = array(
                                   "courseNumber" => $questionDetails->getCourseNumber(),
                                   "subject" => $questionDetails->getSubject(),
@@ -241,6 +244,9 @@ try {
           $questionDetails->setStatus('In-Process');
           $questionDetails->setOpenTime(date("Y-m-d h:i:s", time()));
           QuestionDB::UpdateQuestion($questionDetails);
+
+          $newResolution = new Resolution($questionID, $user->getUserID());
+          $ResolutionDB = ResolutionDB::CreateResolution($newResolution);
     break;
 
     case "reopen_question":
@@ -250,6 +256,9 @@ try {
           $questionDetails->setStatus('Open');
           $questionDetails->setOpenTime(null);
           QuestionDB::UpdateQuestion($questionDetails);
+
+          $resolution = ResolutionDB::RetrieveResolutionByID($questionID);
+          ResolutionDB::DeleteResolution($resolution);
       }
     break;
 
