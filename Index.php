@@ -15,6 +15,8 @@ require_once('/Models/task.php');
 require_once('/Models/taskdb.php');
 require_once('/Models/schedule.php');
 require_once('/Models/scheduledb.php');
+require_once('/Models/resolution.php');
+require_once('/Models/resolutiondb.php');
 
 try {
     session_start();
@@ -183,6 +185,28 @@ try {
         include("./Views/home.php");
     break;
 
+    case "display_questions":
+        $questions = QuestionDB::getOpenQuestions();
+        $loggedInUser = $_SESSION['user'];
+
+        $questionTableData = array();
+
+        foreach ($questions as $question) {
+            $course = CourseDB::RetrieveCourseByNumber($question->getCourseNumber());
+            $singleQuestion = array("courseName" => $course->getCourseName(),
+                                    "subject" => $question->getSubject(),
+                                    "description" => $question->getDescription(),
+                                    "askTime" => $question->getAskTime(),
+                                    "questionID" => $question->getQuestionID(),
+                                    "askUserID" => $question->getUserID(),
+                                    "userID" => $loggedInUser->getUserID(),
+                                    "userRole" => $role);
+
+           array_push($questionTableData, $singleQuestion);
+        }
+        echo json_encode($questionTableData);
+    break;
+
     case "question_details":
         $questionID = filter_input(INPUT_POST, "viewQuestion");
         $questionDetails = QuestionDB::GetQuestionByID($questionID);
@@ -196,6 +220,7 @@ try {
                                 "studentFirstName" => $studentDetails->getFirstName(),
                                 "studentLastName" => $studentDetails->getLastName(),
                                 "studentEmail" => $studentDetails->getEmail());
+
         echo json_encode($questionJSON);
     break;
 
@@ -203,6 +228,7 @@ try {
           $questionID = filter_input(INPUT_POST, "acceptQuestion");
           $questionDetails = QuestionDB::GetQuestionByID($questionID);
           $studentDetails = StudentDB::RetrieveStudentByID($questionDetails->getUserID());
+
           $questionJSON = array(
                                   "courseNumber" => $questionDetails->getCourseNumber(),
                                   "subject" => $questionDetails->getSubject(),
@@ -218,6 +244,9 @@ try {
           $questionDetails->setStatus('In-Process');
           $questionDetails->setOpenTime(date("Y-m-d h:i:s", time()));
           QuestionDB::UpdateQuestion($questionDetails);
+
+          $newResolution = new Resolution($questionID, $user->getUserID());
+          $ResolutionDB = ResolutionDB::CreateResolution($newResolution);
     break;
 
     case "reopen_question":
@@ -227,6 +256,9 @@ try {
           $questionDetails->setStatus('Open');
           $questionDetails->setOpenTime(null);
           QuestionDB::UpdateQuestion($questionDetails);
+
+          $resolution = ResolutionDB::RetrieveResolutionByID($questionID);
+          ResolutionDB::DeleteResolution($resolution);
       }
     break;
 
