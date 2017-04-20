@@ -6,19 +6,17 @@ class ResolutionDB
     {
         $questionID = $RESOLUTION->getQuestionID();
         $userID = $RESOLUTION->getUserID();
-        $resolution = $RESOLUTION->getResolution();
+        $resolutionText = $RESOLUTION->getResolution();
 
-        $query = 'INSERT INTO Resolution
+        $query = 'INSERT INTO Resolution (QuestionId, UserID, Resolution)
                   VALUES (:questionid, :userid, :resolution)';
 
         $db = Database::getDB();
 
         $statement = $db->prepare($query);
-
         $statement->bindValue(":questionid", $questionID);
         $statement->bindValue(":userid", $userID);
-        $statement->bindValue(":resolution", $resolution);
-
+        $statement->bindValue(":resolution", $resolutionText);
         $statement->execute();
         $statement->closeCursor();
     }
