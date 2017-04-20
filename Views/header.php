@@ -65,8 +65,11 @@
       <div class="modal-body row">
         <div id="acceptedModalBody">
 
-          <h3 id="tutorName"></h3>
-          <p>Meet me at hangouts.google.com!</p>
+          <div class="text-center">
+            <h3 id="tutorName"></h3>
+            <p style="font-size: 16px;">Meet up at hangouts.google.com!</p>
+            <p id="tutorEmail"></p>
+          </div>
 
 				</div>
       </div>
@@ -97,15 +100,14 @@
     function CheckAcceptedQuestions() {
       $.post('/CIT-Project/', { action:'check_accepted' }, function(ret) {
           var data = JSON.parse(ret);
-          console.log(ret);
           var modal = $('#acceptedModal');
 
           if (data != null) {
             $.each(data, function(key, val) {
               if (data[key]['uID'] == data[key]['ouID']) {
                 $('#acceptedModal').modal('show');
-                $('#tutorName').empty();
                 modal.find('#tutorName').html(data[key]['tutorFName'] + ' ' + data[key]['tutorLName'] + '  has accepted your question!');
+                modal.find('#tutorEmail').html(data[key]['tutorEmail']);
                 modal.find('#studentResolveQuestion').val(data[key]['qID']);
               }
             });

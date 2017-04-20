@@ -110,11 +110,7 @@ try {
         $description = filter_input(INPUT_POST, "description");
         $status = "open";
         $askTime = date("Y-m-d h:i:s");
-        if (strpos($user->getEmail(), '@my.lanecc.edu') == false) {
-            $questionError = "You must use your my.lanecc.edu email. See your profile to edit account information.";
-            $success = "";
-            include("./Views/ask.php");
-        } elseif ($courseNum == null || $subject == null ||
+        if ($courseNum == null || $subject == null ||
             $description == null || $status == null || $askTime == null) {
             $questionError = "Invalid question. Check all fields and try again.";
             $success = "";
@@ -220,6 +216,7 @@ try {
 
             $singleResolution = array("tutorFName" => $tutor->getFirstName(),
                                       "tutorLName" => $tutor->getLastName(),
+                                      "tutorEmail" => $tutor->getEmail(),
                                       "description" => $question->getDescription(),
                                       "openTime" => $question->getOpenTime(),
                                       "uID" => $question->getUserID(),
