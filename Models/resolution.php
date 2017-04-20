@@ -3,7 +3,7 @@ class Resolution
 {
     private $questionID;
     private $userID;
-    private $resoltion;
+    private $resolution;
 
     public function __construct($QUESTIONID, $USERID, $RESOLUTION = null)
     {

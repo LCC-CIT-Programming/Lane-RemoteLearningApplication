@@ -322,7 +322,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `CITLabMonitor`.`Resolution` (
   `QuestionId` INT NOT NULL,
   `UserID` INT NOT NULL,
-  `Resolution` VARCHAR(512) NOT NULL,
+  `Resolution` VARCHAR(512) NULL,
   INDEX `fk_Resolution_Question1_idx` (`QuestionId` ASC),
   INDEX `fk_Resolution_Tutor_idx` (`UserID` ASC),
   CONSTRAINT `fk_Resolution_Question1`

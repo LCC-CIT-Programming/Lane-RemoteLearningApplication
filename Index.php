@@ -207,6 +207,34 @@ try {
         echo json_encode($questionTableData);
     break;
 
+    case "check_accepted":
+        $resolutions = ResolutionDB::RetrieveUnfinishedResolutions();
+
+        if ($resolutions != null) {
+          $acceptedQuestionInfo = array();
+
+          foreach ($resolutions as $resolution) {
+            $tutor = TutorDB::RetrieveTutorByID($resolution->getUserID());
+            $question = QuestionDB::GetQuestionByID($resolution->getQuestionID());
+            $userID = $question->getUserID();
+
+            $singleResolution = array("tutorFName" => $tutor->getFirstName(),
+                                      "tutorLName" => $tutor->getLastName(),
+                                      "description" => $question->getDescription(),
+                                      "openTime" => $question->getOpenTime(),
+                                      "uID" => $question->getUserID(),
+                                      "ouID" => $user->getUserID(),
+                                      "qID" => $question->getQuestionID());
+
+            array_push($acceptedQuestionInfo, $singleResolution);
+          }
+
+        echo json_encode($acceptedQuestionInfo);
+      } else {
+        echo json_encode(null);
+      }
+    break;
+
     case "question_details":
         $questionID = filter_input(INPUT_POST, "viewQuestion");
         $questionDetails = QuestionDB::GetQuestionByID($questionID);
@@ -229,6 +257,13 @@ try {
           $questionDetails = QuestionDB::GetQuestionByID($questionID);
           $studentDetails = StudentDB::RetrieveStudentByID($questionDetails->getUserID());
 
+          $questionDetails->setStatus('In-Process');
+          $questionDetails->setOpenTime(date("Y-m-d h:i:s", time()));
+          QuestionDB::UpdateQuestion($questionDetails);
+
+          $newResolution = new Resolution($questionID, $user->getUserID());
+          ResolutionDB::CreateResolution($newResolution);
+
           $questionJSON = array(
                                   "courseNumber" => $questionDetails->getCourseNumber(),
                                   "subject" => $questionDetails->getSubject(),
@@ -240,13 +275,6 @@ try {
                                   "studentEmail" => $studentDetails->getEmail());
 
           echo json_encode($questionJSON);
-
-          $questionDetails->setStatus('In-Process');
-          $questionDetails->setOpenTime(date("Y-m-d h:i:s", time()));
-          QuestionDB::UpdateQuestion($questionDetails);
-
-          $newResolution = new Resolution($questionID, $user->getUserID());
-          $ResolutionDB = ResolutionDB::CreateResolution($newResolution);
     break;
 
     case "reopen_question":
@@ -277,6 +305,11 @@ try {
           $questionDetails = QuestionDB::GetQuestionByID($questionID);
           $questionDetails->setStatus('Resolved');
           $questionDetails->setCloseTime(date("Y-m-d h:i:s", time()));
+
+          $res = ResolutionDB::RetrieveResolutionByID($questionID);
+          $res->setResolution('Resolved');
+          ResolutionDB::UpdateResolution($res);
+
           QuestionDB::UpdateQuestion($questionDetails);
       }
     break;

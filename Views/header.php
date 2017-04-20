@@ -51,3 +51,66 @@
 	</div>
   </div>
 </nav>
+
+<!-- Modal -->
+<div id="acceptedModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <p style="font-size: 24px; font-family: 'Cinzel', serif; font-weight:bold;">Question Accepted!</p>
+      </div>
+
+      <div class="modal-body row">
+        <div id="acceptedModalBody">
+
+          <h3 id="tutorName"></h3>
+          <p>Meet me at hangouts.google.com!</p>
+
+				</div>
+      </div>
+
+      <div class="modal-footer">
+				<div id="acceptedModalButtons">
+					<button id="studentResolveQuestion" type="button" class="btn btn-success" data-dismiss="modal">Resolved</button>
+			  </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+      CheckAcceptedQuestions();
+      setInterval(function() {
+        CheckAcceptedQuestions();
+      }, 30000);
+    });
+
+    $('#studentResolveQuestion').click(function() {
+      var val = $(this).val();
+      $.post('/CIT-Project/', { action:'resolve_question', resolveQuestion:val });
+    });
+
+    function CheckAcceptedQuestions() {
+      $.post('/CIT-Project/', { action:'check_accepted' }, function(ret) {
+          var data = JSON.parse(ret);
+          console.log(ret);
+          var modal = $('#acceptedModal');
+
+          if (data != null) {
+            $.each(data, function(key, val) {
+              if (data[key]['uID'] == data[key]['ouID']) {
+                $('#acceptedModal').modal('show');
+                $('#tutorName').empty();
+                modal.find('#tutorName').html(data[key]['tutorFName'] + ' ' + data[key]['tutorLName'] + '  has accepted your question!');
+                modal.find('#studentResolveQuestion').val(data[key]['qID']);
+              }
+            });
+          }
+
+    });
+  }
+</script>
