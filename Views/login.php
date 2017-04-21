@@ -20,9 +20,7 @@
 		  <div class="col-sm-6" id="login">
 			<div class="login-screen">
 				<div class="greeting">
-					<p>Welcome to LCC CIT Lab <br />
-					Please Login
-					</p>
+					<p>Welcome to LCC's CIT Lab</p>
 				</div>
 
 				<form method="post" action=".?action=login">

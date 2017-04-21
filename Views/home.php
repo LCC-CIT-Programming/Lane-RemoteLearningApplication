@@ -44,10 +44,10 @@
 
 	  <div class="col-lg-8 well" id="question_div" style="overflow: auto">
 			<table class="table table-condensed table-responsive" id="questionsTable">
-	        <tr>
-						<th>Questions in queue: <p id="questionCount"></p></th>
-						<th></th><th></th><th></th><th></th>
-					</tr>
+	        <!-- <tr>
+				<!--<th>Questions in queue: <p id="questionCount"></p></th>
+				<th></th><th></th><th></th><th></th>
+			</tr>-->
 
 	        <tr>
 	          <th>Course</th>
@@ -77,7 +77,6 @@
 				<table class="table table-hover table-striped" id="tutor_list_table">
 				  <thead>
 					<tr>
-					  <th></th>
 					  <th>Name</th>
 					  <th>Status</th>
 					  <th>Expertise</th>
@@ -89,14 +88,14 @@
 
               if ($tutors != null) {
                   foreach ($tutors as $tutor) {
-                      echo '<tr><td></td>
+                      echo '<tr>
                         <td>' . $tutor->getFirstName() . ' ' . $tutor->getLastName() . '</td>' .
                        '<td>' . 'Online' . '</td>' .
                        '<td>' . $tutor->getTutorBio() . '</td>' .
                        '</tr>';
                   }
               } else {
-                  echo '<tr><td>There are no available tutors at this time.</td></tr>';
+                  echo '<td>There are no available tutors at this time.</td>';
               }
           ?>
 

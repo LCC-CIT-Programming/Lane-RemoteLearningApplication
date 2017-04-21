@@ -38,7 +38,7 @@
           </div>
 
           <div class="form-group">
-            <label class="col-md-3 control-label">New password:</label>
+            <label class="col-md-3 control-label">Re-enter Password:</label>
             <div class="col-md-8">
               <input class="form-control" id="newPwd2" name="newPwd2" type="password" value="">
             </div>
