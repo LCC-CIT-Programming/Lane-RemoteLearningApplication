@@ -333,16 +333,19 @@ try {
         break;
         case "edit_schedule":
             if ($role == 'tutor') {
+				$scheduleError = "";
                 $date = filter_input(INPUT_POST, "Day");
                 $start = filter_input(INPUT_POST, "StartTime");
                 $end = filter_input(INPUT_POST, "EndTime");
                 if (isset($start) && isset($end)) {
+					//Add schedule verification here 9-5
                     $startTime = date("Y-m-d H:i:s", strtotime($start));
                     $endTime = date("Y-m-d H:i:s", strtotime($end));
                     $weekDay = date('N', strtotime($date));
                     $userID = $user->getUserID();
                     $shift = new Schedule($userID, $startTime, $endTime, $weekDay);
                     scheduledb::CreateSchedule($shift);
+					//else throw schedule error here
                 }
                 $schedules = scheduledb::GetTutorSchedule($user);
                 $_SESSION['schedule'] = $schedules;
@@ -375,10 +378,6 @@ try {
             $success = "Changes have been saved.";
             include("./Views/edit.php");
         }
-    break;
-
-    case "edit_Schedule":
-        include("./Views/tutorSchedule.php");
     break;
     }
 } catch (PDOException $e) {
