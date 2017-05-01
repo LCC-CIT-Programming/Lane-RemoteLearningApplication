@@ -45,13 +45,15 @@ try {
     }
 
     switch ($action) {
+
+    // ----------- LOGIN [GET] -----------  //
     case "default":
             $_SESSION['user'] = null;
             $loginError = "";
             include("./Views/login.php");
     break;
 
-
+    // ----------- LOGIN [POST] -----------  //
     case "login":
       $username = filter_input(INPUT_POST, "lnumber");
       $password = filter_input(INPUT_POST, "password");
@@ -68,13 +70,13 @@ try {
       }
     break;
 
-     // ----------- ASK [GET] -----------  //
+    // ----------- ASK [GET] -----------  //
     case "ask":
     $questionStatus = "";
         include("./Views/ask.php");
     break;
 
-     // ----------- ASK [POST] -----------  //
+    // ----------- ASK [POST] -----------  //
     case "ask_question":
         $courseNum = filter_input(INPUT_POST, "courseSelect");
         $subject = filter_input(INPUT_POST, "subject");
@@ -82,18 +84,13 @@ try {
         Question::AskQuestion($courseNum, $subject, $description);
     break;
 
+    // ----------- TASK [AJAX/POST] -----------  //
     case "update_task":
-    $courseNumber = filter_input(INPUT_POST, "courseNumber");
-
-    $task->setEndTime(date("Y-m-d h:i:s"));
-    TaskDB::UpdateTask($task);
-
-    $newTask = new Task($visit->getVisitID(), $courseNumber, date("Y-m-d h:i:s"));
-    TaskDB::CreateTask($newTask);
-    $task = TaskDB::RetrieveTask($newTask);
-    $_SESSION['task'] = $task;
-
+        $courseNumber = filter_input(INPUT_POST, "courseNumber");
+        Task::ChangeTask($courseNumber);
     break;
+
+    // ----------- LOCATION [AJAX/POST] -----------  //
     case "update_location":
     $location = filter_input(INPUT_POST, "locationID");
     $visit->setLocationID($location);
