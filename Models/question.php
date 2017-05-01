@@ -97,4 +97,48 @@ class Question
     {
         $this->closeTime = $VALUE;
     }
+
+    public static function AskQuestion($COURSENUM, $SUBJECT, $DESCRIPTION)
+    {
+        $STATUS = "open";
+        $ASKTIME = date("Y-m-d h:i:s");
+        
+        if ($COURSENUM == null || $SUBJECT == null || $DESCRIPTION == null) 
+        {
+            $questionStatus = "Invalid question. Check all fields and try again.";
+            include("./Views/ask.php");
+        } 
+
+        else 
+        {
+            // ----------- USER -----------  // 
+            $user = $_SESSION['user'];
+            $USERID = $user->GetUserID();
+
+            // ----------- QUESTION -----------  //
+            $question = new Question($USERID, $COURSENUM, $SUBJECT, $DESCRIPTION, $STATUS, $ASKTIME);
+            QuestionDB::CreateQuestion($question);
+            $questionStatus = "Question created, ask another?";
+            
+            // ----------- VISIT -----------  //
+            $visit = $_SESSION["visit"];
+            
+
+            // ----------- TASK -----------  //
+            $task = $_SESSION['task'];
+            if (($task !== null) && ($visit !== null)) {
+                if ($task->getCourseNumber() !== $COURSENUM) {
+                    $task->setEndTime(date("Y-m-d h:i:s"));
+                    taskdb::UpdateTask($task);
+                    $startNewTask = new Task($visit->getVisitID(), $COURSENUM, date("Y-m-d h:i:s"));
+                    TaskDB::CreateTask($startNewTask);
+                    $task = TaskDB::RetrieveTask($startNewTask);
+                    $_SESSION['task'] = $task;
+                }
+            }
+
+             // ----------- DISPLAY VIEW -----------  //
+            include("./Views/ask.php");
+        }
+    }
 }

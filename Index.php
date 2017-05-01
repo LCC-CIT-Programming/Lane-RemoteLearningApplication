@@ -68,44 +68,20 @@ try {
       }
     break;
 
+     // ----------- ASK [GET] -----------  //
     case "ask":
-    if ($role == 'student') {
-        $questionError = "";
-        $success = "";
+    $questionStatus = "";
         include("./Views/ask.php");
-    } else {
-        include("./Views/home.php");
-    }
-
     break;
+
+     // ----------- ASK [POST] -----------  //
     case "ask_question":
         $courseNum = filter_input(INPUT_POST, "courseSelect");
         $subject = filter_input(INPUT_POST, "subject");
         $description = filter_input(INPUT_POST, "description");
-        $status = "open";
-        $askTime = date("Y-m-d h:i:s");
-        if ($courseNum == null || $subject == null ||
-            $description == null || $status == null || $askTime == null) {
-            $questionError = "Invalid question. Check all fields and try again.";
-            $success = "";
-            include("./Views/ask.php");
-        } else {
-            $user = $_SESSION['user'];
-            $userID = $user->GetUserID();
-            $question = new Question($userID, $courseNum, $subject, $description, $status, $askTime);
-            QuestionDB::CreateQuestion($question);
-            $success = "Question created, ask another?";
-            $questionError = "";
-            $task = $_SESSION['task'];
-            $task->setEndTime(date("Y-m-d h:i:s"));
-            taskdb::UpdateTask($task);
-            $startNewTask = new Task($visit->getVisitID(), $courseNum, date("Y-m-d h:i:s"));
-            TaskDB::CreateTask($startNewTask);
-            $task = TaskDB::RetrieveTask($startNewTask);
-            $_SESSION['task'] = $task;
-            include("./Views/ask.php");
-        }
+        Question::AskQuestion($courseNum, $subject, $description);
     break;
+
     case "update_task":
     $courseNumber = filter_input(INPUT_POST, "courseNumber");
 
