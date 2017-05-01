@@ -7,21 +7,19 @@
 			<div class="col-sm-2"></div>
 			<div class=" col-sm-4 form-group">
 			<?php
-    $role = $_SESSION['role'];
-    if ($role == 'student') {
-        echo "<label class='' for='class' >Please tell us what class you are working on.</label>";
-        echo "<select class='form-control' id='class'>";
+		    $role = $_SESSION['role'];
+		    if ($role == 'student') {
+		        echo "<label class='' for='class' >Please tell us what class you are working on.</label>";
+		        echo "<select class='form-control' id='class'>";
 
 
-        $courses = $_SESSION['courses'];
-        foreach ($courses as $course) {
-            echo '<option value = "' . $course->getCourseNumber().'" >' . $course->getCourseName() . '</option>';
-        }
-    }
-              ?>
-
+		        $courses = $_SESSION['courses'];
+		        foreach ($courses as $course) {
+		            echo '<option value = "' . $course->getCourseNumber().'" >' . $course->getCourseName() . '</option>';
+		        }
+    		}
+    	?>
 			</select>
-
 
 			</div>
 			<div class=" col-sm-4 form-group">

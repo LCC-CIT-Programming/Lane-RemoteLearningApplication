@@ -37,7 +37,7 @@
 
 		<li><a href="?action=schedule">Schedule</a></li>
 	<?php
-    $role = $_SESSION['role'];
+    //$role = $_SESSION['role'];
     if ($role == 'student') {
         echo "<li><a href='?action=ask'>Questions</a></li>";
     } elseif ($role == 'tutor') {

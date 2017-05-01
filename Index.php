@@ -50,50 +50,24 @@ try {
             $loginError = "";
             include("./Views/login.php");
     break;
-    case "login":
-            $username = filter_input(INPUT_POST, "lnumber");
-            $password = filter_input(INPUT_POST, "password");
-            $role = filter_input(INPUT_POST, "roleSelect");
-            $_SESSION['role']= $role;
-            if ($role == "student") {
-                $user = StudentDB::StudentLogin($username, $password);
-                if ($user !== null && isset($user)) {
-                    $courses = StudentDB::GetStudentCourses($user);
-                    $_SESSION['user'] = $user;
-                    $_SESSION['courses'] = $courses;
-                    $visit = new Visit($user->GetUserID(), 1, $role, date("Y-m-d h:i:s"));
-                    VisitDB::CreateVisit($visit);
-                    $visit = VisitDB::RetrieveVisit($visit);
-                    $_SESSION['visit'] = $visit;
-                    $task = new Task($visit->getVisitID(), $courses[0]->getCourseNumber(), date("Y-m-d h:i:s"));
-                    TaskDB::CreateTask($task);
-                    $task = TaskDB::RetrieveTask($task);
-                    $_SESSION['task'] = $task;
-                            header('Location: ?action=home');
-                } else {
-                    $_SESSION['user'] = null;
-                    $loginError = "Login attempt failed.";
-                    include("./Views/login.php");
-                }
-            } elseif ($role == "tutor") {
-                    $user = TutorDB::TutorLogin($username, $password);
-                    if ($user !== null && isset($user)) {
-                        $_SESSION['user'] = $user;
-                        $visit = new Visit($user->GetUserID(), 1, $role, date("Y-m-d h:i:s"));
-                        VisitDB::CreateVisit($visit);
-                        $visit = VisitDB::RetrieveVisit($visit);
-                        $_SESSION['visit'] = $visit;
-                                header('Location: ?action=home');
-                    } else {
-                        $_SESSION['user'] = null;
-                        $loginError = "Login attempt failed.";
-                        include("./Views/login.php");
-                    }
-                } else {
-                    include("./Views/login.php");
-                }
 
+
+    case "login":
+      $username = filter_input(INPUT_POST, "lnumber");
+      $password = filter_input(INPUT_POST, "password");
+      $role = filter_input(INPUT_POST, "roleSelect");
+      $user = AppUser::login($username, $password, $role);
+
+      // ----------- SUCCESSFUL LOGIN -----------  //
+      if ($user !== null)
+        include("./Views/home.php");
+      // -----------   FAILED LOGIN   -----------  //
+      else {
+          $loginError = "Login attempt failed.";
+          include("./Views/login.php");
+      }
     break;
+
     case "ask":
     if ($role == 'student') {
         $questionError = "";
