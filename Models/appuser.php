@@ -84,8 +84,6 @@ class AppUser
       {
         $user = TutorDB::TutorLogin($LNUMBER, $PASSWORD);
         if ($user !== null && isset($user)) {
-            $_SESSION['user'] = $user;
-
             // ----------- VISIT -----------  //
             $visit = new Visit($user->GetUserID(), 1, $ROLE, date("Y-m-d h:i:s"));
             VisitDB::CreateVisit($visit);
@@ -104,7 +102,6 @@ class AppUser
             // ----------- COURSES -----------  //
             $courses = StudentDB::GetStudentCourses($user);
             //SESSION STUFF
-            $_SESSION['user'] = $user;
             $_SESSION['courses'] = $courses;
 
             // ----------- VISIT -----------  //

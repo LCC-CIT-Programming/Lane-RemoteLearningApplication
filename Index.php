@@ -60,10 +60,15 @@ try {
             $password = filter_input(INPUT_POST, "password");
             $role = filter_input(INPUT_POST, "roleSelect");
             $user = AppUser::login($username, $password, $role);
+            $_SESSION['user'] = $user;
 
             // ----------- SUCCESSFUL LOGIN -----------  //
             if ($user !== null)
-                include("./Views/home.php");
+            {
+                header('Location: ?action=home');
+                die();
+            }
+                
             // -----------   FAILED LOGIN   -----------  //
             else {
                 $loginError = "Login attempt failed.";
@@ -122,6 +127,7 @@ try {
                 $loginError = "";
                 session_unset();
                 session_destroy();
+                
                 include("./Views/login.php");
         break;
 

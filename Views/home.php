@@ -143,15 +143,16 @@
 </div>
 
 <script>
-$(document).ready(function() {
 
+$(document).ready(function() {
+	alert('hello world');
 		loadTable();
 		setInterval(function() {
 			loadTable();
 		}, 30000);
 
 		$('#class option').each(function() {
-			if ($(this).val() == "<?php echo $task->getCourseNumber() ?>")
+			if ($(this).val() == "<?php $task->getCourseNumber() ?>")
 					$(this).attr('selected', 'selected');
 		}); 
 
@@ -169,16 +170,14 @@ $(document).ready(function() {
     });
 
 	  $("#location").change( function(){
-              $.ajax({
-                      url: ".?action=update_location",
-                      type: "POST",
-                      data: {"locationID": $(this).val()},
+				$.ajax({
+								url: ".?action=update_location",
+								type: "POST",
+								data: {"locationID": $(this).val()},
 			  });
 	  });
 
-
-
-			$('#acceptQuestion').click(function() {
+		$('#acceptQuestion').click(function() {
 				var val = $(this).val();
 
 				//POST QUESTIONID TO ACTION
@@ -266,11 +265,8 @@ function loadTable() {
 				$('#tableBody').empty();
 				$.each(data, function(key, val) {
 					var rowStart = '<tr>';
-					var myRowStart = '<tr class="success">';
 
-					//<form action="?action=cancel_question" method="post">
-					//</form>
-					//'<input type="hidden" name="id" value="' +  + '">' +
+					var myRowStart = '<tr class="success">';
 
 					var cancel = '<td><button class="btn btn-danger cancelQuestion" type="submit" value="' + data[key]['questionID'] + '">Cancel</button></td>';
 
