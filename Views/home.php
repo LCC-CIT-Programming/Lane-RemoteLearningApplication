@@ -249,6 +249,15 @@ $(document).on('click', '.details', function() {
 		});
 	});
 
+	$(document).on('click', '.cancelQuestion', function() {
+			var val = $(this).val();
+	    $.post('/CIT-Project/', { 
+				action:'cancel_question', 
+				cancelQuestion:val 
+			})
+			.done(function() { loadTable(); });
+	});
+
 
 function loadTable() {
 	$.post('/CIT-Project/', { action:'display_questions' }, function(ret) {
@@ -259,11 +268,13 @@ function loadTable() {
 					var rowStart = '<tr>';
 					var myRowStart = '<tr class="success">';
 
-					var cancel = '<td><form action="?action=cancel_question" method="post">' +
-											 '<input type="hidden" name="id" value="' + data[key]['questionID'] + '">' +
-											 '<input class="btn btn-danger" type="submit" name="submit" value="Cancel"></form>';
+					//<form action="?action=cancel_question" method="post">
+					//</form>
+					//'<input type="hidden" name="id" value="' +  + '">' +
 
-				 var details = '<td><button value="' + data[key]['questionID'] + '" type="button" class="btn btn-info details"' +
+					var cancel = '<td><button class="btn btn-danger cancelQuestion" type="submit" value="' + data[key]['questionID'] + '">Cancel</button></td>';
+
+				  var details = '<td><button value="' + data[key]['questionID'] + '" type="button" class="btn btn-info details"' +
 											 ' data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myModal">Details</button></td>';
 
 					var questionInfo = 		 '<td>' + data[key]['courseName'] + '</td>' +

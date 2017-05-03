@@ -141,4 +141,11 @@ class Question
             include("./Views/ask.php");
         }
     }
+
+    public function CancelQuestion()
+    {
+        $this->setStatus('Resolved');
+        $this->setCloseTime(date("Y-m-d h:i:s", time()));
+        QuestionDB::UpdateQuestion($this);
+    }
 }

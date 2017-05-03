@@ -56,19 +56,19 @@ try {
 
         // ----------- LOGIN [POST] -----------  //
         case "login":
-        $username = filter_input(INPUT_POST, "lnumber");
-        $password = filter_input(INPUT_POST, "password");
-        $role = filter_input(INPUT_POST, "roleSelect");
-        $user = AppUser::login($username, $password, $role);
+            $username = filter_input(INPUT_POST, "lnumber");
+            $password = filter_input(INPUT_POST, "password");
+            $role = filter_input(INPUT_POST, "roleSelect");
+            $user = AppUser::login($username, $password, $role);
 
-        // ----------- SUCCESSFUL LOGIN -----------  //
-        if ($user !== null)
-            include("./Views/home.php");
-        // -----------   FAILED LOGIN   -----------  //
-        else {
-            $loginError = "Login attempt failed.";
-            include("./Views/login.php");
-        }
+            // ----------- SUCCESSFUL LOGIN -----------  //
+            if ($user !== null)
+                include("./Views/home.php");
+            // -----------   FAILED LOGIN   -----------  //
+            else {
+                $loginError = "Login attempt failed.";
+                include("./Views/login.php");
+            }
         break;
 
         // ----------- ASK [GET] -----------  //
@@ -101,40 +101,38 @@ try {
             }
         break;
 
-        // ----------- QUESTION [AJAX/POST] -----------  //
+        // ----------- CANCEL QUESTION [AJAX/POST] -----------  //
         case "cancel_question":
-                $id = filter_input(INPUT_POST, 'id');
-                if (isset($id)) {
-                    $temp = new Question(1, 1, 'a', 'a', 'a', date("Y-m-d h:i:s"), $id);
-                    $question = QuestionDB::GetQuestion($temp);
-                    $question->setStatus('Resolved');
-                    $question->setCloseTime(date("Y-m-d h:i:s", time()));
-                    QuestionDB::UpdateQuestion($question);
-                    include("./Views/home.php");
-                }
-            break;
+            $id = filter_input(INPUT_POST, 'cancelQuestion');
+            
+            if (isset($id)) {
+                $question = QuestionDB::GetQuestionByID($id);
+                $question->CancelQuestion();
+            }
+        break;
 
+        // ----------- LOGOUT [GET] -----------  //
         case "logout":
-                if ($role == 'student') {
-                    $task->setEndTime(date("Y-m-d h:i:s", time()));
-                    taskdb::UpdateTask($task);
-                }
-                    $visit->setEndTime(date("Y-m-d h:i:s", time()));
-                    visitdb::UpdateVisit($visit);
-                    $loginError = "";
-                    session_unset();
-                    session_destroy();
-                    include("./Views/login.php");
-            break;
+            if ($role == 'student') {
+                $task->setEndTime(date("Y-m-d h:i:s", time()));
+                taskdb::UpdateTask($task);
+            }
+                $visit->setEndTime(date("Y-m-d h:i:s", time()));
+                visitdb::UpdateVisit($visit);
+                $loginError = "";
+                session_unset();
+                session_destroy();
+                include("./Views/login.php");
+        break;
 
+        // ----------- HOME [GET] -----------  //
         case "home":
             include("./Views/home.php");
         break;
 
+        // ----------- DISPLAY QUESTION [AJAX/POST] -----------  //
         case "display_questions":
             $questions = QuestionDB::getOpenQuestions();
-            $loggedInUser = $_SESSION['user'];
-
             $questionTableData = array();
 
             foreach ($questions as $question) {
@@ -145,11 +143,12 @@ try {
                                         "askTime" => $question->getAskTime(),
                                         "questionID" => $question->getQuestionID(),
                                         "askUserID" => $question->getUserID(),
-                                        "userID" => $loggedInUser->getUserID(),
+                                        "userID" => $user->getUserID(),
                                         "userRole" => $role);
 
-            array_push($questionTableData, $singleQuestion);
+                array_push($questionTableData, $singleQuestion);
             }
+
             echo json_encode($questionTableData);
         break;
 
@@ -280,31 +279,32 @@ try {
                     $_SESSION['schedule'] = $schedules;
                     include("./Views/tutor_schedule.php");
                 }
-            break;
-            case "edit_schedule":
-                if ($role == 'tutor') {
-                    $scheduleError = "";
-                    $date = filter_input(INPUT_POST, "Day");
-                    $start = filter_input(INPUT_POST, "StartTime");
-                    $end = filter_input(INPUT_POST, "EndTime");
-                    if (isset($start) && isset($end)) {
-                        //Add schedule verification here 9-5
-                        $startTime = date("Y-m-d H:i:s", strtotime($start));
-                        $endTime = date("Y-m-d H:i:s", strtotime($end));
-                        $weekDay = date('N', strtotime($date));
-                        $userID = $user->getUserID();
-                        $shift = new Schedule($userID, $startTime, $endTime, $weekDay);
-                        scheduledb::CreateSchedule($shift);
-                        //else throw schedule error here
-                    }
-                    $schedules = scheduledb::GetTutorSchedule($user);
-                    $_SESSION['schedule'] = $schedules;
-                    include("./Views/tutor_schedule.php");
-                    break;
-                } else {
-                    include("./Views/Home.php");
+        break;
+
+        case "edit_schedule":
+            if ($role == 'tutor') {
+                $scheduleError = "";
+                $date = filter_input(INPUT_POST, "Day");
+                $start = filter_input(INPUT_POST, "StartTime");
+                $end = filter_input(INPUT_POST, "EndTime");
+                if (isset($start) && isset($end)) {
+                    //Add schedule verification here 9-5
+                    $startTime = date("Y-m-d H:i:s", strtotime($start));
+                    $endTime = date("Y-m-d H:i:s", strtotime($end));
+                    $weekDay = date('N', strtotime($date));
+                    $userID = $user->getUserID();
+                    $shift = new Schedule($userID, $startTime, $endTime, $weekDay);
+                    scheduledb::CreateSchedule($shift);
+                    //else throw schedule error here
                 }
+                $schedules = scheduledb::GetTutorSchedule($user);
+                $_SESSION['schedule'] = $schedules;
+                include("./Views/tutor_schedule.php");
                 break;
+            } else {
+                include("./Views/Home.php");
+            }
+        break;
 
 
         case "edit_profile":
