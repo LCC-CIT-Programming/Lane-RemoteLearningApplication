@@ -156,29 +156,29 @@ try {
             $resolutions = ResolutionDB::RetrieveUnfinishedResolutions();
 
             if ($resolutions != null) {
-            $acceptedQuestionInfo = array();
+                $acceptedQuestionInfo = array();
+                foreach ($resolutions as $resolution) {
+                    $tutor = TutorDB::RetrieveTutorByID($resolution->getUserID());
+                    $question = QuestionDB::GetQuestionByID($resolution->getQuestionID());
+                    $userID = $question->getUserID();
 
-            foreach ($resolutions as $resolution) {
-                $tutor = TutorDB::RetrieveTutorByID($resolution->getUserID());
-                $question = QuestionDB::GetQuestionByID($resolution->getQuestionID());
-                $userID = $question->getUserID();
+                    $singleResolution = array("tutorFName" => $tutor->getFirstName(),
+                                            "tutorLName" => $tutor->getLastName(),
+                                            "tutorEmail" => $tutor->getEmail(),
+                                            "description" => $question->getDescription(),
+                                            "openTime" => $question->getOpenTime(),
+                                            "uID" => $question->getUserID(),
+                                            "ouID" => $user->getUserID(),
+                                            "qID" => $question->getQuestionID());
 
-                $singleResolution = array("tutorFName" => $tutor->getFirstName(),
-                                        "tutorLName" => $tutor->getLastName(),
-                                        "tutorEmail" => $tutor->getEmail(),
-                                        "description" => $question->getDescription(),
-                                        "openTime" => $question->getOpenTime(),
-                                        "uID" => $question->getUserID(),
-                                        "ouID" => $user->getUserID(),
-                                        "qID" => $question->getQuestionID());
-
-                array_push($acceptedQuestionInfo, $singleResolution);
+                    array_push($acceptedQuestionInfo, $singleResolution);
+                }
+                echo json_encode($acceptedQuestionInfo);
+            } 
+            else 
+            {
+                echo json_encode(null);
             }
-
-            echo json_encode($acceptedQuestionInfo);
-        } else {
-            echo json_encode(null);
-        }
         break;
 
         case "question_details":

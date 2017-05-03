@@ -87,7 +87,7 @@ class AppUser
             $_SESSION['user'] = $user;
 
             // ----------- VISIT -----------  //
-            $visit = new Visit($user->GetUserID(), 1, $role, date("Y-m-d h:i:s"));
+            $visit = new Visit($user->GetUserID(), 1, $ROLE, date("Y-m-d h:i:s"));
             VisitDB::CreateVisit($visit);
             $visit = VisitDB::RetrieveVisit($visit);
             //SESSION STUFF
