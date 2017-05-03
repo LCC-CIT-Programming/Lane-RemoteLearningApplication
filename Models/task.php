@@ -51,28 +51,24 @@ class Task
         $this->endTime = $VALUE;
     }
 
-    public static function ChangeTask($COURSENUMBER) 
+    public static function ChangeTask($COURSENUMBER, $VISIT, $TASK) 
     {
-        // ----------- SESSION INFO -----------  //
-        $visit = $_SESSESION['visit'];
-        $task = $_SESSION['task'];
+        $currentCourse = $TASK->getCourseNumber();
+        $currentVisit = $VISIT->getVisitID();
 
-        $currentCourse = $task->getCourseNumber();
-        $currentVisit = $visit->getVisitID();
-
-        // ----------- TASK -----------  //
-        if ($COURSENUMBER !== $currentCourse) 
+        // ----------- CHECK TASK -----------  //
+        if ($COURSENUMBER != $currentCourse) 
         {
             // ----------- END OLD TASK -----------  //
-            $task->setEndTime(date("Y-m-d h:i:s"));
-            TaskDB::UpdateTask($task);
+            $TASK->setEndTime(date("Y-m-d h:i:s"));
+            TaskDB::UpdateTask($TASK);
 
             // ----------- CREATE NEW TASK -----------  //
             $newTask = new Task($currentVisit, $COURSENUMBER, date("Y-m-d h:i:s"));
             TaskDB::CreateTask($newTask);
-            $task = TaskDB::RetrieveTask($newTask);
-            $_SESSION['task'] = $task;
+            $TASK = TaskDB::RetrieveTask($newTask);
         }
+        return $TASK;
     }
 
 }

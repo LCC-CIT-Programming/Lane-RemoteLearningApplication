@@ -150,6 +150,16 @@ $(document).ready(function() {
 			loadTable();
 		}, 30000);
 
+		$('#class option').each(function() {
+			if ($(this).val() == "<?php echo $task->getCourseNumber() ?>")
+					$(this).attr('selected', 'selected');
+		}); 
+
+		$('#location option').each(function() {
+			if ($(this).val() == "<?php echo $visit->getLocationID() ?>")
+					$(this).attr('selected', 'selected');
+		}); 
+
     $("#class").change( function(){
             $.ajax({
                     url: ".?action=update_task",
