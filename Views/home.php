@@ -42,10 +42,10 @@
 
 	  <div class="col-lg-8 well" id="question_div" style="overflow: auto">
 			<table class="table table-condensed table-responsive" id="questionsTable">
-	        <!-- <tr>
+	      <!-- <tr>
 				<!--<th>Questions in queue: <p id="questionCount"></p></th>
 				<th></th><th></th><th></th><th></th>
-			</tr>-->
+				</tr>-->
 
 	        <tr>
 	          <th>Course</th>
@@ -142,19 +142,25 @@
   </div>
 </div>
 
-<script>
 
+<?php if(isset($task)) { ?>
+	<script>
+		$(document).ready(function() {
+				$('#class option').each(function() {
+					if ($(this).val() == "<?php $task->getCourseNumber() ?>")
+							$(this).attr('selected', 'selected');
+				}); 
+		});
+	</script>
+<?php } ?>
+
+
+<script>
 $(document).ready(function() {
-	alert('hello world');
 		loadTable();
 		setInterval(function() {
 			loadTable();
 		}, 30000);
-
-		$('#class option').each(function() {
-			if ($(this).val() == "<?php $task->getCourseNumber() ?>")
-					$(this).attr('selected', 'selected');
-		}); 
 
 		$('#location option').each(function() {
 			if ($(this).val() == "<?php echo $visit->getLocationID() ?>")
