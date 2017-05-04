@@ -119,17 +119,19 @@ try {
 
         // ----------- LOGOUT [GET] -----------  //
         case "logout":
-            if ($role == 'student') {
-                $task->setEndTime(date("Y-m-d h:i:s", time()));
-                taskdb::UpdateTask($task);
+            if (isset($task) || isset($visit) || isset($role)) {
+                if ($role == 'student') {
+                    $task->setEndTime(date("Y-m-d h:i:s", time()));
+                    taskdb::UpdateTask($task);
+                }
+                    $visit->setEndTime(date("Y-m-d h:i:s", time()));
+                    visitdb::UpdateVisit($visit);   
             }
-                $visit->setEndTime(date("Y-m-d h:i:s", time()));
-                visitdb::UpdateVisit($visit);
-                $loginError = "";
-                session_unset();
-                session_destroy();
-                
-                include("./Views/login.php");
+
+            $loginError = "";
+            session_unset();
+            session_destroy();
+            include("./Views/login.php");
         break;
 
         // ----------- HOME [GET] -----------  //
