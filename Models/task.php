@@ -50,4 +50,25 @@ class Task
     {
         $this->endTime = $VALUE;
     }
+
+    public static function ChangeTask($COURSENUMBER, $VISIT, $TASK) 
+    {
+        $currentCourse = $TASK->getCourseNumber();
+        $currentVisit = $VISIT->getVisitID();
+
+        // ----------- CHECK TASK -----------  //
+        if ($COURSENUMBER != $currentCourse) 
+        {
+            // ----------- END OLD TASK -----------  //
+            $TASK->setEndTime(date("Y-m-d h:i:s"));
+            TaskDB::UpdateTask($TASK);
+
+            // ----------- CREATE NEW TASK -----------  //
+            $newTask = new Task($currentVisit, $COURSENUMBER, date("Y-m-d h:i:s"));
+            TaskDB::CreateTask($newTask);
+            $TASK = TaskDB::RetrieveTask($newTask);
+        }
+        return $TASK;
+    }
+
 }

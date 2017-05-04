@@ -7,21 +7,19 @@
 			<div class="col-sm-2"></div>
 			<div class=" col-sm-4 form-group">
 			<?php
-    $role = $_SESSION['role'];
-    if ($role == 'student') {
-        echo "<label class='' for='class' >Please tell us what class you are working on.</label>";
-        echo "<select class='form-control' id='class'>";
+		    $role = $_SESSION['role'];
+		    if ($role == 'student') {
+		        echo "<label class='' for='class' >Please tell us what class you are working on.</label>";
+		        echo "<select class='form-control' id='class'>";
 
 
-        $courses = $_SESSION['courses'];
-        foreach ($courses as $course) {
-            echo '<option value = "' . $course->getCourseNumber().'" >' . $course->getCourseName() . '</option>';
-        }
-    }
-              ?>
-
+		        $courses = $_SESSION['courses'];
+		        foreach ($courses as $course) {
+		            echo '<option value = "' . $course->getCourseNumber().'" >' . $course->getCourseName() . '</option>';
+		        }
+    		}
+    	?>
 			</select>
-
 
 			</div>
 			<div class=" col-sm-4 form-group">
@@ -44,10 +42,10 @@
 
 	  <div class="col-lg-8 well" id="question_div" style="overflow: auto">
 			<table class="table table-condensed table-responsive" id="questionsTable">
-	        <!-- <tr>
+	      <!-- <tr>
 				<!--<th>Questions in queue: <p id="questionCount"></p></th>
 				<th></th><th></th><th></th><th></th>
-			</tr>-->
+				</tr>-->
 
 	        <tr>
 	          <th>Course</th>
@@ -144,13 +142,30 @@
   </div>
 </div>
 
+
+<?php if(isset($task)) { ?>
+	<script>
+		$(document).ready(function() {
+				$('#class option').each(function() {
+					if ($(this).val() == "<?php $task->getCourseNumber() ?>")
+							$(this).attr('selected', 'selected');
+				}); 
+		});
+	</script>
+<?php } ?>
+
+
 <script>
 $(document).ready(function() {
-
 		loadTable();
 		setInterval(function() {
 			loadTable();
 		}, 30000);
+
+		$('#location option').each(function() {
+			if ($(this).val() == "<?php echo $visit->getLocationID() ?>")
+					$(this).attr('selected', 'selected');
+		}); 
 
     $("#class").change( function(){
             $.ajax({
@@ -161,20 +176,18 @@ $(document).ready(function() {
     });
 
 	  $("#location").change( function(){
-              $.ajax({
-                      url: ".?action=update_location",
-                      type: "POST",
-                      data: {"locationID": $(this).val()},
+				$.ajax({
+								url: ".?action=update_location",
+								type: "POST",
+								data: {"locationID": $(this).val()},
 			  });
 	  });
 
-
-
-			$('#acceptQuestion').click(function() {
+		$('#acceptQuestion').click(function() {
 				var val = $(this).val();
 
 				//POST QUESTIONID TO ACTION
-	      $.post('/CIT-Project/', { action:'accept_question', acceptQuestion:val }, function(ret) {
+	      $.post('', { action:'accept_question', acceptQuestion:val }, function(ret) {
 	        var data = JSON.parse(ret);
 					var modal = $('#myModal');
 
@@ -196,17 +209,17 @@ $(document).ready(function() {
 
 			$('#openQuestion').click(function() {
 				var val = $(this).val();
-	      $.post('/CIT-Project/', { action:'reopen_question', openQuestion:val });
+	      $.post('', { action:'reopen_question', openQuestion:val });
 			});
 
 			$('#escalateQuestion').click(function() {
 				var val = $(this).val();
-	      $.post('/CIT-Project/', { action:'escalate_question', escalateQuestion:val });
+	      $.post('', { action:'escalate_question', escalateQuestion:val });
 			});
 
 			$('#resolveQuestion').click(function() {
 				var val = $(this).val();
-	      $.post('/CIT-Project/', { action:'resolve_question', resolveQuestion:val });
+	      $.post('', { action:'resolve_question', resolveQuestion:val });
 			});
 
 });
@@ -215,7 +228,7 @@ $(document).on('click', '.details', function() {
 		var val = $(this).val();
 
 		//POST QUESTIONID TO ACTION
-		$.post('/CIT-Project/', { action:'question_details', viewQuestion:val }, function(ret) {
+		$.post('', { action:'question_details', viewQuestion:val }, function(ret) {
 			var data = JSON.parse(ret);
 
 			//OPEN MODAL
@@ -241,21 +254,29 @@ $(document).on('click', '.details', function() {
 		});
 	});
 
+	$(document).on('click', '.cancelQuestion', function() {
+			var val = $(this).val();
+	    $.post('', { 
+				action:'cancel_question', 
+				cancelQuestion:val 
+			})
+			.done(function() { loadTable(); });
+	});
+
 
 function loadTable() {
-	$.post('/CIT-Project/', { action:'display_questions' }, function(ret) {
+	$.post('', { action:'display_questions' }, function(ret) {
 			var data = JSON.parse(ret);
 			if (data != null) {
 				$('#tableBody').empty();
 				$.each(data, function(key, val) {
 					var rowStart = '<tr>';
+
 					var myRowStart = '<tr class="success">';
 
-					var cancel = '<td><form action="?action=cancel_question" method="post">' +
-											 '<input type="hidden" name="id" value="' + data[key]['questionID'] + '">' +
-											 '<input class="btn btn-danger" type="submit" name="submit" value="Cancel"></form>';
+					var cancel = '<td><button class="btn btn-danger cancelQuestion" type="submit" value="' + data[key]['questionID'] + '">Cancel</button></td>';
 
-				 var details = '<td><button value="' + data[key]['questionID'] + '" type="button" class="btn btn-info details"' +
+				  var details = '<td><button value="' + data[key]['questionID'] + '" type="button" class="btn btn-info details"' +
 											 ' data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myModal">Details</button></td>';
 
 					var questionInfo = 		 '<td>' + data[key]['courseName'] + '</td>' +
@@ -265,10 +286,12 @@ function loadTable() {
 
 					if (data[key]['askUserID'] == data[key]['userID'] && data[key]['userRole'] == "student") $("#tableBody").append(myRowStart);
 					else  $("#tableBody").append(rowStart);
+					
 					$("#tableBody").append(questionInfo);
 					if (data[key]['askUserID'] == data[key]['userID'] && data[key]['userRole'] == "student") $('#tableBody').append(cancel);
 					if (data[key]['userRole'] == "tutor" || data[key]['userRole'] == "faculty") $('#tableBody').append(details);
-					$("#tableBody").append('<tr>');
+
+					$("#tableBody").append('</tr>');
 				});
 			}
 			else {

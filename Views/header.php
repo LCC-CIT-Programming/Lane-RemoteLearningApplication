@@ -1,6 +1,6 @@
 <!-- The header includes body tag and nav... include on all pages and begin page with <div class= "container-fluid">-->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-US">
 
 <head>
   <title>LCC CIT Lab Student Home</title>
@@ -10,6 +10,7 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Language" content="en">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -94,11 +95,11 @@
 
     $('#studentResolveQuestion').click(function() {
       var val = $(this).val();
-      $.post('/CIT-Project/', { action:'resolve_question', resolveQuestion:val });
+      $.post('', { action:'resolve_question', resolveQuestion:val });
     });
 
     function CheckAcceptedQuestions() {
-      $.post('/CIT-Project/', { action:'check_accepted' }, function(ret) {
+      $.post('', { action:'check_accepted' }, function(ret) {
           var data = JSON.parse(ret);
           var modal = $('#acceptedModal');
 
