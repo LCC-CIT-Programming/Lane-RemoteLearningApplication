@@ -95,11 +95,11 @@
 
     $('#studentResolveQuestion').click(function() {
       var val = $(this).val();
-      $.post('/CIT-Project/', { action:'resolve_question', resolveQuestion:val });
+      $.post('', { action:'resolve_question', resolveQuestion:val });
     });
 
     function CheckAcceptedQuestions() {
-      $.post('/CIT-Project/', { action:'check_accepted' }, function(ret) {
+      $.post('', { action:'check_accepted' }, function(ret) {
           var data = JSON.parse(ret);
           var modal = $('#acceptedModal');
 

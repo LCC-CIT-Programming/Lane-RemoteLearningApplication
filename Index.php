@@ -1,22 +1,23 @@
 <?php
-require_once('/Models/appuser.php');
-require_once('/Models/student.php');
-require_once('/Models/studentdb.php');
-require_once('/Models/db.php');
-require_once('/Models/course.php');
-require_once('/Models/coursedb.php');
-require_once('/Models/question.php');
-require_once('/Models/questiondb.php');
-require_once('/Models/tutor.php');
-require_once('/Models/tutordb.php');
-require_once('/Models/visit.php');
-require_once('/Models/visitdb.php');
-require_once('/Models/task.php');
-require_once('/Models/taskdb.php');
-require_once('/Models/schedule.php');
-require_once('/Models/scheduledb.php');
-require_once('/Models/resolution.php');
-require_once('/Models/resolutiondb.php');
+require_once('Utils/filepath.php');
+require_once('Models/appuser.php');
+require_once('Models/student.php');
+require_once('Models/studentdb.php');
+require_once('Models/db.php');
+require_once('Models/course.php');
+require_once('Models/coursedb.php');
+require_once('Models/question.php');
+require_once('Models/questiondb.php');
+require_once('Models/tutor.php');
+require_once('Models/tutordb.php');
+require_once('Models/visit.php');
+require_once('Models/visitdb.php');
+require_once('Models/task.php');
+require_once('Models/taskdb.php');
+require_once('Models/schedule.php');
+require_once('Models/scheduledb.php');
+require_once('Models/resolution.php');
+require_once('Models/resolutiondb.php');
 
 try {
 
@@ -158,6 +159,7 @@ try {
             echo json_encode($questionTableData);
         break;
 
+        // ----------- CHECK UNRESOLVED/ACCEPTED QUESTIONS [AJAX/POST] -----------  //
         case "check_accepted":
             $resolutions = ResolutionDB::RetrieveUnfinishedResolutions();
 
@@ -182,11 +184,10 @@ try {
                 echo json_encode($acceptedQuestionInfo);
             } 
             else 
-            {
                 echo json_encode(null);
-            }
         break;
 
+        // ----------- GET SPECIFIC QUESTIONS [AJAX/POST] -----------  //
         case "question_details":
             $questionID = filter_input(INPUT_POST, "viewQuestion");
             $questionDetails = QuestionDB::GetQuestionByID($questionID);
@@ -204,6 +205,7 @@ try {
             echo json_encode($questionJSON);
         break;
 
+        // ----------- ACCEPT SPECIFIC QUESTIONS [AJAX/POST] -----------  //
         case "accept_question":
             $questionID = filter_input(INPUT_POST, "acceptQuestion");
             $questionDetails = QuestionDB::GetQuestionByID($questionID);
@@ -229,41 +231,41 @@ try {
             echo json_encode($questionJSON);
         break;
 
+        // ----------- REOPEN SPECIFIC QUESTIONS [AJAX/POST] -----------  //
         case "reopen_question":
-        if (filter_input(INPUT_POST, "openQuestion") !== null) {
-            $questionID = filter_input(INPUT_POST, "openQuestion");
-            $questionDetails = QuestionDB::GetQuestionByID($questionID);
-            $questionDetails->setStatus('Open');
-            $questionDetails->setOpenTime(null);
-            QuestionDB::UpdateQuestion($questionDetails);
+            if (filter_input(INPUT_POST, "openQuestion") !== null) {
+                $questionID = filter_input(INPUT_POST, "openQuestion");
+                $questionDetails = QuestionDB::GetQuestionByID($questionID);
+                $questionDetails->setStatus('Open');
+                $questionDetails->setOpenTime(null);
+                QuestionDB::UpdateQuestion($questionDetails);
 
-            $resolution = ResolutionDB::RetrieveResolutionByID($questionID);
-            ResolutionDB::DeleteResolution($resolution);
-        }
+                $resolution = ResolutionDB::RetrieveResolutionByID($questionID);
+                ResolutionDB::DeleteResolution($resolution);
+            }
         break;
 
         case "escalate_question":
-        if (filter_input(INPUT_POST, "escalateQuestion") !== null) {
-            $questionID = filter_input(INPUT_POST, "escalateQuestion");
-            $questionDetails = QuestionDB::GetQuestionByID($questionID);
-            $questionDetails->setStatus('Escalated');
-            QuestionDB::UpdateQuestion($questionDetails);
-        }
+            if (filter_input(INPUT_POST, "escalateQuestion") !== null) {
+                $questionID = filter_input(INPUT_POST, "escalateQuestion");
+                $questionDetails = QuestionDB::GetQuestionByID($questionID);
+                $questionDetails->setStatus('Escalated');
+                QuestionDB::UpdateQuestion($questionDetails);
+            }
         break;
 
         case "resolve_question":
-        if (filter_input(INPUT_POST, "resolveQuestion") !== null) {
-            $questionID = filter_input(INPUT_POST, "resolveQuestion");
-            $questionDetails = QuestionDB::GetQuestionByID($questionID);
-            $questionDetails->setStatus('Resolved');
-            $questionDetails->setCloseTime(date("Y-m-d h:i:s", time()));
+            if (filter_input(INPUT_POST, "resolveQuestion") !== null) {
+                $questionID = filter_input(INPUT_POST, "resolveQuestion");
+                $questionDetails = QuestionDB::GetQuestionByID($questionID);
+                $questionDetails->setStatus('Resolved');
+                $questionDetails->setCloseTime(date("Y-m-d h:i:s", time()));
 
-            $res = ResolutionDB::RetrieveResolutionByID($questionID);
-            $res->setResolution('Resolved');
-            ResolutionDB::UpdateResolution($res);
-
-            QuestionDB::UpdateQuestion($questionDetails);
-        }
+                $res = ResolutionDB::RetrieveResolutionByID($questionID);
+                $res->setResolution('Resolved');
+                ResolutionDB::UpdateResolution($res);
+                QuestionDB::UpdateQuestion($questionDetails);
+            }
         break;
 
         case "schedule":
@@ -275,16 +277,17 @@ try {
             $passError = "";
             include("./Views/edit.php");
         break;
+
         case "delete_schedule":
-                $id = filter_input(INPUT_POST, 'id');
-                if (isset($id)) {
-                    $temp = new Schedule(1, date("Y-m-d H:i:s", time()), date("Y-m-d H:i:s", time()), 1, $id);
-                    $schedule = scheduledb::GetSchedule($temp);
-                    scheduledb::DeleteSchedule($schedule);
-                    $schedules = scheduledb::GetTutorSchedule($user);
-                    $_SESSION['schedule'] = $schedules;
-                    include("./Views/tutor_schedule.php");
-                }
+            $id = filter_input(INPUT_POST, 'id');
+            if (isset($id)) {
+                $temp = new Schedule(1, date("Y-m-d H:i:s", time()), date("Y-m-d H:i:s", time()), 1, $id);
+                $schedule = scheduledb::GetSchedule($temp);
+                scheduledb::DeleteSchedule($schedule);
+                $schedules = scheduledb::GetTutorSchedule($user);
+                $_SESSION['schedule'] = $schedules;
+                include("./Views/tutor_schedule.php");
+            }
         break;
 
         case "edit_schedule":
@@ -319,17 +322,23 @@ try {
             $email = filter_input(INPUT_POST, "email");
             $pass1 = filter_input(INPUT_POST, "newPwd1");
             $pass2 = filter_input(INPUT_POST, "newPwd2");
+            
             if ($pass1 != $pass2) {
                 $passError = "Sorry the passwords do not match, please try again.";
                 $success = "";
                 include("./Views/edit.php");
-            } else {
+            } 
+            else 
+            {
                 $user = $_SESSION['user'];
                 $userID = $user->GetUserID();
+
+                //Verify they actually inted to change their pass.
                 $user->setEmail($email);
                 if ($pass1 != "") {
                     $user->setPassword($pass1);
                 }
+
                 StudentDB::UpdateProfile($user);
                 $success = "Changes have been saved.";
                 include("./Views/edit.php");

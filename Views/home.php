@@ -187,7 +187,7 @@ $(document).ready(function() {
 				var val = $(this).val();
 
 				//POST QUESTIONID TO ACTION
-	      $.post('/CIT-Project/', { action:'accept_question', acceptQuestion:val }, function(ret) {
+	      $.post('', { action:'accept_question', acceptQuestion:val }, function(ret) {
 	        var data = JSON.parse(ret);
 					var modal = $('#myModal');
 
@@ -209,17 +209,17 @@ $(document).ready(function() {
 
 			$('#openQuestion').click(function() {
 				var val = $(this).val();
-	      $.post('/CIT-Project/', { action:'reopen_question', openQuestion:val });
+	      $.post('', { action:'reopen_question', openQuestion:val });
 			});
 
 			$('#escalateQuestion').click(function() {
 				var val = $(this).val();
-	      $.post('/CIT-Project/', { action:'escalate_question', escalateQuestion:val });
+	      $.post('', { action:'escalate_question', escalateQuestion:val });
 			});
 
 			$('#resolveQuestion').click(function() {
 				var val = $(this).val();
-	      $.post('/CIT-Project/', { action:'resolve_question', resolveQuestion:val });
+	      $.post('', { action:'resolve_question', resolveQuestion:val });
 			});
 
 });
@@ -228,7 +228,7 @@ $(document).on('click', '.details', function() {
 		var val = $(this).val();
 
 		//POST QUESTIONID TO ACTION
-		$.post('/CIT-Project/', { action:'question_details', viewQuestion:val }, function(ret) {
+		$.post('', { action:'question_details', viewQuestion:val }, function(ret) {
 			var data = JSON.parse(ret);
 
 			//OPEN MODAL
@@ -256,7 +256,7 @@ $(document).on('click', '.details', function() {
 
 	$(document).on('click', '.cancelQuestion', function() {
 			var val = $(this).val();
-	    $.post('/CIT-Project/', { 
+	    $.post('', { 
 				action:'cancel_question', 
 				cancelQuestion:val 
 			})
@@ -265,7 +265,7 @@ $(document).on('click', '.details', function() {
 
 
 function loadTable() {
-	$.post('/CIT-Project/', { action:'display_questions' }, function(ret) {
+	$.post('', { action:'display_questions' }, function(ret) {
 			var data = JSON.parse(ret);
 			if (data != null) {
 				$('#tableBody').empty();
@@ -286,10 +286,12 @@ function loadTable() {
 
 					if (data[key]['askUserID'] == data[key]['userID'] && data[key]['userRole'] == "student") $("#tableBody").append(myRowStart);
 					else  $("#tableBody").append(rowStart);
+					
 					$("#tableBody").append(questionInfo);
 					if (data[key]['askUserID'] == data[key]['userID'] && data[key]['userRole'] == "student") $('#tableBody').append(cancel);
 					if (data[key]['userRole'] == "tutor" || data[key]['userRole'] == "faculty") $('#tableBody').append(details);
-					$("#tableBody").append('<tr>');
+
+					$("#tableBody").append('</tr>');
 				});
 			}
 			else {
