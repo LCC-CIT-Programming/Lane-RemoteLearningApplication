@@ -14,10 +14,12 @@ while(! feof($file))
   {
 	$line = fgets($file);
 	$trim_line = preg_replace('/\s+/', '', $line);
-	$parts = explode('"', $trim_line);
 	echo $trim_line . "<br />";
+	$parts = explode('"', $trim_line);
+	
 	foreach ($parts as $part)
 	{
+		if ( $part != "")
 		
 		echo $part . "<br />";
 	}
