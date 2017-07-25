@@ -8,5 +8,3 @@
 "L00000008"	"Princess"	"Jasmine"	"5555555"	"Cell phone"	"jasmine@fake.com"
 "L00000009"	"Princess"	"Ariel"	"5555555"	"Cell phone"	"ariel@fake.com"
 "L00000010"	"Fish"	"Flounder"	"5555555"	"Permanent phone (Main)"	"flounder@fake.com"
-
- 
