@@ -1,10 +1,17 @@
 <?php
-include 'C:\wamp\www\CIT_Remote_Monitoring_App\App\Models\db.php';
+
+//include 'C:\wamp\www\CIT_Remote_Monitoring_App\App\Models\db.php';
+include($_SERVER["DOCUMENT_ROOT"] . "CIT_Remote_Monitoring_App/App/Models/db.php");
 $lines = file("mcl_app_user_student.txt");
 $db = Database::getDb();
-
+$count = 0;
 foreach($lines as $line)
 {
+	$search = substr($lines[$count], 0, 11);
+	$count++;
+		
+	if (strpos($line, $search) !== false)
+	{
     $trim_line = preg_replace('/\s+/', "", $line);
 	$parts = explode('"', $trim_line);
 	$output = array();
@@ -34,7 +41,11 @@ foreach($lines as $line)
 	$statement->closeCursor();
 	echo $lnum . "<br />" . $lastName . "<br />" . $firstName . "<br />" . $email . "<br />";
 	
-	
+	}
+	echo $count . "<br />";
+	echo count($lines)  . "<br />";
+	 
 }
+
 
 ?>
