@@ -1,5 +1,4 @@
 "L00000001"	"Mouse"	"Mickey"	"5555555"	"Permanent phone (Main)"	"mickeymouse@fake.com"
-"L00000001"	"Mouse"	"Mickey"	"5555555"	"Permanent phone (Main)"	"mickeymouse@fake.com"
 "L00000002"	"Mouse"	"Minnie"	"5555555"	"Permanent phone (Main)"	"minniemouse@fake.com"
 "L00000003"	"Duck"	"Donald"	"5555555"	"Permanent phone (Main)"	"donalduck@fake.com"
 "L00000004"	"Princess"	"Cinderella"	"5555555"	"Permanent phone (Main)"	"cinderella@fake.com"
