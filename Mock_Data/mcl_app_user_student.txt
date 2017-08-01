@@ -1,4 +1,6 @@
 "L00000001"	"Mouse"	"Mickey"	"5555555"	"Permanent phone (Main)"	"mickeymouse@fake.com"
+"L00000001"	"Mouse"	"Mickey"	"5555555"	"Permanent phone (Main)"	"mickeymouse@fake.com"
+"L00000001"	"Mouse"	"Mickey"	"5555555"	"Permanent phone (Main)"	"mickeymouse@fake.com"
 "L00000002"	"Mouse"	"Minnie"	"5555555"	"Permanent phone (Main)"	"minniemouse@fake.com"
 "L00000003"	"Duck"	"Donald"	"5555555"	"Permanent phone (Main)"	"donalduck@fake.com"
 "L00000004"	"Princess"	"Cinderella"	"5555555"	"Permanent phone (Main)"	"cinderella@fake.com"
@@ -8,3 +10,5 @@
 "L00000008"	"Princess"	"Jasmine"	"5555555"	"Cell phone"	"jasmine@fake.com"
 "L00000009"	"Princess"	"Ariel"	"5555555"	"Cell phone"	"ariel@fake.com"
 "L00000010"	"Fish"	"Flounder"	"5555555"	"Permanent phone (Main)"	"flounder@fake.com"
+"L00000003"	"Duck"	"Donald"	"5555555"	"Permanent phone (Main)"	"donalduck@fake.com"
+"L00000015"	"Duck"	"Huey"	"5555555"	"Permanent phone (Main)"	"hueyduck@fake.com"
