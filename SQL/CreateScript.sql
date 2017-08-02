@@ -151,8 +151,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `CITLabMonitor`.`StudentRegistration` (
   `UserID` INT NOT NULL,
-  `SectionNumber` VARCHAR(10) NOT NULL,
-  INDEX `StudentRegistration_Section_FK_idx` (`SectionNumber` ASC),
+  `SectionNumber` VARCHAR(10) NOT NULL)
+  /*INDEX `StudentRegistration_Section_FK_idx` (`SectionNumber` ASC),
   CONSTRAINT `StudentRegistration_Student_FK`
     FOREIGN KEY (`UserID`)
     REFERENCES `CITLabMonitor`.`Student` (`UserID`)
@@ -163,6 +163,7 @@ CREATE TABLE IF NOT EXISTS `CITLabMonitor`.`StudentRegistration` (
     REFERENCES `CITLabMonitor`.`Section` (`SectionNumber`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
+	*/
 ENGINE = InnoDB;
 
 

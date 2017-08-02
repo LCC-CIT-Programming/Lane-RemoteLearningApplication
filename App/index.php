@@ -66,10 +66,10 @@ try {
             // ----------- SUCCESSFUL LOGIN -----------  //
             if ($user !== null)
             {
-                header('Location: ?action=home');
+                header('Location: index.php?action=home');
                 die();
             }
-                
+
             // -----------   FAILED LOGIN   -----------  //
             else {
                 $loginError = "Login attempt failed.";
@@ -110,7 +110,7 @@ try {
         // ----------- CANCEL QUESTION [AJAX/POST] -----------  //
         case "cancel_question":
             $id = filter_input(INPUT_POST, 'cancelQuestion');
-            
+
             if (isset($id)) {
                 $question = QuestionDB::GetQuestionByID($id);
                 $question->CancelQuestion();
@@ -125,7 +125,7 @@ try {
                     taskdb::UpdateTask($task);
                 }
                     $visit->setEndTime(date("Y-m-d h:i:s", time()));
-                    visitdb::UpdateVisit($visit);   
+                    visitdb::UpdateVisit($visit);
             }
 
             $loginError = "";
@@ -184,8 +184,8 @@ try {
                     array_push($acceptedQuestionInfo, $singleResolution);
                 }
                 echo json_encode($acceptedQuestionInfo);
-            } 
-            else 
+            }
+            else
                 echo json_encode(null);
         break;
 
@@ -324,13 +324,13 @@ try {
             $email = filter_input(INPUT_POST, "email");
             $pass1 = filter_input(INPUT_POST, "newPwd1");
             $pass2 = filter_input(INPUT_POST, "newPwd2");
-            
+
             if ($pass1 != $pass2) {
                 $passError = "Sorry the passwords do not match, please try again.";
                 $success = "";
                 include("./Views/edit.php");
-            } 
-            else 
+            }
+            else
             {
                 $user = $_SESSION['user'];
                 $userID = $user->GetUserID();

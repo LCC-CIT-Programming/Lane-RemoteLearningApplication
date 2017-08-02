@@ -75,6 +75,7 @@ class AppUser
 
     public static function login($LNUMBER, $PASSWORD, $ROLE)
     {
+
       $_SESSION['role'] = $ROLE;
       if ($ROLE == "faculty") {
           return null;
@@ -97,8 +98,8 @@ class AppUser
       else
       {
         $user = StudentDB::StudentLogin($LNUMBER, $PASSWORD);
-        if ($user !== null && isset($user)) {
 
+        if ($user !== null && isset($user)) {
             // ----------- COURSES -----------  //
             $courses = StudentDB::GetStudentCourses($user);
             //SESSION STUFF
@@ -124,6 +125,6 @@ class AppUser
 
       $_SESSION['user'] = null;
       return null;
-    }
+     }
 }
 ?>

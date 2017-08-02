@@ -21,12 +21,12 @@ class StudentDB
 
         if ($row != false) {
             $user = new Student($row['FirstName'],
-                                              $row['LastName'],
-                                              $row['LNumber'],
-                                              $row['Password'],
-                                              $row['EmailAddress'],
-                                                        $row['MajorId'],
-                                                        $row['UserID']);
+                                $row['LastName'],
+                                $row['LNumber'],
+                                $row['Password'],
+                                $row['EmailAddress'],
+                                $row['MajorId'],
+                                $row['UserID']);
             return $user;
         } else {
             return null;
@@ -39,10 +39,10 @@ class StudentDB
         $userID = $STUDENT->getUserID();
 
         $query = 'SELECT * FROM Course
-						 JOIN Section ON Course.CourseNumber = Section.CourseNumber
-						 JOIN StudentRegistration ON Section.SectionNumber = StudentRegistration.SectionNumber
-						 JOIN Student ON StudentRegistration.UserID = Student.UserID
-				     WHERE Student.UserID = :id';
+    						 JOIN Section ON Course.CourseNumber = Section.CourseNumber
+    						 JOIN StudentRegistration ON Section.SectionNumber = StudentRegistration.SectionNumber
+    						 JOIN Student ON StudentRegistration.UserID = Student.UserID
+    				     WHERE Student.UserID = :id';
 
         $db = Database::getDB();
 
@@ -56,8 +56,8 @@ class StudentDB
 
         foreach ($rows as $row) {
             $course = new Course($row['CourseNumber'],
-                                                                 $row['CourseName'],
-                                                               $row['LeadInstructorId']);
+                                 $row['CourseName'],
+                                 $row['LeadInstructorId']);
             array_push($courses, $course);
         }
         return $courses;
@@ -83,12 +83,12 @@ class StudentDB
         if ($rows != false) {
             foreach ($rows as $row) {
                 $question = new Question($row['UserID'],
-                                                                 $row['CourseNumber'],
-                                                                 $row['Subject'],
-                                                                 $row['Description'],
-                                                                 $row['Status'],
-                                                                 $row['AskTime'],
-                                                               $row['QuestionID']);
+                                         $row['CourseNumber'],
+                                         $row['Subject'],
+                                         $row['Description'],
+                                         $row['Status'],
+                                         $row['AskTime'],
+                                         $row['QuestionID']);
 
                 if ($row != false) {
                     array_push($questions, $question);
@@ -113,7 +113,7 @@ class StudentDB
         $majorID = $STUDENT->getMajorID();
 
         $query1 = 'INSERT INTO AppUser(FirstName, LastName, LNumber, Password, EmailAddress)
-							 VALUES (:firstName, :lastName, :lnum, :pass, :email)';
+							     VALUES (:firstName, :lastName, :lnum, :pass, :email)';
 
         $statement = $db->prepare($query1);
         $statement->bindValue(':firstName', $firstName);
@@ -125,8 +125,8 @@ class StudentDB
         $statement->closeCursor();
 
         $query2 = 'SELECT UserID
-							 FROM AppUser
-							 WHERE LNumber = :username';
+							     FROM AppUser
+							     WHERE LNumber = :username';
 
         $statement = $db->prepare($query2);
         $statement->bindValue(':username', $lnum);
@@ -136,16 +136,17 @@ class StudentDB
 
         if ($row != false) {
             $ID = $row['UserID'];
+
+
+          $query3 = 'INSERT INTO Student(MajorId, UserId)
+  							 VALUES(:majorid, :userid)';
+
+          $statement = $db->prepare($query3);
+          $statement->bindValue(':majorid', $majorID);
+          $statement->bindValue(':userid', $ID);
+          $statement->execute();
+          $statement->closeCursor();
         }
-
-        $query3 = 'INSERT INTO Student(MajorId, UserId)
-							 VALUES(:majorid, :userid)';
-
-        $statement = $db->prepare($query3);
-        $statement->bindValue(':majorid', $majorID);
-        $statement->bindValue(':userid', $ID);
-        $statement->execute();
-        $statement->closeCursor();
     }
 
     public static function RetrieveStudentByID($STUDENTID)
@@ -213,15 +214,15 @@ class StudentDB
     public static function UpdateProfile($USER)
     {
         $db = Database::getDB();
-        
+
         $email = $USER->getEmail();
         $pass = $USER->getPassword();
         $userID = $USER->getUserID();
-    
-        $query = 'UPDATE AppUser 
+
+        $query = 'UPDATE AppUser
 					SET Password = :pass, EmailAddress = :email
 					WHERE UserID = :userid';
-                    
+
         $statement = $db->prepare($query);
         $statement->bindValue(':pass', $pass);
         $statement->bindValue(':email', $email);
@@ -229,7 +230,7 @@ class StudentDB
         $statement->execute();
         $statement->closeCursor();
     }
-    
+
     public static function DeleteStudent($STUDENT)
     {
         $db = Database::getDB();

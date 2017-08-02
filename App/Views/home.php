@@ -1,4 +1,4 @@
-<?php include 'header.php'; ?>
+<?php include './Views/header.php'; ?>
 
 <!-- Container for student content -->
 <div class="container-fluid" id="main_content_div">
@@ -149,7 +149,7 @@
 				$('#class option').each(function() {
 					if ($(this).val() == "<?php $task->getCourseNumber() ?>")
 							$(this).attr('selected', 'selected');
-				}); 
+				});
 		});
 	</script>
 <?php } ?>
@@ -165,7 +165,7 @@ $(document).ready(function() {
 		$('#location option').each(function() {
 			if ($(this).val() == "<?php echo $visit->getLocationID() ?>")
 					$(this).attr('selected', 'selected');
-		}); 
+		});
 
     $("#class").change( function(){
             $.ajax({
@@ -256,9 +256,9 @@ $(document).on('click', '.details', function() {
 
 	$(document).on('click', '.cancelQuestion', function() {
 			var val = $(this).val();
-	    $.post('', { 
-				action:'cancel_question', 
-				cancelQuestion:val 
+	    $.post('', {
+				action:'cancel_question',
+				cancelQuestion:val
 			})
 			.done(function() { loadTable(); });
 	});
@@ -286,7 +286,7 @@ function loadTable() {
 
 					if (data[key]['askUserID'] == data[key]['userID'] && data[key]['userRole'] == "student") $("#tableBody").append(myRowStart);
 					else  $("#tableBody").append(rowStart);
-					
+
 					$("#tableBody").append(questionInfo);
 					if (data[key]['askUserID'] == data[key]['userID'] && data[key]['userRole'] == "student") $('#tableBody').append(cancel);
 					if (data[key]['userRole'] == "tutor" || data[key]['userRole'] == "faculty") $('#tableBody').append(details);
