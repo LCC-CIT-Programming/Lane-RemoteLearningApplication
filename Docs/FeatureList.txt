@@ -7,6 +7,7 @@ Feature ideas for implementation fall term
 - Blows up if I go to the home page without logging in.  It should take me to the login page
 	- Assigned to Eva and Jeoff?
 	- completed in class - 1 hour - 11/15
+	*need better error message if a student has no courses
 	
 - Hover over a tutor in the tutor schedule and see the expertise
 	- assigned to Oliver and Hamada

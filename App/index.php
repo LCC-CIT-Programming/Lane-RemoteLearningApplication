@@ -25,6 +25,8 @@ try {
     if (isset($_SESSION['user'])) {
         $user = $_SESSION['user'];
     }
+	else 
+		$user = null;
     if (isset($_SESSION['courses'])) {
         $courses = $_SESSION['courses'];
     }
@@ -45,6 +47,13 @@ try {
             $action = 'default';
         }
     }
+if ($user == null){
+	if ($action != 'default' && $action != 'login')
+		{
+			$action = 'default';
+		}
+	}
+		
 
     switch ($action) {
 
