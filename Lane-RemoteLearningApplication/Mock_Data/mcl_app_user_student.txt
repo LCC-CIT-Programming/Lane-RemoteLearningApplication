@@ -1,0 +1,5 @@
+"L00000101"	"Dylan"	"Bob"	"5555555"	"Permanent phone (Main)"	"bobdylan@example.com"
+"L00000102"	"Hendrix"	"Jimi"	"5555555"	"Permanent phone (Main)"	"jimihendrix@example.com"
+"L00000103"	"Cobain"	"Kurt"	"5555555"	"Permanent phone (Main)"	"kurtcobain@example.com"
+"L00000104"	"Rose"	"Axle"	"5555555"	"Permanent phone (Main)"	"axe@example.com"
+"L00000105"	"Vedder"	"Eddie"	"5555555"	"Permanent phone (Main)"	"eddie@example.com"

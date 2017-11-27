@@ -1,0 +1,42 @@
+Feature ideas for implementation fall term
+- Add a database user and password.  (right now uses root and no password)
+- Change the database error page.
+	- assigned to Andrew and Austin
+	- completed in class - 1 hour - 11/15
+
+- Blows up if I go to the home page without logging in.  It should take me to the login page
+	- Assigned to Eva and Jeoff?
+	- completed in class - 1 hour - 11/15
+	*need better error message if a student has no courses
+	
+- Hover over a tutor in the tutor schedule and see the expertise
+	- assigned to Oliver and Hamada
+	- started in class 11/15
+	
+- Display the picture for the user
+- Edit Profile for a student
+	- Assigned to Aeryne, Robin, Cody and Jack
+	- started in class 11/15
+	
+- Edit Profile (and expertise) for a tutor
+	- Aeryne and Robin after profile for student?
+	
+- Design and implement a strategy for checking to see if a student is still working or should be logged out
+	- Andrew, Austin
+
+- Write some end of the term queries to gather data for instructors
+	- Oliver and Hamada?
+	
+- Develop or find a code base for writing 2 dimensional associative array to a text file OR excel file OR xml file for download
+
+Download file, bring to excel and create graph, wants to be able to choose excel, text or xml. If you can do in JS rather than PHP that's fine. On some level better to do on client side, so consider JS. Doesn't matter which, but wants user to be able to download file and choose formats. At a minimum, comma seperated value as we can bring that to excel. XML would be nice because Eva's file needs it. Basically do it all is the implication here.
+
+Build sample code, test and make sure functionality is working. Write a document that says what we need to do like framework, how to include framework files on server for Joseph Colton. 
+1. Get it working on machine, 
+2. Write sample code for proof of concept, 
+3. Documentation for others 
+4. Design a page that would (more later)
+	- Eva, Jeoff and Aaron
+	
+- Develop or a code base for creating graphs from a 2 dimensional associative array on the server side OR a json array on the client side
+	- Cody and Jack?
