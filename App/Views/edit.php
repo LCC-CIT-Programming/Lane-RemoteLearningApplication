@@ -11,10 +11,15 @@
       <div class="col-md-3">
 	   <h2 class="text-center"><?php echo($user->getFirstName(). " " . $user->getLastName());?></h2>
         <div class="text-center">
-          <img src="./Styles/smiley.png
-		  " class="avatar img-circle" alt="avatar">
+          <!--here's where the img will be displayed-->
+		  <!--<img src="./Styles/smiley.png
+		  " class="avatar img-circle" alt="avatar">-->
+		  <img src="<?php echo $user->getImgFilepath($user->getUserID()); ?>" class="avatar img-circle" alt="avatar">
           <h6>Upload a different photo...</h6>
-          <input type="file" class="form-control" style="display: block;">
+          <form method="post" enctype="multipart/form-data">
+			<input type="file" class="form-control" style="display: block;">
+			<input type="submit" class="btn" id="savePicture" name="savePicture">Upload Picture</input>
+		  </form>
 		  </br>
 
         </div>

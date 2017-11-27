@@ -8,6 +8,8 @@ class AppUser
     protected $lnumber;
     protected $pass;
     protected $email;
+	//add property for img filepath
+	//protected $filepath;
 
     public function __construct($FIRSTNAME, $LASTNAME, $LNUMBER, $PASS, $EMAIL, $USERID = null)
     {
@@ -126,5 +128,25 @@ class AppUser
       $_SESSION['user'] = null;
       return null;
      }
+	 
+	 //shamelessly copied from Lab 6
+	 public function getImageFilename() {
+        $number_hash = md5(getLNumber());
+		$image_filename = $number_hash . '.png';
+        return $image_filename;
+    }
+
+    public function getImagePath() {
+        $image_path = '../Profile_Pics/' . $this->getImageFilename();
+        return $image_path;
+    }
+	 
+	 /*public function getImgFilepath($LNUMBER) {
+		 //pass in LNumber, return the hashed string for the image filepath
+		 //generate appuser object from database
+		 $user = $_SESSION['user'];
+		 $returnString = md5($user->$filepath);
+		 return $returnString;
+	 }*/
 }
 ?>

@@ -26,7 +26,7 @@ class StudentDB
                                 $row['Password'],
                                 $row['EmailAddress'],
                                 $row['MajorId'],
-                                $row['UserID']);
+                                $row['UserID']); //add $row['ImgFilepath']
             return $user;
         } else {
             return null;
