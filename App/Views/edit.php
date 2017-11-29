@@ -14,11 +14,12 @@
           <!--here's where the img will be displayed-->
 		  <!--<img src="./Styles/smiley.png
 		  " class="avatar img-circle" alt="avatar">-->
-		  <img src="<?php echo $user->getImgFilepath($user->getUserID()); ?>" class="avatar img-circle" alt="avatar">
+		  <img src="<?php echo $user->getImagePath($user->getUserID()); ?>" class="avatar img-circle" alt="avatar">
           <h6>Upload a different photo...</h6>
           <form action=".?=update_picture" method="post" enctype="multipart/form-data">
-			<input type="file" class="form-control" style="display: block;">
-			<input type="submit" class="btn" id="savePicture" name="savePicture">Upload Picture</input>
+			<input type="file" id="savePicture" name="savePicture" class="form-control" style="display: block;">
+			<input type="submit" class="btn" value="Upload Picture"/>
+			<input type="hidden" name="action" value="update_picture" />
 		  </form>
 		  </br>
 

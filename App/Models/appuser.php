@@ -129,7 +129,7 @@ class AppUser
 	 
 	 //shamelessly copied from Lab 6
 	 public function getImageFilename() {
-        $number_hash = md5(getLNumber());
+        $number_hash = md5($this->getLNumber());
 		$image_filename = $number_hash . '.png';
         return $image_filename;
     }
