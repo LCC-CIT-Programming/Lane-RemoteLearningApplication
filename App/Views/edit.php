@@ -16,7 +16,7 @@
 		  " class="avatar img-circle" alt="avatar">-->
 		  <img src="<?php echo $user->getImgFilepath($user->getUserID()); ?>" class="avatar img-circle" alt="avatar">
           <h6>Upload a different photo...</h6>
-          <form method="post" enctype="multipart/form-data">
+          <form action=".?=update_picture" method="post" enctype="multipart/form-data">
 			<input type="file" class="form-control" style="display: block;">
 			<input type="submit" class="btn" id="savePicture" name="savePicture">Upload Picture</input>
 		  </form>
