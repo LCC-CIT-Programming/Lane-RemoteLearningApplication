@@ -348,7 +348,9 @@ try {
             }
         break;
 		case "update_picture":
-			uploads/upload_Picture(); //calls to upload picture function in uploads.php in Profile_Pics folder
+			$success = "";
+			$passError = "";
+			upload_Picture(); //calls to upload picture function in uploads.php in Profile_Pics folder
 			include("./Views/edit.php");
 		break;
     }
