@@ -4,8 +4,8 @@ class Database
 {
     //static = create only one, and is not an instance of an object
     private static $dsn = 'mysql:host=localhost;dbname=citlabmonitor';
-    private static $username = 'root';
-    private static $password = '';
+    private static $username = 'citlab_user';
+    private static $password = 'pa$$word123';
     private static $options = array(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
     private static $db;
 

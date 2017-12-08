@@ -102,6 +102,8 @@ class AppUser
         if ($user !== null && isset($user)) {
             // ----------- COURSES -----------  //
             $courses = StudentDB::GetStudentCourses($user);
+			if (count ($courses) == 0)
+				return null;
             //SESSION STUFF
             $_SESSION['courses'] = $courses;
 

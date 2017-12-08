@@ -1,5 +1,6 @@
 <?php
 require_once('Utils/filepath.php');
+require_once('Utils/usehttps.php');
 require_once('Models/appuser.php');
 require_once('Models/student.php');
 require_once('Models/studentdb.php');
@@ -19,12 +20,16 @@ require_once('Models/scheduledb.php');
 require_once('Models/resolution.php');
 require_once('Models/resolutiondb.php');
 
+forceHttps(true);
+
 try {
 
     session_start();
     if (isset($_SESSION['user'])) {
         $user = $_SESSION['user'];
     }
+	else 
+		$user = null;
     if (isset($_SESSION['courses'])) {
         $courses = $_SESSION['courses'];
     }
@@ -45,6 +50,13 @@ try {
             $action = 'default';
         }
     }
+if ($user == null){
+	if ($action != 'default' && $action != 'login')
+		{
+			$action = 'default';
+		}
+	}
+		
 
     switch ($action) {
 

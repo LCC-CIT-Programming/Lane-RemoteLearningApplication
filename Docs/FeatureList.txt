@@ -1,0 +1,34 @@
+Feature ideas for implementation fall term
+- Add a database user and password.  (right now uses root and no password)
+- Change the database error page.
+	- assigned to Andrew and Austin
+	- completed in class - 1 hour - 11/15
+
+- Blows up if I go to the home page without logging in.  It should take me to the login page
+	- Assigned to Eva and Jeoff?
+	- completed in class - 1 hour - 11/15
+	*need better error message if a student has no courses
+	
+- Hover over a tutor in the tutor schedule and see the expertise
+	- assigned to Oliver and Hamada
+	- started in class 11/15
+	
+- Display the picture for the user
+- Edit Profile for a student
+	- Assigned to Aeryne, Robin, Cody and Jack
+	- started in class 11/15
+	
+- Edit Profile (and expertise) for a tutor
+	- Aeryne and Robin after profile for student?
+	
+- Design and implement a strategy for checking to see if a student is still working or should be logged out
+	- Andrew, Austin, Aaron?
+
+- Write some end of the term queries to gather data for instructors
+	- Oliver and Hamada?
+	
+- Develop or find a code base for writing 2 dimensional associative array to a text file OR excel file OR xml file for download
+	- Eva and Jeoff?
+	
+- Develop or a code base for creating graphs from a 2 dimensional associative array on the server side OR a json array on the client side
+	- Cody and Jack?
