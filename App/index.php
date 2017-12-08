@@ -1,5 +1,6 @@
 <?php
 require_once('Utils/filepath.php');
+require_once('Utils/usehttps.php');
 require_once('Models/appuser.php');
 require_once('Models/student.php');
 require_once('Models/studentdb.php');
@@ -18,6 +19,8 @@ require_once('Models/schedule.php');
 require_once('Models/scheduledb.php');
 require_once('Models/resolution.php');
 require_once('Models/resolutiondb.php');
+
+forceHttps(true);
 
 try {
 
