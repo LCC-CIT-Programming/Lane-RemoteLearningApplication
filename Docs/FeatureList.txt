@@ -22,7 +22,8 @@ Feature ideas for implementation fall term
 	
 	
 - Design and implement a strategy for checking to see if a student is still working or should be logged out
-	- Andrew, Austin, Aaron?
+	- Assigned to Andrew, Austin
+	- Mari completed 12/9
 	
 - Add list of students who are logged in to the tutor screen
 
