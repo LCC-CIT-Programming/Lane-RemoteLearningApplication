@@ -348,6 +348,14 @@ WHERE EndTime IS NULL
 AND (Role = 'Tutor' OR Role = 'Faculty');
 -- AND UserID IN (SELECT UserID FROM tutor);
 
+-- -----------------------------------------------------
+-- User for the application
+-- -----------------------------------------------------
+GRANT SELECT, INSERT, UPDATE, DELETE
+ON *
+TO citlab_user@localhost
+IDENTIFIED BY 'D!;Fj*xc9~zFF]2(';
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

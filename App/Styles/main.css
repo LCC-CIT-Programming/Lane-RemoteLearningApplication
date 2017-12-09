@@ -2,6 +2,21 @@
 	font-family: Cambria, Georgia, serif !important;
 }
 
+.message {
+color: #00529b !important;
+background-color: white;
+border-radius: 15px;
+font-size: 20px;
+padding: 5px;
+}
+.message-box {
+margin: 20px auto;
+width: 90%;
+background-color: #d6d8d9;
+padding: 40px;
+border-radius: 15px;
+}
+
 .title{
   margin-bottom: 0;
   background-color:  #d6d8d9;
