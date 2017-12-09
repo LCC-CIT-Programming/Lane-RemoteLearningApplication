@@ -1,4 +1,4 @@
-/* MAJOR TABLE */
+Visit/* MAJOR TABLE */
 INSERT INTO major (MajorName) VALUES ('Programming');
 INSERT INTO major (MajorName) VALUES ('CIT');
 INSERT INTO major (MajorName) VALUES ('Networking');
@@ -99,11 +99,11 @@ INSERT INTO location (LocationName) VALUES ('Home');
 -- SELECT * FROM location;
 
 /* VISIT TABLE */
-INSERT INTO visit (StartTime, EndTime, UserID, LocationId, Role) VALUES ( '2016-11-21 14:00:00', '2016-11-21 16:00:00', 5, 1, 'student');
-INSERT INTO visit (StartTime, EndTime, UserID, LocationId, Role) VALUES ( '2016-11-24 09:00:00', '2016-11-24 09:30:21', 6, 2, 'student');
-INSERT INTO visit (StartTime, EndTime, UserID, LocationId, Role) VALUES ( '2016-11-22 12:00:00', '2016-11-22 14:00:00', 4, 1, 'student');
-INSERT INTO visit (StartTime, EndTime, UserID, LocationId, Role) VALUES ( '2016-11-23 13:30:00', '2016-11-23 15:00:00', 7, 2, 'student');
-INSERT INTO visit (StartTime, EndTime, UserID, LocationId, Role) VALUES ( '2016-11-24 15:28:00', '2016-11-24 17:11:00', 9, 2, 'student');
+INSERT INTO visit (StartTime, EndTime, LastPing, UserID, LocationId, Role) VALUES ( '2016-11-21 14:00:00', '2016-11-21 16:00:00', '2016-11-21 14:00:00', 5, 1, 'student');
+INSERT INTO visit (StartTime, EndTime, LastPing, UserID, LocationId, Role) VALUES ( '2016-11-24 09:00:00', '2016-11-24 09:30:21', '2016-11-24 09:00:00', 6, 2, 'student');
+INSERT INTO visit (StartTime, EndTime, LastPing, UserID, LocationId, Role) VALUES ( '2016-11-22 12:00:00', '2016-11-22 14:00:00', '2016-11-22 12:00:00', 4, 1, 'student');
+INSERT INTO visit (StartTime, EndTime, LastPing, UserID, LocationId, Role) VALUES ( '2016-11-23 13:30:00', '2016-11-23 15:00:00', '2016-11-23 13:30:00', 7, 2, 'student');
+INSERT INTO visit (StartTime, EndTime, LastPing, UserID, LocationId, Role) VALUES ( '2016-11-24 15:28:00', '2016-11-24 17:11:00', '2016-11-24 15:28:00', 9, 2, 'student');
 -- SELECT * FROM visit;
 
 /* TASK TABLE */

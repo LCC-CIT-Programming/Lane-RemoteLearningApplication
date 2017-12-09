@@ -7,19 +7,20 @@
 			<div class="col-sm-2"></div>
 			<div class=" col-sm-4 form-group">
 			<?php
-		    $role = $_SESSION['role'];
-		    if ($role == 'student') {
-		        echo "<label class='' for='class' >Please tell us what class you are working on.</label>";
-		        echo "<select class='form-control' id='class'>";
+		    	$role = $_SESSION['role'];
+		    	if ($role == 'student') {
+		        	echo "<label class='' for='class' >Please tell us what class you are working on.</label>";
+		        	echo "<select class='form-control' id='class'>";
 
 
-		        $courses = $_SESSION['courses'];
-		        foreach ($courses as $course) {
-		            echo '<option value = "' . $course->getCourseNumber().'" >' . $course->getCourseName() . '</option>';
-		        }
-    		}
-    	?>
-			</select>
+		        	$courses = $_SESSION['courses'];
+		        	foreach ($courses as $course) {
+		           	 	echo '<option value = "' . $course->getCourseNumber().'" >' . $course->getCourseName() . '</option>';
+		        	}
+		        	echo "</select>";
+    			}
+    		?>
+
 
 			</div>
 			<div class=" col-sm-4 form-group">
@@ -160,7 +161,8 @@ $(document).ready(function() {
 		loadTable();
 		setInterval(function() {
 			loadTable();
-		}, 30000);
+		}, 1000*60*2);
+		setInterval("stillLoggedIn()", 1000*60*15);
 
 		$('#location option').each(function() {
 			if ($(this).val() == "<?php echo $visit->getLocationID() ?>")
@@ -263,6 +265,9 @@ $(document).on('click', '.details', function() {
 			.done(function() { loadTable(); });
 	});
 
+function stillLoggedIn() {
+	$.get('.?action=still_logged_in');
+}
 
 function loadTable() {
 	$.post('', { action:'display_questions' }, function(ret) {
