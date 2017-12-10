@@ -1,4 +1,4 @@
-Visit/* MAJOR TABLE */
+/* MAJOR TABLE */
 INSERT INTO major (MajorName) VALUES ('Programming');
 INSERT INTO major (MajorName) VALUES ('CIT');
 INSERT INTO major (MajorName) VALUES ('Networking');
@@ -23,8 +23,8 @@ INSERT INTO instructor (UserID) VALUES (2);
 -- SELECT * FROM instructor;
 
 /* TUTOR TABLE */
-INSERT INTO tutor (UserID) VALUES (3);
-INSERT INTO tutor (UserID) VALUES (4);
+INSERT INTO tutor (UserID, TutorBio) VALUES (3, 'Tutor with an id of 3 is good at C#');
+INSERT INTO tutor (UserID, TutorBio) VALUES (4, 'Tutor with an id of 4 is good at JavaScript');
 -- SELECT * FROM tutor;
 
 /* STUDENT TABLE */

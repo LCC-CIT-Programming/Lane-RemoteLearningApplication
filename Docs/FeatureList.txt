@@ -12,6 +12,8 @@ Feature ideas for implementation fall term
 - Hover over a tutor in the tutor schedule and see the expertise
 	- assigned to Oliver and Hamada
 	- started in class 11/15
+	- Mari completed 12/10
+	- position and style the tutor expertise?
 	
 - Display the picture for the user
 - Edit Profile for a student
