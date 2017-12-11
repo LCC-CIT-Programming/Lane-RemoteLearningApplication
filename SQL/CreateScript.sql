@@ -185,6 +185,7 @@ CREATE TABLE IF NOT EXISTS `CITLabMonitor`.`Visit` (
   `VisitId` INT NOT NULL AUTO_INCREMENT,
   `StartTime` DATETIME NOT NULL,
   `EndTime` DATETIME NULL DEFAULT NULL,
+  `LastPing` DATETIME NULL DEFAULT NULL,
   `UserID` INT NOT NULL,
   `LocationId` INT NOT NULL,
   `Role` VARCHAR(15) NOT NULL,
@@ -347,6 +348,39 @@ FROM visit
 WHERE EndTime IS NULL
 AND (Role = 'Tutor' OR Role = 'Faculty');
 -- AND UserID IN (SELECT UserID FROM tutor);
+
+-- -----------------------------------------------------
+-- View `CITLabMonitor`.`onlinestudents`
+-- -----------------------------------------------------
+CREATE VIEW `onlinestudents` AS
+	SELECT 
+		AppUser.UserID,
+		CONCAT(FirstName, ' ', LastName) AS Name,
+		ROUND(TIMESTAMPDIFF(MINUTE, LastPing, NOW()) / 60,
+				1) AS HoursWorking,
+		LocationName,
+		CourseName
+	FROM
+		visit
+			INNER JOIN
+		AppUser ON visit.UserID = AppUser.UserID
+			INNER JOIN
+		Location ON Visit.LocationID = Location.LocationID
+			INNER JOIN
+		Task ON Visit.VisitID = Task.VisitID
+			INNER JOIN
+		Course ON Task.CourseNumber = Course.CourseNumber
+	WHERE
+		(Visit.EndTime IS NULL
+			AND Task.EndTime IS NULL)
+			AND (Role = 'student');
+-- -----------------------------------------------------
+-- User for the application
+-- -----------------------------------------------------
+GRANT SELECT, INSERT, UPDATE, DELETE
+ON *
+TO citlab_user@localhost
+IDENTIFIED BY 'D!;Fj*xc9~zFF]2(';
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

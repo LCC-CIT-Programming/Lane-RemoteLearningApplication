@@ -38,11 +38,10 @@
           ?>
 
         </table>
-        <form>
-            <div id='tutorExpertise' >
-               
-            </div>
-        </form>
+        
+        <div id='tutorExpertise' >               
+        </div>
+
         </div>
       </div>
     </div>
@@ -63,19 +62,40 @@
                 
 
                 for ($i = $fStart; $i <= $fEnd; $i++) {
-                    ?>
-                    $("#<?php echo $i . $day; ?>").append("<input type='button' id='tutor' class='hasTutor' value='<?php echo $tutorID; ?>' style='width:100%;'><?php echo $name; ?></a>");
+        ?>
+                    $("#<?php echo $i . $day; ?>").append(
+                    	"<a id='tutor_<?php echo $tutorID; ?>' class='isTutor' href='' style='width:100%;'><?php echo $name; ?></a>");
 
-          <?php 
+        <?php 
                 } 
-            } ?>  
-            <?php $tutors = TutorDB::GetAllTutors();
+            } 
+            $tutors = TutorDB::GetAllTutors();
             foreach ($tutors as $t){
-              $email = $t->getEmail();
-              $name = $t->getFirstName();
+              $tutorID = $t->getUserID();
               $bio = $t->getTutorBio();
-              ?>
-            $("div#tutorExpertise").append("<p>Name: <?php echo $name; ?>Email:  <?php echo $email; ?> Expertise: <?php echo $bio; ?> </p>");
+        ?>
+            $("div#tutorExpertise").append(
+            	"<div class='isExpertise' id='tutor_<?php echo $tutorID; ?>'><h3><?php echo $bio; ?></h3></div>");
         <?php  }  ?>
+        // hide each div tag that contains tutor experience
+        $("div.isExpertise").hide();
+        // add the event handler to show the experience for each tutor
+        $("a.isTutor").hover( 
+        	function(event){
+    			var divThisTutor = "div#" + this.id;
+    			//$(divThisTutor).css("position", "inline");
+    			//$(divThisTutor).css("left", (event.pageX) + "px");
+    			//$(divThisTutor).css("top", (event.pageY) + "px");
+    			//$(divThisTutor).css("left:(event.pageX+20) + "px", top:(event.pageY+20) + "px"});
+				$(divThisTutor).show();
+			}, 
+			function (event) {
+			    var divThisTutor = "div#" + this.id;
+				$(divThisTutor).hide();
+			}
+		);
+		// clicking on a tutor shouldn't reload the page
+		$("a.isTutor").click( function(event) { event.preventDefault(); });
+
   });
 </script>

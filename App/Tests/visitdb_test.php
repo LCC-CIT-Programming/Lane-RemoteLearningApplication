@@ -5,7 +5,7 @@ include_once('../Models/db.php');
 
 function canCreateVisit()
 {
-    $visit = new Visit(7, 2);
+    $visit = new Visit(7, 2, 'student');
     try {
         visitdb::CreateVisit($visit);
         echo "<p style='color:green;'> Creating a visit was successful! </p>";
@@ -16,7 +16,7 @@ function canCreateVisit()
 
 function canRetrieveVisit()
 {
-    $visit = new Visit(3, 2);
+    $visit = new Visit(3, 2, 'student');
     $retrievedvisit = visitdb::RetrieveVisit($visit);
 
     if (isset($retrievedvisit) && ($retrievedvisit->getVisitID() == 3)) {

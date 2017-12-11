@@ -50,8 +50,9 @@ try {
             $action = 'default';
         }
     }
-if ($user == null){
-	if ($action != 'default' && $action != 'login')
+    
+	if ($user == null){
+		if ($action != 'default' && $action != 'login')
 		{
 			$action = 'default';
 		}
@@ -128,6 +129,14 @@ if ($user == null){
                 $question->CancelQuestion();
             }
         break;
+        
+        // ----------- STILL LOGGED IN [AJAX/GET] -----------  //
+        case "still_logged_in":
+            if (isset($visit)) {
+                $visit->setLastPing(date("Y-m-d h:i:s", time()));
+                visitdb::UpdateVisit($visit);
+            }
+        break;
 
         // ----------- LOGOUT [GET] -----------  //
         case "logout":
@@ -136,8 +145,8 @@ if ($user == null){
                     $task->setEndTime(date("Y-m-d h:i:s", time()));
                     taskdb::UpdateTask($task);
                 }
-                    $visit->setEndTime(date("Y-m-d h:i:s", time()));
-                    visitdb::UpdateVisit($visit);
+                $visit->setEndTime(date("Y-m-d h:i:s", time()));
+                visitdb::UpdateVisit($visit);
             }
 
             $loginError = "";

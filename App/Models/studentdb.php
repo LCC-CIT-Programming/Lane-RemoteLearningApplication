@@ -100,6 +100,22 @@ class StudentDB
             return null;
         }
     }
+    
+    public static function GetOnlineStudents()
+    {
+        $db = Database::getDB();
+        $query = 'SELECT * FROM onlinestudents';
+        $statement = $db->prepare($query);
+        $statement->execute();
+        $rows = $statement->fetchAll();
+        $statement->closeCursor();
+
+        if (isset($rows)) {
+            return $rows;
+        } else {
+            return null;
+        }
+    }
 
     public static function CreateStudent($STUDENT)
     {

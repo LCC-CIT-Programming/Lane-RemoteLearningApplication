@@ -12,6 +12,8 @@ Feature ideas for implementation fall term
 - Hover over a tutor in the tutor schedule and see the expertise
 	- assigned to Oliver and Hamada
 	- started in class 11/15
+	- Mari completed 12/10
+	- position and style the tutor expertise?
 	
 - Display the picture for the user
 - Edit Profile for a student
@@ -19,16 +21,25 @@ Feature ideas for implementation fall term
 	- started in class 11/15
 	
 - Edit Profile (and expertise) for a tutor
-	- Aeryne and Robin after profile for student?
+	
 	
 - Design and implement a strategy for checking to see if a student is still working or should be logged out
-	- Andrew, Austin, Aaron?
+	- Assigned to Andrew, Austin
+	- Mari completed 12/9
+	
+- Add list of students who are logged in to the tutor screen
+
+- Add list of students who are working on the same class to the student screen
+
+- Add what they're working on to the task information
+	- pick from a combo box - required reading, other reading, video, tutorials etc
+	
+	
 
 - Write some end of the term queries to gather data for instructors
-	- Oliver and Hamada?
+
 	
 - Develop or find a code base for writing 2 dimensional associative array to a text file OR excel file OR xml file for download
 	- Eva and Jeoff?
 	
 - Develop or a code base for creating graphs from a 2 dimensional associative array on the server side OR a json array on the client side
-	- Cody and Jack?
