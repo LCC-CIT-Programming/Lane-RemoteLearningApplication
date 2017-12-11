@@ -350,6 +350,31 @@ AND (Role = 'Tutor' OR Role = 'Faculty');
 -- AND UserID IN (SELECT UserID FROM tutor);
 
 -- -----------------------------------------------------
+-- View `CITLabMonitor`.`onlinestudents`
+-- -----------------------------------------------------
+CREATE VIEW `onlinestudents` AS
+	SELECT 
+		AppUser.UserID,
+		CONCAT(FirstName, ' ', LastName) AS Name,
+		ROUND(TIMESTAMPDIFF(MINUTE, LastPing, NOW()) / 60,
+				1) AS HoursWorking,
+		LocationName,
+		CourseName
+	FROM
+		visit
+			INNER JOIN
+		AppUser ON visit.UserID = AppUser.UserID
+			INNER JOIN
+		Location ON Visit.LocationID = Location.LocationID
+			INNER JOIN
+		Task ON Visit.VisitID = Task.VisitID
+			INNER JOIN
+		Course ON Task.CourseNumber = Course.CourseNumber
+	WHERE
+		(Visit.EndTime IS NULL
+			AND Task.EndTime IS NULL)
+			AND (Role = 'student');
+-- -----------------------------------------------------
 -- User for the application
 -- -----------------------------------------------------
 GRANT SELECT, INSERT, UPDATE, DELETE

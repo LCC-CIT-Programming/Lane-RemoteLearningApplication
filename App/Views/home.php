@@ -66,6 +66,52 @@
 	</div>
 </div>
 
+<!-- Container for Student List -->
+<div class="container-fluid" id="student_list_table_div">
+	<div class="row">
+
+			<div class="col-sm-12">
+				<h1 id="tutor_header">Other Students Who Are Working Now</h1>
+				<hr>
+				<table class="table table-hover table-striped" id="student_list_table">
+				  <thead>
+					<tr>
+					  <th>Name</th>
+					  <th>Working On</th>
+					  <th>Where</th>
+					  <th>How Long (Hours)</th>
+					</tr>
+				  </thead>
+
+          <?php
+          	 // returns a 2 dimensional array not an array of student objects
+            $students = StudentDB::GetOnlineStudents();
+
+			if ($students != null) {
+				$count = 0;
+				foreach ($students as $student) {
+                	if ($student['UserID'] != $user->getUserId()) {
+                    	echo '<tr><td>' . $student['Name'] . '</td>' .
+                       	'<td>' . $student['CourseName'] . '</td>' .
+                       	'<td>' . $student['LocationName'] . '</td>' .
+                       	'<td>' . $student['HoursWorking'] . '</td>' .
+                       	'</tr>';
+                       	$count++;
+                    }
+                }
+                if ($count == 0)
+                  	echo '<tr><td>There are no other students working at this time.</td></tr>';
+              } else {
+                  echo '<tr><td>There are no other students working at this time.</td></tr>';
+              }
+          ?>
+
+				</table>
+			</div>
+
+	</div>
+</div>
+
 <!-- Container for Tutor List -->
 <div class="container-fluid" id="tutor_list_table_div">
 	<div class="row">
@@ -94,7 +140,7 @@
                        '</tr>';
                   }
               } else {
-                  echo '<td>There are no available tutors at this time.</td>';
+                  echo '<tr><td>There are no available tutors at this time.</td></tr>';
               }
           ?>
 
@@ -162,7 +208,7 @@ $(document).ready(function() {
 		setInterval(function() {
 			loadTable();
 		}, 1000*60*2);
-		setInterval("stillLoggedIn()", 1000*60*15);
+		setInterval("stillLoggedIn()", 1000*60*5);
 
 		$('#location option').each(function() {
 			if ($(this).val() == "<?php echo $visit->getLocationID() ?>")
