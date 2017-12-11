@@ -96,5 +96,6 @@
 		);
 		// clicking on a tutor shouldn't reload the page
 		$("a.isTutor").click( function(event) { event.preventDefault(); });
+
   });
 </script>
