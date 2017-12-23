@@ -9,7 +9,7 @@ class TaskDB
         $courseNumber = $TASK->getCourseNumber();
         $startTime = $TASK->getStartTime();
 
-        $query = 'INSERT INTO task
+        $query = 'INSERT INTO Task
               (VisitId, Coursenumber, StartTime)
               VALUES
               ( :visitid, :coursenumber,:starttime)';
@@ -27,8 +27,8 @@ class TaskDB
         $db = Database::getDB();
 
         $query = 'SELECT *
-			          FROM task
-                WHERE task.VisitId = :visitid AND task.StartTime = :starttime';
+			          FROM Task
+                WHERE Task.VisitId = :visitid AND Task.StartTime = :starttime';
 
         $statement = $db->prepare($query);
         $statement->bindValue(":visitid", $TASK->getVisitID());
@@ -55,8 +55,8 @@ class TaskDB
         $db = Database::getDB();
 
         $query = 'SELECT *
-			          FROM task
-                WHERE task.TaskId = :taskid';
+			          FROM Task
+                WHERE Task.TaskId = :taskid';
 
         $statement = $db->prepare($query);
         $statement->bindValue(":taskid", $TASK->getTaskID());
@@ -83,9 +83,9 @@ class TaskDB
         $taskID = $TASK->getTaskID();
         $endTime = $TASK->getEndTime();
 
-        $query = 'UPDATE task
+        $query = 'UPDATE Task
             SET EndTime = :endtime
-		        WHERE task.TaskId = :taskid';
+		        WHERE Task.TaskId = :taskid';
 
         $statement = $db->prepare($query);
         $statement->bindValue(":taskid", $taskID);
@@ -99,8 +99,8 @@ class TaskDB
         $db = Database::getDB();
         $taskID = $TASK->getTaskID();
 
-        $query = 'DELETE FROM task
-		          WHERE task.TaskId = :taskid';
+        $query = 'DELETE FROM Task
+		          WHERE Task.TaskId = :taskid';
 
         $statement = $db->prepare($query);
         $statement->bindValue(":taskid", $taskID);

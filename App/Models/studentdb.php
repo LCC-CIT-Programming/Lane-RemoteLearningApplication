@@ -2,28 +2,24 @@
 
 class StudentDB
 {
-    public static function StudentLogin($USERNAME, $PASSWORD)
+    public static function StudentLogin($USERNAME)
     {
-        $query = 'SELECT appuser.*, MajorId
-                FROM `appuser`
-                INNER JOIN student
-                ON appuser.UserID = student.UserID
-			          WHERE appuser.LNumber = :username
-                AND appuser.Password = :password';
+        $query = 'SELECT AppUser.*, MajorId
+                FROM `AppUser`
+                INNER JOIN Student
+                ON AppUser.UserID = Student.UserID
+			          WHERE AppUser.LNumber = :username';
 
         $db = Database::getDB();
         $statement = $db->prepare($query);
         $statement->bindValue(":username", $USERNAME);
-        $statement->bindValue(":password", $PASSWORD);
         $statement->execute();
         $row = $statement->fetch();
         $statement->closeCursor();
-
         if ($row != false) {
             $user = new Student($row['FirstName'],
                                 $row['LastName'],
                                 $row['LNumber'],
-                                $row['Password'],
                                 $row['EmailAddress'],
                                 $row['MajorId'],
                                 $row['UserID']);
@@ -124,18 +120,16 @@ class StudentDB
         $firstName = $STUDENT->getFirstName();
         $lastName = $STUDENT->getLastName();
         $lnum = $STUDENT->getLNumber();
-        $pass = $STUDENT->getPassword();
         $email = $STUDENT->getEmail();
         $majorID = $STUDENT->getMajorID();
 
-        $query1 = 'INSERT INTO AppUser(FirstName, LastName, LNumber, Password, EmailAddress)
-							     VALUES (:firstName, :lastName, :lnum, :pass, :email)';
+        $query1 = 'INSERT INTO AppUser(FirstName, LastName, LNumber, EmailAddress)
+							     VALUES (:firstName, :lastName, :lnum, :email)';
 
         $statement = $db->prepare($query1);
         $statement->bindValue(':firstName', $firstName);
         $statement->bindValue(':lastName', $lastName);
         $statement->bindValue(':lnum', $lnum);
-        $statement->bindValue(':pass', $pass);
         $statement->bindValue(':email', $email);
         $statement->execute();
         $statement->closeCursor();
@@ -185,7 +179,6 @@ class StudentDB
             $user = new Student($row['FirstName'],
                                                     $row['LastName'],
                                                     $row['LNumber'],
-                                                    $row['Password'],
                                                     $row['EmailAddress'],
                                                     $row['MajorId'],
                                                     $row['UserID']);
@@ -202,13 +195,12 @@ class StudentDB
         $firstName = $STUDENT->getFirstName();
         $lastName = $STUDENT->getLastName();
         $lnum = $STUDENT->getLNumber();
-        $pass = $STUDENT->getPassword();
         $email = $STUDENT->getEmail();
         $majorID = $STUDENT->getMajorID();
         $userID = $STUDENT->getUserID();
 
         $query = 'UPDATE AppUser
-							SET FirstName = :firstname, LastName = :lastname, LNumber = :lnum, Password = :pass, EmailAddress = :email
+							SET FirstName = :firstname, LastName = :lastname, LNumber = :lnum, EmailAddress = :email
 							WHERE UserID = :userID;
 
 				 			UPDATE Student
@@ -219,7 +211,6 @@ class StudentDB
         $statement->bindValue(':firstname', $firstName);
         $statement->bindValue(':lastname', $lastName);
         $statement->bindValue(':lnum', $lnum);
-        $statement->bindValue(':pass', $pass);
         $statement->bindValue(':email', $email);
         $statement->bindValue(':majorid', $majorID);
         $statement->bindValue(':userid', $userID);
@@ -232,15 +223,13 @@ class StudentDB
         $db = Database::getDB();
 
         $email = $USER->getEmail();
-        $pass = $USER->getPassword();
         $userID = $USER->getUserID();
 
         $query = 'UPDATE AppUser
-					SET Password = :pass, EmailAddress = :email
+					SET EmailAddress = :email
 					WHERE UserID = :userid';
 
         $statement = $db->prepare($query);
-        $statement->bindValue(':pass', $pass);
         $statement->bindValue(':email', $email);
         $statement->bindValue(':userid', $userID);
         $statement->execute();

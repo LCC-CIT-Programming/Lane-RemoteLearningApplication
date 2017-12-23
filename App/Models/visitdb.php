@@ -14,7 +14,7 @@ class VisitDB
 		$lastPing = $startTime;
         $role = $VISIT->getRole();
 
-        $query = 'INSERT INTO visit
+        $query = 'INSERT INTO Visit
               (UserID, LocationId, StartTime, LastPing, Role)
               VALUES
               ( :userid, :locationid, :starttime, :lastPing, :role )';
@@ -44,8 +44,8 @@ class VisitDB
         $db = Database::getDB();
 
         $query = 'SELECT *
-			          FROM visit
-                WHERE visit.UserID = :userid AND visit.LocationId = :locationid AND visit.EndTime IS NULL';
+			          FROM Visit
+                WHERE Visit.UserID = :userid AND Visit.LocationId = :locationid AND Visit.EndTime IS NULL';
 
         $statement = $db->prepare($query);
         $statement->bindValue(":locationid", $VISIT->getLocationID());
@@ -74,8 +74,8 @@ class VisitDB
         $db = Database::getDB();
 
         $query = 'SELECT *
-			          FROM visit
-                WHERE visit.UserID = :userid AND visit.EndTime IS NULL';
+			          FROM Visit
+                WHERE Visit.UserID = :userid AND Visit.EndTime IS NULL';
 
         $statement = $db->prepare($query);
         $statement->bindValue(":userid", $userID);
@@ -103,8 +103,8 @@ class VisitDB
         $db = Database::getDB();
 
         $query = 'SELECT *
-			          FROM visit
-                WHERE visit.VisitId = :visitid';
+			          FROM Visit
+                WHERE Visit.VisitId = :visitid';
 
         $statement = $db->prepare($query);
         $statement->bindValue(":visitid", $VISIT->getVisitID());
@@ -131,9 +131,9 @@ class VisitDB
     {
         $db = Database::getDB();
 
-        $query = 'UPDATE visit
+        $query = 'UPDATE Visit
             SET LocationId = :locationid, EndTime = :endtime, StartTime = :starttime, LastPing = :lastping
-		        WHERE visit.VisitId = :visitid';
+		        WHERE Visit.VisitId = :visitid';
 
         $statement = $db->prepare($query);
         $statement->bindValue(":locationid", $VISIT->getLocationID());
@@ -151,17 +151,17 @@ class VisitDB
     	if ($visit != null)
     	{
     		$db = Database::getDB();
-    		$query = 'UPDATE visit
+    		$query = 'UPDATE Visit
             	SET EndTime = :endtime
-		        WHERE visit.VisitId = :visitid AND EndTime IS NULL';
+		        WHERE Visit.VisitId = :visitid AND EndTime IS NULL';
 		    $statement = $db->prepare($query);
 		    $statement->bindValue(":visitid", $visit->getVisitID());
 		    $statement->bindValue(":endtime", $visit->getLastPing());
 		    $statement->execute();
         	$statement->closeCursor();
-        	$query = 'UPDATE task
+        	$query = 'UPDATE Task
         		SET EndTime = :endtime
-        		WHERE task.VisitId = :visitid AND EndTime IS NULL';
+        		WHERE Task.VisitId = :visitid AND EndTime IS NULL';
         	$statement = $db->prepare($query);
         	$statement->bindValue(":visitid", $visit->getVisitID());
 		    $statement->bindValue(":endtime", $visit->getLastPing());
@@ -174,8 +174,8 @@ class VisitDB
     {
         $db = Database::getDB();
 
-        $query = 'DELETE FROM visit
-		          WHERE visit.VisitId = :visitid';
+        $query = 'DELETE FROM Visit
+		          WHERE Visit.VisitId = :visitid';
 
         $statement = $db->prepare($query);
         $statement->bindValue(":visitid", $VISIT->getVisitID());

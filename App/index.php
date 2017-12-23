@@ -21,6 +21,7 @@ require_once('Models/resolution.php');
 require_once('Models/resolutiondb.php');
 
 forceHttps(true);
+$useCAS = false;
 
 try {
 
@@ -73,7 +74,14 @@ try {
             $username = filter_input(INPUT_POST, "lnumber");
             $password = filter_input(INPUT_POST, "password");
             $role = filter_input(INPUT_POST, "roleSelect");
-            $user = AppUser::login($username, $password, $role);
+            if ($useCAS) {
+            	//TODO:  Call Jacob's function here
+            	$user = AppUser::login($username, $role);
+            }
+            else {
+                $user = AppUser::login($username, $role);
+            }
+            
             $_SESSION['user'] = $user;
 
             // ----------- SUCCESSFUL LOGIN -----------  //
