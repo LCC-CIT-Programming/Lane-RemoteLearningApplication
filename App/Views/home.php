@@ -9,25 +9,31 @@
 			<?php
 		    	$role = $_SESSION['role'];
 		    	if ($role == 'student') {
-		        	echo "<label class='' for='class' >Please tell us what class you are working on.</label>";
+		        	echo "<label class='' for='class' >Please tell us what you are working on.</label>";
 		        	echo "<select class='form-control' id='class'>";
-
-
-		        	$courses = $_SESSION['courses'];
+					$courses = $_SESSION['courses'];
 		        	foreach ($courses as $course) {
 		           	 	echo '<option value = "' . $course->getCourseNumber().'" >' . $course->getCourseName() . '</option>';
 		        	}
 		        	echo "</select>";
+		        	echo "<select class='form-control' id='tasktype'>";
+		        	$tasktypes = $_SESSION['tasktypes'];
+		        	foreach ($tasktypes as $tasktype) {
+		           	 	echo '<option value = "' . $tasktype->getTaskTypeId().'" >' . $tasktype->getTaskTypeName() . '</option>';
+		        	}
+		        	echo "</select>";
     			}
     		?>
-
-
 			</div>
 			<div class=" col-sm-4 form-group">
 			<label class="" for="location">Where are you working today?</label>
 			<select class="form-control" id="location">
-				<option value="1">CIT Lab</option>
-				<option value ="2">Elsewhere</option>
+			<?php
+		        	$locations = $_SESSION['locations'];
+		        	foreach ($locations as $location) {
+		           	 	echo '<option value = "' . $location->getLocationId().'" >' . $location->getLocationName() . '</option>';
+		        	}
+    		?>
 			</select>
 			</div>
 			<div class="col-sm-2"></div>
@@ -194,7 +200,11 @@
 	<script>
 		$(document).ready(function() {
 				$('#class option').each(function() {
-					if ($(this).val() == "<?php $task->getCourseNumber() ?>")
+					if ($(this).val() == "<?php echo $task->getCourseNumber() ?>")
+							$(this).attr('selected', 'selected');
+				});
+				$('#tasktype option').each(function() {
+					if ($(this).val() == "<?php echo $task->getTaskTypeId() ?>")
 							$(this).attr('selected', 'selected');
 				});
 		});
@@ -215,13 +225,21 @@ $(document).ready(function() {
 					$(this).attr('selected', 'selected');
 		});
 
-    $("#class").change( function(){
+    	$("#class").change( function(){
             $.ajax({
                     url: ".?action=update_task",
                     type: "POST",
-                    data: {"courseNumber": $(this).val()},
+                    data: {"courseNumber": $(this).val(), "taskType": $("#taskType").val()},
            });
-    });
+    	});
+        $("#tasktype").change( function(){
+            $.ajax({
+                    url: ".?action=update_task",
+                    type: "POST",
+                    data: {"courseNumber": $("#class").val(), "taskType": $(this).val()},
+           });
+           
+        });
 
 	  $("#location").change( function(){
 				$.ajax({

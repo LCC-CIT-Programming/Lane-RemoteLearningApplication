@@ -19,6 +19,10 @@ require_once('Models/schedule.php');
 require_once('Models/scheduledb.php');
 require_once('Models/resolution.php');
 require_once('Models/resolutiondb.php');
+require_once('Models/location.php');
+require_once('Models/locationdb.php');
+require_once('Models/tasktype.php');
+require_once('Models/tasktypedb.php');
 
 forceHttps(true);
 $useCAS = false;
@@ -42,6 +46,20 @@ try {
     }
     if (isset($_SESSION['role'])) {
         $role = $_SESSION['role'];
+    }
+    if (isset($_SESSION['locations'])) {
+        $locations = $_SESSION['locations'];
+    }
+    else {
+    	$locations = LocationDB::getLocations();
+    	$_SESSION['locations'] = $locations;
+    }
+    if (isset($_SESSION['tasktypes'])) {
+        $taskTypes = $_SESSION['tasktypes'];
+    }
+    else {
+    	$taskTypes = TaskTypeDB::getTaskTypes();
+    	$_SESSION['tasktypes'] = $taskTypes;
     }
 
     $action = filter_input(INPUT_POST, 'action');
@@ -115,7 +133,8 @@ try {
         // ----------- TASK [AJAX/POST] -----------  //
         case "update_task":
             $courseNumber = filter_input(INPUT_POST, "courseNumber");
-            $currentTask = Task::ChangeTask($courseNumber, $visit, $task);
+            $taskType = filter_input(INPUT_POST, "taskType");
+            $currentTask = Task::ChangeTask($courseNumber, $taskType, $visit, $task);
             $_SESSION['task'] = $currentTask;
         break;
 
@@ -151,7 +170,7 @@ try {
             if (isset($task) || isset($visit) || isset($role)) {
                 if ($role == 'student') {
                     $task->setEndTime(date("Y-m-d h:i:s", time()));
-                    taskdb::UpdateTask($task);
+                    taskdb::EndTask($task);
                 }
                 $visit->setEndTime(date("Y-m-d h:i:s", time()));
                 visitdb::UpdateVisit($visit);

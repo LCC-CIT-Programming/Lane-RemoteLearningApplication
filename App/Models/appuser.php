@@ -95,6 +95,7 @@ class AppUser
             $_SESSION['courses'] = $courses;
 
             // ----------- VISIT -----------  //
+            // assumes the student is working in the lab //
             $visit = new Visit($user->GetUserID(), 1, $ROLE, date("Y-m-d h:i:s"));
             VisitDB::CreateVisit($visit);
             $visit = VisitDB::RetrieveVisit($visit);
@@ -102,7 +103,11 @@ class AppUser
             $_SESSION['visit'] = $visit;
 
             // ----------- TASK -----------  //
-            $task = new Task($visit->getVisitID(), $courses[0]->getCourseNumber(), date("Y-m-d h:i:s"));
+            // assumes the student is working on first course in the his/her list of courses //
+            $task = new Task($visit->getVisitID(), 
+            	$courses[0]->getCourseNumber(), 
+            	1,
+            	date("Y-m-d h:i:s"));
             TaskDB::CreateTask($task);
             $task = TaskDB::RetrieveTask($task);
 

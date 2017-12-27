@@ -2,10 +2,12 @@
 INSERT INTO Major (MajorName) VALUES ('Programming');
 INSERT INTO Major (MajorName) VALUES ('CIT');
 INSERT INTO Major (MajorName) VALUES ('Networking');
+INSERT INTO Major (MajorName) VALUES ('Gaming');
+INSERT INTO Major (MajorName) VALUES ('ASOT CS');
 -- SELECT * FROM major;
 
 /* APP USER TABLE */
-INSERT INTO Appuser (FirstName, LastName, LNumber, EmailAddress) VALUES ('Mari', 'Good', 'L00000001', 'Goodm@lanecc.edu');
+INSERT INTO Appuser (FirstName, LastName, LNumber, EmailAddress) VALUES ('Mari', 'Good', 'L00000051', 'goodm@lanecc.edu');
 INSERT INTO Appuser (FirstName, LastName, LNumber, EmailAddress) VALUES ('Ron', 'Little', 'L00000002', 'littler@lanecc.edu');
 INSERT INTO Appuser (FirstName, LastName, LNumber, EmailAddress) VALUES ('Tutor1', 'Three', 'L00000003', 'tutor1@gmail.com');
 INSERT INTO Appuser (FirstName, LastName, LNumber, EmailAddress) VALUES ('Tutor2', 'Four', 'L00000004', 'tutor2@gmail.com');
@@ -90,11 +92,11 @@ INSERT INTO StudentRegistration VALUES (1, 'abc123');
 -- SELECT * FROM StudentRegistration;
 
 /* Location TABLE */
-INSERT INTO Location (LocationName, StationId) VALUES ('Lab', 1);
-INSERT INTO Location (LocationName, StationId) VALUES ('Lab', 2);
-INSERT INTO Location (LocationName, StationId) VALUES ('Lab', 3);
-INSERT INTO Location (LocationName, StationId) VALUES ('Lab', 4);
-INSERT INTO Location (LocationName, StationId) VALUES ('Lab', 5);
+INSERT INTO Location (LocationName) VALUES ('Lab 135');
+INSERT INTO Location (LocationName) VALUES ('Lab 130');
+INSERT INTO Location (LocationName) VALUES ('Group Room');
+INSERT INTO Location (LocationName) VALUES ('Classroom');
+INSERT INTO Location (LocationName) VALUES ('Off campus');
 INSERT INTO Location (LocationName) VALUES ('Home');
 -- SELECT * FROM Location;
 
@@ -106,11 +108,28 @@ INSERT INTO Visit (StartTime, EndTime, LastPing, UserID, LocationId, Role) VALUE
 INSERT INTO Visit (StartTime, EndTime, LastPing, UserID, LocationId, Role) VALUES ( '2016-11-24 15:28:00', '2016-11-24 17:11:00', '2016-11-24 15:28:00', 9, 2, 'student');
 -- SELECT * FROM Visit;
 
+/* TaskType TABLE */
+INSERT INTO TaskType (TaskTypeName, TaskTypeCategory) VALUES ('Hands On Assignment - Homework', 'Lab');
+INSERT INTO TaskType (TaskTypeName, TaskTypeCategory) VALUES ('Hands On Assigment - In Class', 'Lab');
+INSERT INTO TaskType (TaskTypeName, TaskTypeCategory) VALUES ('Homework Assignment', 'Lecture');
+INSERT INTO TaskType (TaskTypeName, TaskTypeCategory) VALUES ('Reading - Required', 'Lecture');
+INSERT INTO TaskType (TaskTypeName, TaskTypeCategory) VALUES ('Reading - Recommended', 'Lecture');
+INSERT INTO TaskType (TaskTypeName, TaskTypeCategory) VALUES ('Reading - Extra', 'Lecture');
+INSERT INTO TaskType (TaskTypeName, TaskTypeCategory) VALUES ('Reading Quiz', 'Lecture');
+INSERT INTO TaskType (TaskTypeName, TaskTypeCategory) VALUES ('Midterm', 'Assessment');
+INSERT INTO TaskType (TaskTypeName, TaskTypeCategory) VALUES ('Final', 'Assessment');
+INSERT INTO TaskType (TaskTypeName, TaskTypeCategory) VALUES ('Demonstration - Video', 'Lecture/Lab');
+INSERT INTO TaskType (TaskTypeName, TaskTypeCategory) VALUES ('Demonstration - Live', 'Lecture/Lab');
+INSERT INTO TaskType (TaskTypeName, TaskTypeCategory) VALUES ('Tutorial - Written' , 'Lecture/Lab');
+INSERT INTO TaskType (TaskTypeName, TaskTypeCategory) VALUES ('Tutorial - Video', 'Lecture/Lab');
+INSERT INTO TaskType (TaskTypeName, TaskTypeCategory) VALUES ('Lecture - Live', 'Lecture');
+INSERT INTO TaskType (TaskTypeName, TaskTypeCategory) VALUES ('Lecture - Video', 'Lecture');
+
 /* Task TABLE */
-INSERT INTO Task (VisitId, CourseNumber, StartTime, EndTime) VALUES ( 1, 'CIS 244', '2016-11-21 14:00:00', '2016-11-21 16:00:00');
-INSERT INTO Task (VisitId, CourseNumber, StartTime, EndTime) VALUES ( 2, 'CS 133N', '2016-11-24 14:00:00', '2016-11-21 16:30:00');
-INSERT INTO Task (VisitId, CourseNumber, StartTime, EndTime) VALUES ( 3, 'CS 296P', '2016-11-23 14:00:00', '2016-11-21 16:45:00');
-INSERT INTO Task (VisitId, CourseNumber, StartTime, EndTime) VALUES ( 4, 'CS 295N', '2016-11-22 14:10:00', '2016-11-21 16:50:00');
+INSERT INTO Task (VisitId, CourseNumber, TaskTypeId, StartTime, EndTime) VALUES ( 1, 'CIS 244', 1, '2016-11-21 14:00:00', '2016-11-21 16:00:00');
+INSERT INTO Task (VisitId, CourseNumber, TaskTypeId, StartTime, EndTime) VALUES ( 2, 'CS 133N', 1, '2016-11-24 14:00:00', '2016-11-21 16:30:00');
+INSERT INTO Task (VisitId, CourseNumber, TaskTypeId, StartTime, EndTime) VALUES ( 3, 'CS 296P', 2, '2016-11-23 14:00:00', '2016-11-21 16:45:00');
+INSERT INTO Task (VisitId, CourseNumber, TaskTypeId, StartTime, EndTime) VALUES ( 4, 'CS 295N', 3, '2016-11-22 14:10:00', '2016-11-21 16:50:00');
 -- SELECT * FROM Task;
 
 /* Question TABLE */

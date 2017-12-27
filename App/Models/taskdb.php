@@ -7,16 +7,18 @@ class TaskDB
 
         $visitID = $TASK->getVisitID();
         $courseNumber = $TASK->getCourseNumber();
+        $taskTypeId = $TASK->getTaskTypeId();
         $startTime = $TASK->getStartTime();
 
         $query = 'INSERT INTO Task
-              (VisitId, Coursenumber, StartTime)
+              (VisitId, Coursenumber, TaskTypeId, StartTime)
               VALUES
-              ( :visitid, :coursenumber,:starttime)';
+              ( :visitid, :coursenumber, :taskTypeId, :starttime)';
 
         $statement = $db->prepare($query);
         $statement->bindValue(':visitid', $visitID);
         $statement->bindValue(':coursenumber', $courseNumber);
+        $statement->bindValue(':taskTypeId', $taskTypeId);
         $statement->bindValue(':starttime', $startTime);
         $statement->execute();
         $statement->closeCursor();
@@ -39,11 +41,12 @@ class TaskDB
 
         if ($row != false) {
             $task = new Task(
-                       $row['VisitId'],
-                       $row['CourseNumber'],
-             $row['StartTime'],
-             $row['TaskId'],
-             $row['EndTime']);
+                $row['VisitId'],
+                $row['CourseNumber'],
+                $row['TaskTypeId'], 
+             	$row['StartTime'],
+             	$row['TaskId'],
+             	$row['EndTime']);
             return $task;
         } else {
             return null;
@@ -66,18 +69,19 @@ class TaskDB
 
         if ($row != false) {
             $task = new Task(
-                                     $row['VisitId'],
-                                     $row['CourseNumber'],
-                       $row['StartTime'],
-                       $row['TaskId'],
-                       $row['EndTime']);
+                $row['VisitId'],
+                $row['CourseNumber'],
+                $row['TaskTypeid'], 
+                $row['StartTime'],
+                $row['TaskId'],
+                $row['EndTime']);
             return $task;
         } else {
             return null;
         }
     }
 
-    public static function UpdateTask($TASK)
+    public static function EndTask($TASK)
     {
         $db = Database::getDB();
         $taskID = $TASK->getTaskID();
@@ -90,6 +94,25 @@ class TaskDB
         $statement = $db->prepare($query);
         $statement->bindValue(":taskid", $taskID);
         $statement->bindValue(":endtime", $endTime);
+        $statement->execute();
+        $statement->closeCursor();
+    }
+    
+    public static function UpdateTaskContent($TASK)
+    {
+        $db = Database::getDB();
+        $taskID = $TASK->getTaskID();
+        $courseNumber = $TASK->getCourseNumber();
+        $taskTypeId = $TASK->getTaskTypeId(); 
+
+        $query = 'UPDATE Task
+            SET CourseNumber = :coursenumber, TaskTypeId = :taskTypeId
+		        WHERE Task.TaskId = :taskid';
+
+        $statement = $db->prepare($query);
+        $statement->bindValue(":taskid", $taskID);
+        $statement->bindValue(':coursenumber', $courseNumber);
+        $statement->bindValue(':taskTypeId', $taskTypeId);
         $statement->execute();
         $statement->closeCursor();
     }
