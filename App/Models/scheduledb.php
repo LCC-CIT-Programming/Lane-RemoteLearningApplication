@@ -5,8 +5,8 @@ class ScheduleDB
     {
         $db = Database::getDB();
         $query = 'SELECT *
-			          FROM schedule
-                WHERE schedule.ScheduleID = :scheduleid';
+			          FROM Schedule
+                WHERE Schedule.ScheduleID = :scheduleid';
         $statement = $db->prepare($query);
         $scheduleID = $SCHEDULE->getScheduleID();
         $statement->bindValue(":scheduleid", $scheduleID);
@@ -30,12 +30,10 @@ class ScheduleDB
     {
         $db = Database::getDB();
         $query = 'SELECT *
-			    FROM schedule';
+			    FROM Schedule';
 
         $statement = $db->prepare($query);
-    //  $scheduleID = $SCHEDULE->getScheduleID();
-    //  $statement->bindValue(":scheduleid", $scheduleID );
-      $statement->execute();
+      	$statement->execute();
         $rows = $statement->fetchAll();
         $statement->closeCursor();
 
@@ -64,7 +62,7 @@ class ScheduleDB
         $startTime = $SCHEDULE->getStartTime();
         $endTime = $SCHEDULE->getEndTime();
         $weekDay = $SCHEDULE->getWeekDay();
-        $query = 'INSERT INTO schedule
+        $query = 'INSERT INTO Schedule
               (UserID, StartTime, EndTime, WeekDay)
               VALUES
               ( :userid, :starttime,:endtime, :weekday )';
@@ -80,8 +78,8 @@ class ScheduleDB
     {
         $db = Database::getDB();
         $scheduleID = $SCHEDULE->getScheduleID();
-        $query = 'DELETE FROM schedule
-		          WHERE schedule.ScheduleID = :scheduleid';
+        $query = 'DELETE FROM Schedule
+		          WHERE Schedule.ScheduleID = :scheduleid';
         $statement = $db->prepare($query);
         $statement->bindValue(":scheduleid", $scheduleID);
         $statement->execute();
@@ -90,9 +88,9 @@ class ScheduleDB
     public static function GetTutorSchedule($TUTOR)
     {
         $db = Database::getDB();
-        $query = 'SELECT * FROM schedule
-  							JOIN Tutor ON schedule.UserID = tutor.UserID
-  				  		WHERE tutor.UserID = :id';
+        $query = 'SELECT * FROM Schedule
+  							JOIN Tutor ON Schedule.UserID = Tutor.UserID
+  				  		WHERE Tutor.UserID = :id';
         $statement = $db->prepare($query);
         $statement->bindValue(":id", $TUTOR->getUserID());
         $statement->execute();

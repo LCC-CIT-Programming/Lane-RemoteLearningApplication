@@ -6,16 +6,14 @@ class AppUser
     protected $firstName;
     protected $lastName;
     protected $lnumber;
-    protected $pass;
     protected $email;
 
-    public function __construct($FIRSTNAME, $LASTNAME, $LNUMBER, $PASS, $EMAIL, $USERID = null)
+    public function __construct($FIRSTNAME, $LASTNAME, $LNUMBER, $EMAIL, $USERID = null)
     {
         $this->userID = $USERID;
         $this->firstName = $FIRSTNAME;
         $this->lastName = $LASTNAME;
         $this->lnumber = $LNUMBER;
-        $this->pass = $PASS;
         $this->email = $EMAIL;
     }
 
@@ -51,17 +49,6 @@ class AppUser
         return $this->lnumber;
     }
 
-    public function getPassword()
-    {
-        return $this->pass;
-    }
-
-
-    public function setPassword($VALUE)
-    {
-        $this->pass = $VALUE;
-    }
-
     public function getEmail()
     {
         return $this->email;
@@ -73,7 +60,7 @@ class AppUser
         $this->email = $VALUE;
     }
 
-    public static function login($LNUMBER, $PASSWORD, $ROLE)
+    public static function login($LNUMBER, $ROLE)
     {
 
       $_SESSION['role'] = $ROLE;
@@ -83,7 +70,7 @@ class AppUser
 
       else if ($ROLE == "tutor")
       {
-        $user = TutorDB::TutorLogin($LNUMBER, $PASSWORD);
+        $user = TutorDB::TutorLogin($LNUMBER);
         if ($user !== null && isset($user)) {
             // ----------- VISIT -----------  //
             $visit = new Visit($user->GetUserID(), 1, $ROLE, date("Y-m-d h:i:s"));
@@ -97,7 +84,7 @@ class AppUser
       }
       else
       {
-        $user = StudentDB::StudentLogin($LNUMBER, $PASSWORD);
+        $user = StudentDB::StudentLogin($LNUMBER);
 
         if ($user !== null && isset($user)) {
             // ----------- COURSES -----------  //
@@ -108,6 +95,7 @@ class AppUser
             $_SESSION['courses'] = $courses;
 
             // ----------- VISIT -----------  //
+            // assumes the student is working in the lab //
             $visit = new Visit($user->GetUserID(), 1, $ROLE, date("Y-m-d h:i:s"));
             VisitDB::CreateVisit($visit);
             $visit = VisitDB::RetrieveVisit($visit);
@@ -115,7 +103,11 @@ class AppUser
             $_SESSION['visit'] = $visit;
 
             // ----------- TASK -----------  //
-            $task = new Task($visit->getVisitID(), $courses[0]->getCourseNumber(), date("Y-m-d h:i:s"));
+            // assumes the student is working on first course in the his/her list of courses //
+            $task = new Task($visit->getVisitID(), 
+            	$courses[0]->getCourseNumber(), 
+            	1,
+            	date("Y-m-d h:i:s"));
             TaskDB::CreateTask($task);
             $task = TaskDB::RetrieveTask($task);
 

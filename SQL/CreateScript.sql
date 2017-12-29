@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS `CITLabMonitor`.`TutorExpertise` ;
 DROP TABLE IF EXISTS `CITLabMonitor`.`StudentRegistration` ;
 DROP TABLE IF EXISTS `CITLabMonitor`.`Tutor` ;
 DROP TABLE IF EXISTS `CITLabMonitor`.`Task` ;
+DROP TABLE IF EXISTS `CITLabMonitor`.`TaskType` ;
 DROP TABLE IF EXISTS `CITLabMonitor`.`Visit` ;
 DROP TABLE IF EXISTS `CITLabMonitor`.`Section` ;
 DROP TABLE IF EXISTS `CITLabMonitor`.`Term` ;
@@ -15,6 +16,7 @@ DROP TABLE IF EXISTS `CITLabMonitor`.`Student` ;
 DROP TABLE IF EXISTS `CITLabMonitor`.`Major` ;
 DROP TABLE IF EXISTS `CITLabMonitor`.`AppUser` ;
 DROP VIEW IF EXISTS `CITLabMonitor`.`onlinetutors`;
+DROP VIEW IF EXISTS `CITLabMonitor`.`onlinestudents`;
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
@@ -44,7 +46,6 @@ CREATE TABLE IF NOT EXISTS `CITLabMonitor`.`AppUser` (
   `FirstName` VARCHAR(45) NULL DEFAULT NULL,
   `LastName` VARCHAR(45) NULL DEFAULT NULL,
   `LNumber` VARCHAR(9) NULL DEFAULT NULL,
-  `Password` VARCHAR(16) NULL DEFAULT NULL,
   `EmailAddress` VARCHAR(50) NULL DEFAULT NULL,
   PRIMARY KEY (`UserID`))
 ENGINE = InnoDB;
@@ -173,7 +174,6 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `CITLabMonitor`.`Location` (
   `LocationId` INT NOT NULL AUTO_INCREMENT,
   `LocationName` VARCHAR(50) NOT NULL,
-  `StationId` INT NULL DEFAULT NULL,
   PRIMARY KEY (`LocationId`))
 ENGINE = InnoDB;
 
@@ -204,6 +204,17 @@ CREATE TABLE IF NOT EXISTS `CITLabMonitor`.`Visit` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `CITLabMonitor`.`TaskType'
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `CITLabMonitor`.`TaskType` (
+  `TaskTypeId` INT NOT NULL AUTO_INCREMENT,
+  `TaskTypeName` VARCHAR(50) NOT NULL,
+  `TaskTypeCategory` VARCHAR(50) NULL, 
+  PRIMARY KEY (`TaskTypeId`),
+  UNIQUE INDEX `TaskTypeName_UNIQUE` (`TaskTypeName` ASC))
+ENGINE = InnoDB;
+
 
 -- -----------------------------------------------------
 -- Table `CITLabMonitor`.`Task`
@@ -212,6 +223,7 @@ CREATE TABLE IF NOT EXISTS `CITLabMonitor`.`Task` (
   `TaskId` INT NOT NULL AUTO_INCREMENT,
   `VisitId` INT NOT NULL,
   `CourseNumber` VARCHAR(10) NULL DEFAULT NULL,
+  `TaskTypeId` INT NOT NULL, 
   `StartTime` DATETIME NOT NULL,
   `EndTime` DATETIME NULL DEFAULT NULL,
   PRIMARY KEY (`TaskId`),
@@ -225,6 +237,11 @@ CREATE TABLE IF NOT EXISTS `CITLabMonitor`.`Task` (
   CONSTRAINT `Task_Section_FK`
     FOREIGN KEY (`CourseNumber`)
     REFERENCES `CITLabMonitor`.`Section` (`CourseNumber`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION, 
+  CONSTRAINT `Task_TaskType_FK`
+    FOREIGN KEY (`TaskTypeId`)
+    REFERENCES `CITLabMonitor`.`TaskType` (`TaskTypeId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
