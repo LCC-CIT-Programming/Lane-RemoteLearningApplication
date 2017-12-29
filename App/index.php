@@ -395,8 +395,13 @@ try {
             }
         break;
     }
-} catch (PDOException $e) {
-    $error_message = $e->getMessage();
+} catch (PDOException $pdoEx) {
+    $error_message = $pdoEx->getMessage();
     include('./Errors/database_error.php');
+    exit();
+}
+catch (Exception $ex) {
+    $error_message = $ex->getMessage();
+    echo($error_message);
     exit();
 }
