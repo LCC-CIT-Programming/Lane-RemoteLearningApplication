@@ -132,8 +132,10 @@ td{
 }
 
 .smiley{
-	padding-left: 25px;
+	padding-left: 20px;
 	padding-top: 5px;
+    height: 80px;
+    width: 80px;
 }
 
 h4 {

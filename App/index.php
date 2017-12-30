@@ -1,7 +1,13 @@
 <?php
+
+$useCAS = false;
+$doc_root = "";
+$app_path = "";
+$picture_path = "";
+
 require_once('Utils/settimezone.php');
 require_once('Utils/filepath.php');
-require_once('Utils/uploads.php');
+require_once('Utils/uploadfiles.php');
 require_once('Utils/usehttps.php');
 require_once('Models/appuser.php');
 require_once('Models/student.php');
@@ -27,7 +33,6 @@ require_once('Models/tasktype.php');
 require_once('Models/tasktypedb.php');
 
 forceHttps(true);
-$useCAS = false;
 
 try {
 

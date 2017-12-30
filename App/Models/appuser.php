@@ -121,16 +121,13 @@ class AppUser
       return null;
      }
 	 
-	 //shamelessly copied from Lab 6
+	 // what if the original picture is not a png?  Will browser still display it?
 	 public function getImageFilename() {
         $number_hash = md5($this->getLNumber());
 		$image_filename = $number_hash . '.png';
         return $image_filename;
     }
-
-    public function getImagePath() {
-        $image_path = '../Profile_Pics/' . $this->getImageFilename();
-        return $image_path;
-    }
+    
 }
+
 ?>
