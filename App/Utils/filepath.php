@@ -16,4 +16,5 @@ foreach($dirs as $directory) {
 }
 
 set_include_path($doc_root . $app_path);
+
 ?>

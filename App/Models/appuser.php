@@ -73,7 +73,7 @@ class AppUser
         $user = TutorDB::TutorLogin($LNUMBER);
         if ($user !== null && isset($user)) {
             // ----------- VISIT -----------  //
-            $visit = new Visit($user->GetUserID(), 1, $ROLE, date("Y-m-d h:i:s"));
+            $visit = new Visit($user->GetUserID(), 1, $ROLE, date("Y-m-d H:i:s"));
             VisitDB::CreateVisit($visit);
             $visit = VisitDB::RetrieveVisit($visit);
             //SESSION STUFF
@@ -96,7 +96,7 @@ class AppUser
 
             // ----------- VISIT -----------  //
             // assumes the student is working in the lab //
-            $visit = new Visit($user->GetUserID(), 1, $ROLE, date("Y-m-d h:i:s"));
+            $visit = new Visit($user->GetUserID(), 1, $ROLE, date("Y-m-d H:i:s"));
             VisitDB::CreateVisit($visit);
             $visit = VisitDB::RetrieveVisit($visit);
             //SESSION STUFF
@@ -107,7 +107,7 @@ class AppUser
             $task = new Task($visit->getVisitID(), 
             	$courses[0]->getCourseNumber(), 
             	1,
-            	date("Y-m-d h:i:s"));
+            	date("Y-m-d H:i:s"));
             TaskDB::CreateTask($task);
             $task = TaskDB::RetrieveTask($task);
 

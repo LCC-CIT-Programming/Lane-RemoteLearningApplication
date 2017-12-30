@@ -10,7 +10,7 @@ class VisitDB
 
         $userID = $VISIT->getUserID();
         $locationID = $VISIT->getLocationID();
-        $startTime = date("Y-m-d h:i:s");
+        $startTime = date("Y-m-d H:i:s");
 		$lastPing = $startTime;
         $role = $VISIT->getRole();
 

@@ -201,11 +201,15 @@
 		$(document).ready(function() {
 				$('#class option').each(function() {
 					if ($(this).val() == "<?php echo $task->getCourseNumber() ?>")
-							$(this).attr('selected', 'selected');
+						$(this).prop('selected', true);
+						// the following line doesn't work in safari but does in chrome
+						// $(this).attr('selected', 'selected');
 				});
 				$('#tasktype option').each(function() {
 					if ($(this).val() == "<?php echo $task->getTaskTypeId() ?>")
-							$(this).attr('selected', 'selected');
+						$(this).prop('selected', true);
+						// the following line doesn't work in safari but does in chrome
+						// $(this).attr('selected', 'selected');
 				});
 		});
 	</script>
@@ -222,7 +226,9 @@ $(document).ready(function() {
 
 		$('#location option').each(function() {
 			if ($(this).val() == "<?php echo $visit->getLocationID() ?>")
-					$(this).attr('selected', 'selected');
+				$(this).prop('selected', true);
+				// the following line doesn't work in safari but does in chrome
+				// $(this).attr('selected', 'selected');
 		});
 
     	$("#class").change( function(){

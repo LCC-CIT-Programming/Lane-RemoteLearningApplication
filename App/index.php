@@ -1,4 +1,5 @@
 <?php
+require_once('Utils/settimezone.php');
 require_once('Utils/filepath.php');
 require_once('Utils/usehttps.php');
 require_once('Models/appuser.php');
@@ -160,7 +161,7 @@ try {
         // ----------- STILL LOGGED IN [AJAX/GET] -----------  //
         case "still_logged_in":
             if (isset($visit)) {
-                $visit->setLastPing(date("Y-m-d h:i:s", time()));
+                $visit->setLastPing(date("Y-m-d H:i:s", time()));
                 visitdb::UpdateVisit($visit);
             }
         break;
@@ -169,10 +170,10 @@ try {
         case "logout":
             if (isset($task) || isset($visit) || isset($role)) {
                 if ($role == 'student') {
-                    $task->setEndTime(date("Y-m-d h:i:s", time()));
+                    $task->setEndTime(date("Y-m-d H:i:s", time()));
                     taskdb::EndTask($task);
                 }
-                $visit->setEndTime(date("Y-m-d h:i:s", time()));
+                $visit->setEndTime(date("Y-m-d H:i:s", time()));
                 visitdb::UpdateVisit($visit);
             }
 
@@ -262,7 +263,7 @@ try {
             $studentDetails = StudentDB::RetrieveStudentByID($questionDetails->getUserID());
 
             $questionDetails->setStatus('In-Process');
-            $questionDetails->setOpenTime(date("Y-m-d h:i:s", time()));
+            $questionDetails->setOpenTime(date("Y-m-d H:i:s", time()));
             QuestionDB::UpdateQuestion($questionDetails);
 
             $newResolution = new Resolution($questionID, $user->getUserID());
@@ -309,7 +310,7 @@ try {
                 $questionID = filter_input(INPUT_POST, "resolveQuestion");
                 $questionDetails = QuestionDB::GetQuestionByID($questionID);
                 $questionDetails->setStatus('Resolved');
-                $questionDetails->setCloseTime(date("Y-m-d h:i:s", time()));
+                $questionDetails->setCloseTime(date("Y-m-d H:i:s", time()));
 
                 $res = ResolutionDB::RetrieveResolutionByID($questionID);
                 $res->setResolution('Resolved');
