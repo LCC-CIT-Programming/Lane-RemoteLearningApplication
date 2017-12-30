@@ -40,7 +40,7 @@ function canRetrieveVisitByID()
 
 function canUpdateVisit()
 {
-    $visit = new Visit(3, 2, 3, date("Y-m-d h:i:s"));
+    $visit = new Visit(3, 2, 3, date("Y-m-d H:i:s"));
     visitdb::UpdateVisit($visit);
     $retrievedvisit = visitdb::RetrieveVisitByID($visit);
 
@@ -53,7 +53,7 @@ function canUpdateVisit()
 
 function canDeleteVisit()
 {
-    $visit = new Visit(10, 1, 15, date("Y-m-d h:i:s"));
+    $visit = new Visit(10, 1, 15, date("Y-m-d H:i:s"));
     visitdb::DeleteVisit($visit);
     $retrievedvisit = visitdb::RetrieveVisitByID($visit);
 
