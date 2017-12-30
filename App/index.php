@@ -1,6 +1,7 @@
 <?php
 require_once('Utils/settimezone.php');
 require_once('Utils/filepath.php');
+require_once('Utils/uploads.php');
 require_once('Utils/usehttps.php');
 require_once('Models/appuser.php');
 require_once('Models/student.php');
@@ -366,7 +367,7 @@ try {
             }
         break;
 
-
+	// ----------- EDIT APPUSER(STUDENT) PROFILE -----------  //
         case "edit_profile":
             $success = "";
             $passError = "";
@@ -395,6 +396,12 @@ try {
                 include("./Views/edit.php");
             }
         break;
+		case "update_picture":
+			$success = "";
+			$passError = "";
+			upload_Picture(); //calls to upload picture function in uploads.php in Profile_Pics folder
+			include("./Views/edit.php");
+		break;
     }
 } catch (PDOException $pdoEx) {
     $error_message = $pdoEx->getMessage();

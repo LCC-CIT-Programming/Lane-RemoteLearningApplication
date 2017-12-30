@@ -120,5 +120,17 @@ class AppUser
       $_SESSION['user'] = null;
       return null;
      }
+	 
+	 //shamelessly copied from Lab 6
+	 public function getImageFilename() {
+        $number_hash = md5($this->getLNumber());
+		$image_filename = $number_hash . '.png';
+        return $image_filename;
+    }
+
+    public function getImagePath() {
+        $image_path = '../Profile_Pics/' . $this->getImageFilename();
+        return $image_path;
+    }
 }
 ?>

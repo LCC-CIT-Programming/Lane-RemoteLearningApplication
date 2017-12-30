@@ -22,7 +22,7 @@ class StudentDB
                                 $row['LNumber'],
                                 $row['EmailAddress'],
                                 $row['MajorId'],
-                                $row['UserID']);
+                                $row['UserID']); //add $row['ImgFilepath']
             return $user;
         } else {
             return null;
