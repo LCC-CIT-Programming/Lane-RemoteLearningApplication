@@ -8,7 +8,7 @@ class CourseDB
         $courseName = $COURSE->getCourseName();
         $leadInstructorID = $COURSE->getLeadInstructor();
 
-        $query = 'INSERT INTO course
+        $query = 'INSERT INTO Course
               VALUES (:coursenum, :coursename, :leadinstructor)';
 
         $db = Database::getDB();
@@ -31,7 +31,7 @@ class CourseDB
         $leadInstructorID = $COURSE->getLeadInstructor();
 
         $query = 'SELECT *
-              FROM course
+              FROM Course
               WHERE CourseNumber = :coursenum
               AND CourseName = :coursename
               AND LeadInstructorID = :leadinstructor';
@@ -61,7 +61,7 @@ class CourseDB
     public static function RetrieveCourseByNumber($ID)
     {
         $query = 'SELECT *
-							FROM course
+							FROM Course
               WHERE CourseNumber = :coursenum';
 
         $db = Database::getDB();
@@ -90,7 +90,7 @@ class CourseDB
         $courseName = $COURSE->getCourseName();
         $leadInstructorID = $COURSE->getLeadInstructor();
 
-        $query = 'UPDATE course
+        $query = 'UPDATE Course
               SET CourseName = :coursename, LeadInstructorId = :leadinstructor
               WHERE CourseNumber = :coursenum';
 
@@ -110,7 +110,7 @@ class CourseDB
         $courseName = $COURSE->getCourseName();
         $leadInstructorID = $COURSE->getLeadInstructor();
 
-        $query = 'UPDATE course
+        $query = 'UPDATE Course
               SET CourseNumber = :coursenum, LeadInstructorId = :leadinstructor
               WHERE CourseName = :coursename';
 
@@ -132,7 +132,7 @@ class CourseDB
         $courseName = $COURSE->getCourseName();
         $leadInstructorID = $COURSE->getLeadInstructor();
 
-        $query = 'DELETE FROM course
+        $query = 'DELETE FROM Course
               WHERE CourseNumber = :coursenum
               AND LeadInstructorId = :leadinstructor
               AND CourseName = :coursename';

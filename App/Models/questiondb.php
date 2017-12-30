@@ -7,8 +7,8 @@ class QuestionDB
         $db = Database::getDB();
 
         $query = 'SELECT *
-			    FROM question
-                WHERE question.Status = "Open"
+			    FROM Question
+                WHERE Question.Status = "Open"
                 ORDER BY askTime';
 
         $statement = $db->prepare($query);
@@ -39,7 +39,7 @@ class QuestionDB
         $db = Database::getDB();
 
         $query = 'SELECT *
-			          FROM question
+			          FROM Question
                 WHERE Question.QuestionID = :questionid';
 
         $statement = $db->prepare($query);
@@ -70,7 +70,7 @@ class QuestionDB
         $db = Database::getDB();
 
         $query = 'SELECT *
-  			      FROM question
+  			      FROM Question
                   WHERE Question.QuestionID = :questionid';
 
         $statement = $db->prepare($query);
@@ -101,9 +101,9 @@ class QuestionDB
     {
         $db = Database::getDB();
 
-        $query = 'UPDATE question
+        $query = 'UPDATE Question
                 SET status = :status, openTime = :openTime, closeTime = :closeTime
-			          WHERE question.questionID = :questionid';
+			          WHERE Question.questionID = :questionid';
 
         $statement = $db->prepare($query);
         $status = $QUESTION->getStatus();
@@ -128,11 +128,11 @@ class QuestionDB
         $subject = $QUESTION->getSubject();
         $description = $QUESTION->getDescription();
         $status = $QUESTION->getStatus();
-        $askTime = date("Y-m-d h:i:s");
+        $askTime = date("Y-m-d H:i:s");
         $openTime = $QUESTION->getOpenTime();
         $closeTime = $QUESTION->getCloseTime();
 
-        $query = 'INSERT INTO question
+        $query = 'INSERT INTO Question
               (userid, coursenumber, subject, description, status, askTime, openTime, closeTime)
               VALUES
               ( :userid, :coursenumber,:subject, :description, :status, :asktime, :opentime, :closetime)';
@@ -156,8 +156,8 @@ class QuestionDB
         $db = Database::getDB();
         $questionID = $QUESTION->getQuestionID();
 
-        $query = 'DELETE FROM question
-		          WHERE question.questionID = :questionid';
+        $query = 'DELETE FROM Question
+		          WHERE Question.questionID = :questionid';
 
         $statement = $db->prepare($query);
         $statement->bindValue(":questionid", $questionID);

@@ -3,9 +3,9 @@ class Student extends AppUser
 {
     private $majorID;
 
-    public function __construct($FIRSTNAME, $LASTNAME, $LNUMBER, $PASS, $EMAIL, $MAJORID, $USERID = null)
+    public function __construct($FIRSTNAME, $LASTNAME, $LNUMBER, $EMAIL, $MAJORID, $USERID = null)
     {
-        parent::__construct($FIRSTNAME, $LASTNAME, $LNUMBER, $PASS, $EMAIL, $USERID);
+        parent::__construct($FIRSTNAME, $LASTNAME, $LNUMBER, $EMAIL, $USERID);
         $this->majorID = $MAJORID;
     }
 

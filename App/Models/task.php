@@ -6,14 +6,16 @@ class Task
     protected $startTime;
     protected $endTime;
     protected $taskID;
+    protected $taskTypeID;
 
-    public function __construct($VISITID, $COURSENUMBER, $STARTTIME, $TASKID = null, $ENDTIME = null)
+    public function __construct($VISITID, $COURSENUMBER, $TASKTYPEID, $STARTTIME, $TASKID = null, $ENDTIME = null)
     {
         $this->visitID = $VISITID;
         $this->courseNumber = $COURSENUMBER;
         $this->taskID = $TASKID;
         $this->startTime = $STARTTIME;
         $this->endTime = $ENDTIME;
+        $this->taskTypeID = $TASKTYPEID;
     }
 
     public function getVisitID()
@@ -24,6 +26,11 @@ class Task
     public function getCourseNumber()
     {
         return $this->courseNumber;
+    }
+    
+    function setCourseNumber($VALUE)
+    {
+        $this->tcourseNumber = $VALUE;
     }
 
     public function getStartTime()
@@ -40,6 +47,16 @@ class Task
     {
         $this->taskID = $VALUE;
     }
+     
+    function getTaskTypeID()
+    {
+        return $this->taskTypeID;
+    }
+
+    public function setTaskTypeID($VALUE)
+    {
+        $this->taskTypeID = $VALUE;
+    }
 
     public function getEndTime()
     {
@@ -51,22 +68,35 @@ class Task
         $this->endTime = $VALUE;
     }
 
-    public static function ChangeTask($COURSENUMBER, $VISIT, $TASK) 
+    public static function ChangeTask($COURSENUMBER, $TASKTYPEID, $VISIT, $TASK) 
     {
         $currentCourse = $TASK->getCourseNumber();
         $currentVisit = $VISIT->getVisitID();
+        $currentTaskType = $TASK->getTaskTypeID();
+        $currentStartTime = $TASK->getStartTime();
+        $now = date("Y-m-d H:i:s");
+        $elapsedTime = (strtotime($now) - strtotime($currentStartTime))/60;
 
         // ----------- CHECK TASK -----------  //
-        if ($COURSENUMBER != $currentCourse) 
+        if ($COURSENUMBER != $currentCourse || $TASKTYPEID != $currentTaskType) 
         {
+        	// if the time is big enough, end this task and start a new one
+        	if ($elapsedTime >= 5) {
             // ----------- END OLD TASK -----------  //
-            $TASK->setEndTime(date("Y-m-d h:i:s"));
-            TaskDB::UpdateTask($TASK);
+            	$TASK->setEndTime($now);
+            	TaskDB::EndTask($TASK);
 
             // ----------- CREATE NEW TASK -----------  //
-            $newTask = new Task($currentVisit, $COURSENUMBER, date("Y-m-d h:i:s"));
-            TaskDB::CreateTask($newTask);
-            $TASK = TaskDB::RetrieveTask($newTask);
+            	$newTask = new Task($currentVisit, $COURSENUMBER, $TASKTYPEID, $now);
+            	TaskDB::CreateTask($newTask);
+            	$TASK = TaskDB::RetrieveTask($newTask);
+            }
+            // otherwise assume they've just changed their mind about the task that they want to work on
+            else {
+                $TASK->setCourseNumber($COURSENUMBER);
+                $TASK->setTaskTypeId($TASKTYPEID);            
+               	TaskDB::UpdateTaskContent($TASK);
+            }
         }
         return $TASK;
     }

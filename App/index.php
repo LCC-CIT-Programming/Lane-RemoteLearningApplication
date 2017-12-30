@@ -1,5 +1,8 @@
 <?php
+require_once('Utils/settimezone.php');
 require_once('Utils/filepath.php');
+require_once('Utils/uploads.php');
+require_once('Utils/usehttps.php');
 require_once('Models/appuser.php');
 require_once('Models/student.php');
 require_once('Models/studentdb.php');
@@ -18,7 +21,13 @@ require_once('Models/schedule.php');
 require_once('Models/scheduledb.php');
 require_once('Models/resolution.php');
 require_once('Models/resolutiondb.php');
-require_once('Profile_Pics/uploads.php');
+require_once('Models/location.php');
+require_once('Models/locationdb.php');
+require_once('Models/tasktype.php');
+require_once('Models/tasktypedb.php');
+
+forceHttps(true);
+$useCAS = false;
 
 try {
 
@@ -26,6 +35,8 @@ try {
     if (isset($_SESSION['user'])) {
         $user = $_SESSION['user'];
     }
+	else 
+		$user = null;
     if (isset($_SESSION['courses'])) {
         $courses = $_SESSION['courses'];
     }
@@ -38,6 +49,20 @@ try {
     if (isset($_SESSION['role'])) {
         $role = $_SESSION['role'];
     }
+    if (isset($_SESSION['locations'])) {
+        $locations = $_SESSION['locations'];
+    }
+    else {
+    	$locations = LocationDB::getLocations();
+    	$_SESSION['locations'] = $locations;
+    }
+    if (isset($_SESSION['tasktypes'])) {
+        $taskTypes = $_SESSION['tasktypes'];
+    }
+    else {
+    	$taskTypes = TaskTypeDB::getTaskTypes();
+    	$_SESSION['tasktypes'] = $taskTypes;
+    }
 
     $action = filter_input(INPUT_POST, 'action');
     if ($action == null) {
@@ -46,6 +71,14 @@ try {
             $action = 'default';
         }
     }
+    
+	if ($user == null){
+		if ($action != 'default' && $action != 'login')
+		{
+			$action = 'default';
+		}
+	}
+		
 
     switch ($action) {
 
@@ -61,7 +94,14 @@ try {
             $username = filter_input(INPUT_POST, "lnumber");
             $password = filter_input(INPUT_POST, "password");
             $role = filter_input(INPUT_POST, "roleSelect");
-            $user = AppUser::login($username, $password, $role);
+            if ($useCAS) {
+            	//TODO:  Call Jacob's function here
+            	$user = AppUser::login($username, $role);
+            }
+            else {
+                $user = AppUser::login($username, $role);
+            }
+            
             $_SESSION['user'] = $user;
 
             // ----------- SUCCESSFUL LOGIN -----------  //
@@ -95,7 +135,8 @@ try {
         // ----------- TASK [AJAX/POST] -----------  //
         case "update_task":
             $courseNumber = filter_input(INPUT_POST, "courseNumber");
-            $currentTask = Task::ChangeTask($courseNumber, $visit, $task);
+            $taskType = filter_input(INPUT_POST, "taskType");
+            $currentTask = Task::ChangeTask($courseNumber, $taskType, $visit, $task);
             $_SESSION['task'] = $currentTask;
         break;
 
@@ -117,16 +158,24 @@ try {
                 $question->CancelQuestion();
             }
         break;
+        
+        // ----------- STILL LOGGED IN [AJAX/GET] -----------  //
+        case "still_logged_in":
+            if (isset($visit)) {
+                $visit->setLastPing(date("Y-m-d H:i:s", time()));
+                visitdb::UpdateVisit($visit);
+            }
+        break;
 
         // ----------- LOGOUT [GET] -----------  //
         case "logout":
             if (isset($task) || isset($visit) || isset($role)) {
                 if ($role == 'student') {
-                    $task->setEndTime(date("Y-m-d h:i:s", time()));
-                    taskdb::UpdateTask($task);
+                    $task->setEndTime(date("Y-m-d H:i:s", time()));
+                    taskdb::EndTask($task);
                 }
-                    $visit->setEndTime(date("Y-m-d h:i:s", time()));
-                    visitdb::UpdateVisit($visit);
+                $visit->setEndTime(date("Y-m-d H:i:s", time()));
+                visitdb::UpdateVisit($visit);
             }
 
             $loginError = "";
@@ -215,7 +264,7 @@ try {
             $studentDetails = StudentDB::RetrieveStudentByID($questionDetails->getUserID());
 
             $questionDetails->setStatus('In-Process');
-            $questionDetails->setOpenTime(date("Y-m-d h:i:s", time()));
+            $questionDetails->setOpenTime(date("Y-m-d H:i:s", time()));
             QuestionDB::UpdateQuestion($questionDetails);
 
             $newResolution = new Resolution($questionID, $user->getUserID());
@@ -262,7 +311,7 @@ try {
                 $questionID = filter_input(INPUT_POST, "resolveQuestion");
                 $questionDetails = QuestionDB::GetQuestionByID($questionID);
                 $questionDetails->setStatus('Resolved');
-                $questionDetails->setCloseTime(date("Y-m-d h:i:s", time()));
+                $questionDetails->setCloseTime(date("Y-m-d H:i:s", time()));
 
                 $res = ResolutionDB::RetrieveResolutionByID($questionID);
                 $res->setResolution('Resolved');
@@ -354,8 +403,13 @@ try {
 			include("./Views/edit.php");
 		break;
     }
-} catch (PDOException $e) {
-    $error_message = $e->getMessage();
+} catch (PDOException $pdoEx) {
+    $error_message = $pdoEx->getMessage();
     include('./Errors/database_error.php');
+    exit();
+}
+catch (Exception $ex) {
+    $error_message = $ex->getMessage();
+    echo($error_message);
     exit();
 }
