@@ -1,78 +1,40 @@
 <?php
-	function upload_Picture(){
-		
-		$uploadGood = 0;
-		$target_file;
-		$imageFileType;
-		
-		getPicture($uploadGood, $target_file, $imageFileType);
-		
-		fileSizeCheck($uploadGood);
-		
-		fileTypeCheck($uploadGood, $imageFileType);
-		
-		uploadPicCheck($uploadGood, $target_file);		
-	}
-	
-	function getPicture(&$uploadGood, &$target_file, &$imageFileType)
+
+	function uploadPicture($doc_root, $picture_path, $user, &$errors)
 	{
-		$target_dir = "Profile_Pics/";
-		$target_file = $target_dir . basename($_FILES["savePicture"]["name"]);
-		$uploadGood = 1;
-		$imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
-		if(isset($_POST["submit"])){
-			$check = getimagesize($_FILES["savePicture"]["tmp_name"]);
-			if($check !== false) {
-				echo "File is an image - " . $check["mime"] . ".";
-				$uploadGood = 1;
+		if(isset($_FILES['savePicture'])) {
+
+			$user_picture_filename = $user->getImageFilename();
+			$user_picture_path = $picture_path . $user_picture_filename;
+			$full_picture_path = $doc_root . $user_picture_path;
+
+			$maxsize    = 2097152;
+			$acceptable = array(
+				'image/jpeg',
+				'image/jpg',
+				'image/gif',
+				'image/png'
+			);
+
+			if(($_FILES['savePicture']['size'] >= $maxsize) || ($_FILES['savePicture']['size'] == 0)) {
+				$errors[] = 'File too large. File must be less than 2 megabytes.';
+			}
+
+			if(!(in_array($_FILES['savePicture']['type'], $acceptable)) && !(empty($_FILES["savePicture"]['type']))) {
+				$errors[] = 'Invalid file type. Only JPG, GIF and PNG types are accepted.';
+			}
+
+			if(count($errors) === 0) {
+				if (move_uploaded_file($_FILES['savePicture']['tmp_name'], $full_picture_path))
+					return true;
+				else {
+					$errors[] = 'A technical error has occurred.  Your file was not uploaded.';
+					return false;
+				}
 			} else {
-				echo "File is not an image.";
-				$uploadGood = 0;
+				return false;
 			}
 		}
 	}
 	
-	function fileExistsCheck(&$uploadGood, $target_file)
-	{
-		// Check if file already exists
-		if (file_exists($target_file)) {
-			echo "Sorry, file already exists.";
-			$uploadGood = 0;
-		}
-	}
-	
-	function fileSizeCheck(&$uploadGood)
-	{
-		// Check file size
-		if ($_FILES["savePicture"]["size"] > 200000) { //200kb
-			echo "Sorry, your file is too large. Maximum file size is 200KB";
-			$uploadGood = 0;
-		}
-	}
-	
-	function fileTypeCheck(&$uploadGood, $imageFileType)
-	{
-		// Allow certain file formats
-		if(/*$imageFileType != "jpg" &&*/ $imageFileType != "png"/* && $imageFileType != "jpeg"
-		&& $imageFileType != "gif"*/ ) {
-			echo "Sorry, only PNG files are allowed.";
-			$uploadGood = 0;
-		}
-	}
-	
-	function uploadPicCheck($uploadGood, $target_file)
-	{
-		// Check if $uploadGood is set to 0 by an error
-		if ($uploadGood == 0) {
-			echo "Sorry, your file was not uploaded.";
-		// if everything is ok, try to upload file
-		} else {
-			if (move_uploaded_file($_FILES["savePicture"]["tmp_name"], $target_file)) { 
-				echo "The file ". basename( $_FILES["savePicture"]["name"]). " has been uploaded.";
-				$success = "The file ". basename( $_FILES["savePicture"]["name"]). " has been uploaded.";
-			} else {
-				echo "Sorry, there was an error uploading your file.";
-			}
-		}
-	}
 ?>

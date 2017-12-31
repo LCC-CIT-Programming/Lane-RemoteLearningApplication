@@ -8,7 +8,7 @@ include_once('../Models/Question.php');
 
 function canStudentLogin()
 {
-    $user = StudentDB::StudentLogin('L00000005', 'Student1');
+    $user = StudentDB::StudentLogin('L00000005');
     if ($user->getFirstName() == 'Student1') {
         echo "<p style='color:green;'> Student Login was successful! </p>";
     } else {
@@ -18,7 +18,7 @@ function canStudentLogin()
 
 function canGetCourses()
 {
-    $user = StudentDB::StudentLogin('L00000006', 'Student2');
+    $user = StudentDB::StudentLogin('L00000006');
 
     $courses = array();
     $courses = StudentDB::GetStudentCourses($user);
@@ -32,7 +32,7 @@ function canGetCourses()
 
 function canRetreiveStudentByID()
 {
-    $user = StudentDB::StudentLogin('L00000006', 'Student2');
+    $user = StudentDB::StudentLogin('L00000006');
     $retrieve = StudentDB::RetrieveStudentByID($user->getUserID());
 
     if ($retrieve != null) {
@@ -44,10 +44,10 @@ function canRetreiveStudentByID()
 
 function canCreateStudent()
 {
-    $student = new Student(1, 'test', 'user', 'L00111111', 'testpassword', 'email@email.com', 1);
+    $student = new Student('test', 'user', 'L00111111', 'email@email.com', 'student bio', 1);
     StudentDB::CreateStudent($student);
 
-    $createdStudent = StudentDB::StudentLogin('L00111111', 'testpassword');
+    $createdStudent = StudentDB::StudentLogin('L00111111');
 
     if ($createdStudent != null) {
         echo "<p style='color:green;'>Creating a student was successful! </p>";
@@ -58,23 +58,28 @@ function canCreateStudent()
 
 function canUpdateStudent()
 {
-    $student = StudentDB::StudentLogin('L00111111', 'testpassword');
-    $student->setPassword('newpassword');
-    StudentDB::UpdateStudent($student);
+    $student = StudentDB::StudentLogin('L00111111');
+    $student->setEmail('test@gmail.com');
+    $student->setBio('test bio');
+    $student->setMajorId(5);
 
-    $updatedStudent = StudentDB::StudentLogin('L00111111', 'newpassword');
-    if ($updatedStudent != null) {
-        echo "<p style='color:green;'>Updating student was successful! </p>";
+    StudentDB::UpdateStudent($student);
+    $updatedStudent = StudentDB::StudentLogin('L00111111');
+
+    if ($updatedStudent->getEmail() == $student->getEmail() &&
+    	$updatedStudent->getBio() == $student->getBio() &&
+    	$updatedStudent->getMajorId() == $student->getMajorId() ) {
+        echo "<p style='color:green;'>Updating a student was successful! </p>";
     } else {
-        echo "<p style='color:red;'>Updating student was not successful! </p>";
+        echo "<p style='color:red;'>Updating a student was not successful! </p>";
     }
 }
 
 function canDeleteStudent()
 {
-    $student = StudentDB::StudentLogin('L00111111', 'newpassword');
+    $student = StudentDB::StudentLogin('L00111111');
     StudentDB::DeleteStudent($student);
-    $deletedStudent = StudentDB::StudentLogin('L00111111', 'newpassword');
+    $deletedStudent = StudentDB::StudentLogin('L00111111');
 
     if ($deletedStudent == null) {
         echo "<p style='color:green;'>Deleting a student was successful! </p>";
@@ -85,7 +90,7 @@ function canDeleteStudent()
 
 function canGetStudentOpenQuestions()
 {
-    $student = StudentDB::StudentLogin('L00000006', 'Student2');
+    $student = StudentDB::StudentLogin('L00000006');
     $questions = array();
     $questions = StudentDB::GetOpenQuestions($student);
 
@@ -98,9 +103,9 @@ function canGetStudentOpenQuestions()
 
 
 canStudentLogin();
-canGetCourses();
+//canGetCourses();
 canRetreiveStudentByID();
-// canCreateStudent();
-// canUpdateStudent();
+//canCreateStudent();
+canUpdateStudent();
 // canDeleteStudent();
 canGetStudentOpenQuestions();

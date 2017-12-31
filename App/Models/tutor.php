@@ -3,9 +3,9 @@ class Tutor extends AppUser
 {
     private $tutorBio;
 
-    public function __construct($FIRSTNAME, $LASTNAME, $LNUMBER, $EMAIL, $TUTORBIO, $USERID = null)
+    public function __construct($FIRSTNAME, $LASTNAME, $LNUMBER, $EMAIL, $BIO, $TUTORBIO, $USERID = null)
     {
-        parent::__construct($FIRSTNAME, $LASTNAME, $LNUMBER, $EMAIL, $USERID);
+        parent::__construct($FIRSTNAME, $LASTNAME, $LNUMBER, $EMAIL, $BIO, $USERID);
         $this->tutorBio = $TUTORBIO;
     }
 

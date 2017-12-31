@@ -17,12 +17,13 @@ class TutorDB
         $statement->closeCursor();
         if ($row != false) {
             $user = new Tutor(
-                                                        $row['FirstName'],
-                                                        $row['LastName'],
-                                                        $row['LNumber'],
-                                                        $row['EmailAddress'],
-                                                        $row['TutorBio'],
-                                                        $row['UserID']);
+				$row['FirstName'],
+				$row['LastName'],
+				$row['LNumber'],
+				$row['EmailAddress'],
+				$row['AppUserBio'],
+				$row['TutorBio'],
+				$row['UserID']);
             return $user;
         } else {
             return null;
@@ -38,15 +39,17 @@ class TutorDB
         $lnum = $tutor->getLnumber();
         $email = $tutor->getEmail();
         $tutorBio = $tutor->getTutorBio();
+        $bio = $tutor->getBio();
 
-        $query1 = 'INSERT INTO AppUser(FirstName, LastName, LNumber, EmailAddress)
-								 VALUES (:firstName, :lastName, :lnum, :email)';
+        $query1 = 'INSERT INTO AppUser(FirstName, LastName, LNumber, EmailAddress, AppUserBio)
+								 VALUES (:firstName, :lastName, :lnum, :email, :bio)';
 
         $statement = $db->prepare($query1);
         $statement->bindValue(':firstName', $firstName);
         $statement->bindValue(':lastName', $lastName);
         $statement->bindValue(':lnum', $lnum);
         $statement->bindValue(':email', $email);
+        $statement->bindValue(':bio', $bio);
         $statement->execute();
         $statement->closeCursor();
 
@@ -81,44 +84,34 @@ class TutorDB
         $email = $tutor->getEmail();
         $userid = $tutor->getUserID();
         $tutorBio = $tutor->getTutorBio();
+        $bio = $tutor->getBio();
 
-        $query = 'UPDATE Appuser
-								SET FirstName=:firstName, LastName=:lastName, Lnumber=:lnum, Email=:email, TutorBio=:tutorBio
-								WHERE UserID = :userid;
-								
-								UPDATE Tutor
-								SET TutorBio=:tutorBio
-								WHERE UserID=:userid';
+        $query1 = 'UPDATE Appuser 
+        	SET FirstName=:firstName, LastName=:lastName,  
+			EmailAddress=:email, AppUserBio = :bio 
+			WHERE UserID = :userid';
+		$query2 = 'UPDATE Tutor
+			SET TutorBio=:tutorBio
+			WHERE UserID=:userid';
 
-        $statement = $db-prepare($query);
+        $statement = $db->prepare($query1);
         $statement->bindValue(':firstName', $firstName);
         $statement->bindValue(':lastName', $lastName);
-        $statement->bindValue(':lnum', $lnum);
         $statement->bindValue(':email', $email);
+        $statement->bindValue(':bio', $bio);
+        $statement->bindValue(':userid', $userid);
+        if ($statement->execute())
+        	$statement->closeCursor();
+        else
+        	throw new PDOException("Could not update app user table in update tutor");
+
+        $statement = $db->prepare($query2);        
         $statement->bindValue(':tutorBio', $tutorBio);
         $statement->bindValue(':userid', $userid);
-        $statement->execute();
-        $statement->closeCursor();
-    }
-        
-    public static function UpdateProfile($USER)
-    {
-        $db = Database::getDB();
-        
-        $email = $USER->getEmail();
-        $userID = $USER->getUserID();
-        $summary = $USER->getTutorBio();
-    
-        $query = 'UPDATE AppUser 
-					SET EmailAddress = :email, TutorBio = :summary
-					WHERE UserID = :userid';
-                    
-        $statement = $db->prepare($query);
-        $statement->bindValue(':email', $email);
-        $statement->bindValue(':summary', $summary);
-        $statement->bindValue(':userid', $userID);
-        $statement->execute();
-        $statement->closeCursor();
+        if ($statement->execute())
+        	$statement->closeCursor();
+        else
+        	throw new PDOException("Could not update tutor table in update tutor");
     }
 
     public static function DeleteTutor($tutor)
@@ -150,14 +143,14 @@ class TutorDB
         $statement->closeCursor();
         foreach ($rows as $row) {
             $tutor = new Tutor(
-                                                     $row['FirstName'],
-                                                     $row['LastName'],
-                                                     $row['LNumber'],
-                                                     $row['Password'],
-                                                     $row['EmailAddress'],
-                                                     $row['TutorBio'],
-                                                     $row['UserID']);
-            $tutors[] = $tutor;
+				 $row['FirstName'],
+				 $row['LastName'],
+				 $row['LNumber'],
+				 $row['EmailAddress'],
+				 $row['AppUserBio'],
+				 $row['TutorBio'],                                                   
+				 $row['UserID']);
+			$tutors[] = $tutor;
         }
         return $tutors;
     }
@@ -198,15 +191,16 @@ class TutorDB
         $row = $statement->fetch();
         $statement->closeCursor();
         if ($row != false) {
-            $user = new Tutor(
-                                                            $row['FirstName'],
-                                                            $row['LastName'],
-                                                            $row['LNumber'],
-                                                            $row['EmailAddress'],
-                                                            $row['TutorBio'],
-                                                          $row['UserID']);
+            $tutor = new Tutor(
+				 $row['FirstName'],
+				 $row['LastName'],
+				 $row['LNumber'],
+				 $row['EmailAddress'],
+				 $row['AppUserBio'],
+				 $row['TutorBio'],                                                   
+				 $row['UserID']);
 
-            return $user;
+            return $tutor;
         } else {
             return null;
         }

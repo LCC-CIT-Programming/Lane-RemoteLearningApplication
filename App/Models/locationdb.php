@@ -6,7 +6,7 @@ class LocationDB
     {
         $locationName = $LOCATION->getLocationName();
 
-        $query = 'INSERT INTO LOCATION (LocationName)
+        $query = 'INSERT INTO Location (LocationName)
               VALUES (:locationName)';
 
         $db = Database::getDB();
