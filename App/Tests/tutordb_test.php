@@ -30,7 +30,7 @@ function canGetAllTutors()
 function canCreateTutor()
 {
     $db = Database::getDB();
-    $tutor = new Tutor('testcreatetutor', 'user', 'L00111111', 'testpassword', 'email@email.com', 'my bio');
+    $tutor = new Tutor('testcreatetutor', 'user', 'L00111111', 'email@email.com', 'my bio', 'my tutor bio');
     TutorDB::CreateTutor($tutor);
     $createdTutor = TutorDB::TutorLogin('L00111111', 'testpassword');
 
@@ -40,6 +40,7 @@ function canCreateTutor()
         echo "<p style='color:red;'>  not successful! </p>";
     }
 }
+
 
 function canDeleteTutor()
 {
@@ -55,7 +56,27 @@ function canDeleteTutor()
     }
 }
 
-canTutorLogin();
-canGetAllTutors();
-canCreateTutor();
+function canUpdateTutor()
+{
+    $db = Database::getDB();
+    $tutor = TutorDB::TutorLogin('L00111111', 'testpassword');
+    $tutor->setEmail('test@gmail.com');
+    $tutor->setBio('test bio');
+    $tutor->setTutorBio('test tutor bio');
+    TutorDB::UpdateTutor($tutor);
+    $updatedTutor = TutorDB::TutorLogin('L00111111', 'testpassword');
+
+    if ($updatedTutor->getEmail() == $tutor->getEmail() &&
+    	$updatedTutor->getBio() == $tutor->getBio() &&
+    	$updatedTutor->getTutorBio() == $tutor->getTutorBio() ) {
+        echo "<p style='color:green;'>Updating a tutor was successful! </p>";
+    } else {
+        echo "<p style='color:red;'>Updating a tutor was not successful! </p>";
+    }
+}
+
+//canTutorLogin();
+//canGetAllTutors();
+//canCreateTutor();
 canDeleteTutor();
+//canUpdateTutor();

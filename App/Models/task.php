@@ -74,22 +74,24 @@ class Task
         $currentVisit = $VISIT->getVisitID();
         $currentTaskType = $TASK->getTaskTypeID();
         $currentStartTime = $TASK->getStartTime();
+        $now = date("Y-m-d H:i:s");
+        $elapsedTime = (strtotime($now) - strtotime($currentStartTime))/60;
 
         // ----------- CHECK TASK -----------  //
         if ($COURSENUMBER != $currentCourse || $TASKTYPEID != $currentTaskType) 
         {
-        	// TODO: if the time is big enough, end this task and start a new one
-        	if ($currentStartTime - date("Y-m-d h:i:s") > 60) {
+        	// if the time is big enough, end this task and start a new one
+        	if ($elapsedTime >= 5) {
             // ----------- END OLD TASK -----------  //
-            	$TASK->setEndTime(date("Y-m-d h:i:s"));
+            	$TASK->setEndTime($now);
             	TaskDB::EndTask($TASK);
 
             // ----------- CREATE NEW TASK -----------  //
-            	$newTask = new Task($currentVisit, $COURSENUMBER, $TASKTYPEID, date("Y-m-d h:i:s"));
+            	$newTask = new Task($currentVisit, $COURSENUMBER, $TASKTYPEID, $now);
             	TaskDB::CreateTask($newTask);
             	$TASK = TaskDB::RetrieveTask($newTask);
             }
-            // otherwise assume they've just change their mind about the task that they want to work on
+            // otherwise assume they've just changed their mind about the task that they want to work on
             else {
                 $TASK->setCourseNumber($COURSENUMBER);
                 $TASK->setTaskTypeId($TASKTYPEID);            

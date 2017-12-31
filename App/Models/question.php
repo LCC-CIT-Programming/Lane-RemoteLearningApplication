@@ -101,7 +101,7 @@ class Question
     public static function AskQuestion($COURSENUM, $SUBJECT, $DESCRIPTION)
     {
         $STATUS = "open";
-        $ASKTIME = date("Y-m-d h:i:s");
+        $ASKTIME = date("Y-m-d H:i:s");
         
         if ($COURSENUM == null || $SUBJECT == null || $DESCRIPTION == null) 
         {
@@ -128,9 +128,9 @@ class Question
             $task = $_SESSION['task'];
             if (($task !== null) && ($visit !== null)) {
                 if ($task->getCourseNumber() !== $COURSENUM) {
-                    $task->setEndTime(date("Y-m-d h:i:s"));
+                    $task->setEndTime(date("Y-m-d H:i:s"));
                     taskdb::UpdateTask($task);
-                    $startNewTask = new Task($visit->getVisitID(), $COURSENUM, date("Y-m-d h:i:s"));
+                    $startNewTask = new Task($visit->getVisitID(), $COURSENUM, date("Y-m-d H:i:s"));
                     TaskDB::CreateTask($startNewTask);
                     $task = TaskDB::RetrieveTask($startNewTask);
                     $_SESSION['task'] = $task;
@@ -145,7 +145,7 @@ class Question
     public function CancelQuestion()
     {
         $this->setStatus('Resolved');
-        $this->setCloseTime(date("Y-m-d h:i:s", time()));
+        $this->setCloseTime(date("Y-m-d H:i:s", time()));
         QuestionDB::UpdateQuestion($this);
     }
 }

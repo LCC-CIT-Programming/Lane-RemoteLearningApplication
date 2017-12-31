@@ -128,7 +128,7 @@ class QuestionDB
         $subject = $QUESTION->getSubject();
         $description = $QUESTION->getDescription();
         $status = $QUESTION->getStatus();
-        $askTime = date("Y-m-d h:i:s");
+        $askTime = date("Y-m-d H:i:s");
         $openTime = $QUESTION->getOpenTime();
         $closeTime = $QUESTION->getCloseTime();
 

@@ -1,5 +1,13 @@
 <?php
+
+$useCAS = false;
+$doc_root = "";
+$app_path = "";
+$picture_path = "";
+
+require_once('Utils/settimezone.php');
 require_once('Utils/filepath.php');
+require_once('Utils/uploadfiles.php');
 require_once('Utils/usehttps.php');
 require_once('Models/appuser.php');
 require_once('Models/student.php');
@@ -23,9 +31,10 @@ require_once('Models/location.php');
 require_once('Models/locationdb.php');
 require_once('Models/tasktype.php');
 require_once('Models/tasktypedb.php');
+require_once('Models/major.php');
+require_once('Models/majordb.php');
 
 forceHttps(true);
-$useCAS = false;
 
 try {
 
@@ -60,6 +69,13 @@ try {
     else {
     	$taskTypes = TaskTypeDB::getTaskTypes();
     	$_SESSION['tasktypes'] = $taskTypes;
+    }
+    if (isset($_SESSION['majors'])) {
+        $majors = $_SESSION['majors'];
+    }
+    else {
+    	$majors = MajorDB::getMajors();
+    	$_SESSION['majors'] = $majors;
     }
 
     $action = filter_input(INPUT_POST, 'action');
@@ -160,7 +176,7 @@ try {
         // ----------- STILL LOGGED IN [AJAX/GET] -----------  //
         case "still_logged_in":
             if (isset($visit)) {
-                $visit->setLastPing(date("Y-m-d h:i:s", time()));
+                $visit->setLastPing(date("Y-m-d H:i:s", time()));
                 visitdb::UpdateVisit($visit);
             }
         break;
@@ -169,10 +185,10 @@ try {
         case "logout":
             if (isset($task) || isset($visit) || isset($role)) {
                 if ($role == 'student') {
-                    $task->setEndTime(date("Y-m-d h:i:s", time()));
+                    $task->setEndTime(date("Y-m-d H:i:s", time()));
                     taskdb::EndTask($task);
                 }
-                $visit->setEndTime(date("Y-m-d h:i:s", time()));
+                $visit->setEndTime(date("Y-m-d H:i:s", time()));
                 visitdb::UpdateVisit($visit);
             }
 
@@ -262,7 +278,7 @@ try {
             $studentDetails = StudentDB::RetrieveStudentByID($questionDetails->getUserID());
 
             $questionDetails->setStatus('In-Process');
-            $questionDetails->setOpenTime(date("Y-m-d h:i:s", time()));
+            $questionDetails->setOpenTime(date("Y-m-d H:i:s", time()));
             QuestionDB::UpdateQuestion($questionDetails);
 
             $newResolution = new Resolution($questionID, $user->getUserID());
@@ -309,7 +325,7 @@ try {
                 $questionID = filter_input(INPUT_POST, "resolveQuestion");
                 $questionDetails = QuestionDB::GetQuestionByID($questionID);
                 $questionDetails->setStatus('Resolved');
-                $questionDetails->setCloseTime(date("Y-m-d h:i:s", time()));
+                $questionDetails->setCloseTime(date("Y-m-d H:i:s", time()));
 
                 $res = ResolutionDB::RetrieveResolutionByID($questionID);
                 $res->setResolution('Resolved');
@@ -320,12 +336,6 @@ try {
 
         case "schedule":
             include("./Views/schedule.php");
-        break;
-
-        case "edit":
-            $success = "";
-            $passError = "";
-            include("./Views/edit.php");
         break;
 
         case "delete_schedule":
@@ -365,35 +375,63 @@ try {
             }
         break;
 
-
-        case "edit_profile":
-            $success = "";
-            $passError = "";
-            $email = filter_input(INPUT_POST, "email");
-            $pass1 = filter_input(INPUT_POST, "newPwd1");
-            $pass2 = filter_input(INPUT_POST, "newPwd2");
-
-            if ($pass1 != $pass2) {
-                $passError = "Sorry the passwords do not match, please try again.";
-                $success = "";
-                include("./Views/edit.php");
-            }
-            else
-            {
-                $user = $_SESSION['user'];
-                $userID = $user->GetUserID();
-
-                //Verify they actually inted to change their pass.
-                $user->setEmail($email);
-                if ($pass1 != "") {
-                    $user->setPassword($pass1);
-                }
-
-                StudentDB::UpdateProfile($user);
-                $success = "Changes have been saved.";
-                include("./Views/edit.php");
-            }
+	// ----------- EDIT APPUSER(STUDENT) PROFILE -----------  //
+	    case "edit":
+            $profileSuccess = "";
+            $profileErrors = array();
+			$uploadSuccess = "";
+			$uploadErrors = array();
+            include("./Views/edit.php");
         break;
+        
+        case "edit_profile":
+            $profileSuccess = "";
+            $profileErrors = array();
+			$uploadSuccess = "";
+			$uploadErrors = array();
+			
+            $email = filter_input(INPUT_POST, "newEmail", FILTER_VALIDATE_EMAIL);
+            $bio = filter_input(INPUT_POST, "newBio", FILTER_SANITIZE_STRING);
+            if ($email === false || $email === null)
+            	$profileErrors[] = "Please provide a valid email address.";
+            if ($bio === false || $bio === null)
+            	$profileErrors[] = "Please tell us something about yourself.";            
+            if ($user instanceof Tutor) {
+            	$tutorbio = filter_input(INPUT_POST, "newTutorBio", FILTER_SANITIZE_STRING);  
+            	if ($tutorbio === false || $tutorbio === null)
+            		$profileErrors[] = "Please tell us something about your tutoring expertise.";  
+            }
+            if ($user instanceof Student) {
+            	$majorid = filter_input(INPUT_POST, "newStudentMajor", FILTER_VALIDATE_INT);  
+            	if ($majorid === false || $majorid === null)
+            		$profileErrors[] = "Please select your major.";  
+            }
+            if (count($profileErrors) == 0) {
+            	$user->setEmail($email);
+            	$user->setBio($bio);
+            	if ($user instanceof Tutor) {
+            		$user->setTutorBio($tutorbio);
+					TutorDB::UpdateTutor($user);
+            	}
+            	else {
+            		$user->setMajorId($majorid);
+            		StudentDB::UpdateStudent($user);
+            	}
+            	$profileSuccess = "Your profile has been saved.";
+            }
+            include("./Views/edit.php");
+        break;
+        
+		case "upload_picture":
+            $profileSuccess = "";
+            $profileErrors = array();
+			$uploadSuccess = "";
+			$uploadErrors = array();
+			if (uploadPicture($doc_root, $picture_path, $user, $uploadErrors))
+				// this is not displayed on the page because the new image is loaded on success
+				$uploadSuccess = "Your image was successfully uploaded.";
+			include("./Views/edit.php");
+		break;
     }
 } catch (PDOException $pdoEx) {
     $error_message = $pdoEx->getMessage();

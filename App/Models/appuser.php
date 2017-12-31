@@ -7,14 +7,16 @@ class AppUser
     protected $lastName;
     protected $lnumber;
     protected $email;
+    protected $bio;
 
-    public function __construct($FIRSTNAME, $LASTNAME, $LNUMBER, $EMAIL, $USERID = null)
+    public function __construct($FIRSTNAME, $LASTNAME, $LNUMBER, $EMAIL, $BIO, $USERID = null)
     {
         $this->userID = $USERID;
         $this->firstName = $FIRSTNAME;
         $this->lastName = $LASTNAME;
         $this->lnumber = $LNUMBER;
         $this->email = $EMAIL;
+        $this->bio = $BIO;
     }
 
     public function getUserID()
@@ -59,6 +61,17 @@ class AppUser
     {
         $this->email = $VALUE;
     }
+    
+    public function getBio()
+    {
+        return $this->bio;
+    }
+
+
+    public function setBio($VALUE)
+    {
+        $this->bio = $VALUE;
+    }
 
     public static function login($LNUMBER, $ROLE)
     {
@@ -73,7 +86,7 @@ class AppUser
         $user = TutorDB::TutorLogin($LNUMBER);
         if ($user !== null && isset($user)) {
             // ----------- VISIT -----------  //
-            $visit = new Visit($user->GetUserID(), 1, $ROLE, date("Y-m-d h:i:s"));
+            $visit = new Visit($user->GetUserID(), 1, $ROLE, date("Y-m-d H:i:s"));
             VisitDB::CreateVisit($visit);
             $visit = VisitDB::RetrieveVisit($visit);
             //SESSION STUFF
@@ -96,7 +109,7 @@ class AppUser
 
             // ----------- VISIT -----------  //
             // assumes the student is working in the lab //
-            $visit = new Visit($user->GetUserID(), 1, $ROLE, date("Y-m-d h:i:s"));
+            $visit = new Visit($user->GetUserID(), 1, $ROLE, date("Y-m-d H:i:s"));
             VisitDB::CreateVisit($visit);
             $visit = VisitDB::RetrieveVisit($visit);
             //SESSION STUFF
@@ -107,7 +120,7 @@ class AppUser
             $task = new Task($visit->getVisitID(), 
             	$courses[0]->getCourseNumber(), 
             	1,
-            	date("Y-m-d h:i:s"));
+            	date("Y-m-d H:i:s"));
             TaskDB::CreateTask($task);
             $task = TaskDB::RetrieveTask($task);
 
@@ -120,5 +133,14 @@ class AppUser
       $_SESSION['user'] = null;
       return null;
      }
+	 
+	 // what if the original picture is not a png?  Will browser still display it?
+	 public function getImageFilename() {
+        $number_hash = md5($this->getLNumber());
+		$image_filename = $number_hash . '.png';
+        return $image_filename;
+    }
+    
 }
+
 ?>
