@@ -64,7 +64,7 @@
                 for ($i = $fStart; $i <= $fEnd; $i++) {
         ?>
                     $("#<?php echo $i . $day; ?>").append(
-                    	"<a id='tutor_<?php echo $tutorID; ?>' class='isTutor' href='' style='width:100%;'><?php echo $name; ?></a>");
+                    	"<a id='tutor_<?php echo $tutorID; ?>' class='isTutor' href='' style='width:100%;'><?php echo $name; ?></a><br />");
 
         <?php 
                 } 
