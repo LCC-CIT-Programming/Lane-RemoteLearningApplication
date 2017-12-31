@@ -362,7 +362,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE VIEW onlinetutors AS
 SELECT UserID
-FROM visit
+FROM Visit
 WHERE EndTime IS NULL
 AND (Role = 'Tutor' OR Role = 'Faculty');
 -- AND UserID IN (SELECT UserID FROM tutor);
@@ -379,7 +379,7 @@ CREATE VIEW `onlinestudents` AS
 		LocationName,
 		CourseName
 	FROM
-		visit
+		Visit
 			INNER JOIN
 		AppUser ON visit.UserID = AppUser.UserID
 			INNER JOIN
