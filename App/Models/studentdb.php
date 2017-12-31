@@ -21,8 +21,9 @@ class StudentDB
                                 $row['LastName'],
                                 $row['LNumber'],
                                 $row['EmailAddress'],
+                                $row['AppUserBio'],                                
                                 $row['MajorId'],
-                                $row['UserID']); //add $row['ImgFilepath']
+                                $row['UserID']);
             return $user;
         } else {
             return null;
@@ -122,17 +123,21 @@ class StudentDB
         $lnum = $STUDENT->getLNumber();
         $email = $STUDENT->getEmail();
         $majorID = $STUDENT->getMajorID();
+        $bio = $STUDENT->getBio();
 
-        $query1 = 'INSERT INTO AppUser(FirstName, LastName, LNumber, EmailAddress)
-							     VALUES (:firstName, :lastName, :lnum, :email)';
+        $query1 = 'INSERT INTO AppUser(FirstName, LastName, LNumber, EmailAddress, AppUserBio)
+							     VALUES (:firstName, :lastName, :lnum, :email, :bio)';
 
         $statement = $db->prepare($query1);
         $statement->bindValue(':firstName', $firstName);
         $statement->bindValue(':lastName', $lastName);
         $statement->bindValue(':lnum', $lnum);
         $statement->bindValue(':email', $email);
-        $statement->execute();
-        $statement->closeCursor();
+        $statement->bindValue(':bio', $bio);
+        if ($statement->execute())
+        	$statement->closeCursor();
+        else
+        	throw new PDOException("Could not insert into AppUser in create student");
 
         $query2 = 'SELECT UserID
 							     FROM AppUser
@@ -146,16 +151,15 @@ class StudentDB
 
         if ($row != false) {
             $ID = $row['UserID'];
-
-
-          $query3 = 'INSERT INTO Student(MajorId, UserId)
-  							 VALUES(:majorid, :userid)';
-
-          $statement = $db->prepare($query3);
-          $statement->bindValue(':majorid', $majorID);
-          $statement->bindValue(':userid', $ID);
-          $statement->execute();
-          $statement->closeCursor();
+			$query3 = 'INSERT INTO Student(MajorId, UserId)
+							 VALUES(:majorid, :userid)';
+			$statement = $db->prepare($query3);
+			$statement->bindValue(':majorid', $majorID);
+			$statement->bindValue(':userid', $ID);
+			if ($statement->execute())
+				$statement->closeCursor();
+			else
+				throw new PDOException("Could not insert into Major in create student");
         }
     }
 
@@ -180,6 +184,7 @@ class StudentDB
                                                     $row['LastName'],
                                                     $row['LNumber'],
                                                     $row['EmailAddress'],
+                                                    $row['AppUserBio'],
                                                     $row['MajorId'],
                                                     $row['UserID']);
             return $user;
@@ -198,42 +203,36 @@ class StudentDB
         $email = $STUDENT->getEmail();
         $majorID = $STUDENT->getMajorID();
         $userID = $STUDENT->getUserID();
+        $bio = $STUDENT->getBio();
+        
+        $query1 = 
+        	'UPDATE AppUser
+				SET FirstName = :firstname, LastName = :lastname,  
+				EmailAddress = :email, AppUserBio = :bio
+				WHERE UserID = :userid';
+		$query2 = 	
+			'UPDATE Student
+				SET MajorId = :majorid
+				WHERE UserID = :userid';
 
-        $query = 'UPDATE AppUser
-							SET FirstName = :firstname, LastName = :lastname, LNumber = :lnum, EmailAddress = :email
-							WHERE UserID = :userID;
-
-				 			UPDATE Student
-						  SET MajorId = :majorid
-							WHERE UserID = :userid';
-
-        $statement = $db->prepare($query);
+        $statement = $db->prepare($query1);
         $statement->bindValue(':firstname', $firstName);
         $statement->bindValue(':lastname', $lastName);
-        $statement->bindValue(':lnum', $lnum);
         $statement->bindValue(':email', $email);
+        $statement->bindValue(':bio', $bio);
+        $statement->bindValue(':userid', $userID);
+		if ($statement->execute())
+			$statement->closeCursor();
+		else
+			throw new PDOException("Could not update app user in update student");
+        
+        $statement = $db->prepare($query2);
         $statement->bindValue(':majorid', $majorID);
         $statement->bindValue(':userid', $userID);
-        $statement->execute();
-        $statement->closeCursor();
-    }
-
-    public static function UpdateProfile($USER)
-    {
-        $db = Database::getDB();
-
-        $email = $USER->getEmail();
-        $userID = $USER->getUserID();
-
-        $query = 'UPDATE AppUser
-					SET EmailAddress = :email
-					WHERE UserID = :userid';
-
-        $statement = $db->prepare($query);
-        $statement->bindValue(':email', $email);
-        $statement->bindValue(':userid', $userID);
-        $statement->execute();
-        $statement->closeCursor();
+        if ($statement->execute())
+			$statement->closeCursor();
+		else
+			throw new PDOException("Could not update student in update student");
     }
 
     public static function DeleteStudent($STUDENT)

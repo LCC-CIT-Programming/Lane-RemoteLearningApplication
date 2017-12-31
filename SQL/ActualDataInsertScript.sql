@@ -5,6 +5,7 @@ INSERT INTO Major (MajorName) VALUES ('Networking');
 INSERT INTO Major (MajorName) VALUES ('Gaming');
 INSERT INTO Major (MajorName) VALUES ('ASOT CS');
 INSERT INTO Major (MajorName) VALUES ('CIT');
+INSERT INTO Major (MajorName) VALUES ('Other');
 
 /* TaskType TABLE */
 INSERT INTO TaskType (TaskTypeName, TaskTypeCategory) VALUES ('Hands On Assignment - Homework', 'Lab');
@@ -24,7 +25,7 @@ INSERT INTO TaskType (TaskTypeName, TaskTypeCategory) VALUES ('Lecture - Live', 
 INSERT INTO TaskType (TaskTypeName, TaskTypeCategory) VALUES ('Lecture - Video', 'Lecture');
 -- SELECT * FROM TaskType;
 
-/* APP USER TABLE  - need lnumbers and part timers and tutors*/
+/* APP USER TABLE  - need lnumbers and bio part timers and tutors*/
 INSERT INTO Appuser (FirstName, LastName, LNumber, EmailAddress) VALUES ('Mari', 'Good', 'L00000051', 'goodm@lanecc.edu');
 INSERT INTO Appuser (FirstName, LastName, LNumber, EmailAddress) VALUES ('Ron', 'Little', 'L00000002', 'littler@lanecc.edu');
 INSERT INTO Appuser (FirstName, LastName, LNumber, EmailAddress) VALUES ('Jim', 'Bailey', 'L00000003', 'baileyj@lanecc.edu');

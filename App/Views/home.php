@@ -41,11 +41,20 @@
 	</div>
 	<div class="row">
 
-	  <div class="col-lg-3 well" id="student_div">
-		 <img src="./Styles/smiley.png" align="left" class="smiley">
+	<div class="col-lg-3 well" id="student_div">
+		<?php
+			$user_picture_filename = $user->getImageFilename();
+			$user_picture_path = $picture_path . $user_picture_filename;
+			$full_picture_path = $doc_root . $user_picture_path;
+			if (file_exists($full_picture_path))
+				echo "<img src='$user_picture_path' align='left' class='smiley'>";
+			else
+				echo "<img src='./Styles/smiley.png' align='left' class='smiley'>";
+		?>
+	  
 		<h4 class="yourName"><?php echo $user->getFirstName(); ?></h4>
 		<h4><a href="?action=edit">Edit Profile</a></h4>
-	  </div>
+	</div>
 
 	  <div class="col-lg-8 well" id="question_div" style="overflow: auto">
 			<table class="table table-condensed table-responsive" id="questionsTable">

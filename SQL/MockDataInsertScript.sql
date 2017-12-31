@@ -4,12 +4,13 @@ INSERT INTO Major (MajorName) VALUES ('CIT');
 INSERT INTO Major (MajorName) VALUES ('Networking');
 INSERT INTO Major (MajorName) VALUES ('Gaming');
 INSERT INTO Major (MajorName) VALUES ('ASOT CS');
+INSERT INTO Major (MajorName) VALUES ('Other');
 -- SELECT * FROM major;
 
 /* APP USER TABLE */
 INSERT INTO Appuser (FirstName, LastName, LNumber, EmailAddress) VALUES ('Mari', 'Good', 'L00000051', 'goodm@lanecc.edu');
 INSERT INTO Appuser (FirstName, LastName, LNumber, EmailAddress) VALUES ('Ron', 'Little', 'L00000002', 'littler@lanecc.edu');
-INSERT INTO Appuser (FirstName, LastName, LNumber, EmailAddress) VALUES ('Tutor1', 'Three', 'L00000003', 'tutor1@gmail.com');
+INSERT INTO Appuser (FirstName, LastName, LNumber, EmailAddress, AppUserBio) VALUES ('Tutor1', 'Three', 'L00000003', 'tutor1@gmail.com', '2nd year Programming major');
 INSERT INTO Appuser (FirstName, LastName, LNumber, EmailAddress) VALUES ('Tutor2', 'Four', 'L00000004', 'tutor2@gmail.com');
 INSERT INTO Appuser (FirstName, LastName, LNumber, EmailAddress) VALUES ('Student1', 'One', 'L00000005', 'Student1@gmail.com');
 INSERT INTO Appuser (FirstName, LastName, LNumber, EmailAddress) VALUES ('Student2', 'Two', 'L00000006', 'Student2@gmail.com');

@@ -7,14 +7,16 @@ class AppUser
     protected $lastName;
     protected $lnumber;
     protected $email;
+    protected $bio;
 
-    public function __construct($FIRSTNAME, $LASTNAME, $LNUMBER, $EMAIL, $USERID = null)
+    public function __construct($FIRSTNAME, $LASTNAME, $LNUMBER, $EMAIL, $BIO, $USERID = null)
     {
         $this->userID = $USERID;
         $this->firstName = $FIRSTNAME;
         $this->lastName = $LASTNAME;
         $this->lnumber = $LNUMBER;
         $this->email = $EMAIL;
+        $this->bio = $BIO;
     }
 
     public function getUserID()
@@ -58,6 +60,17 @@ class AppUser
     public function setEmail($VALUE)
     {
         $this->email = $VALUE;
+    }
+    
+    public function getBio()
+    {
+        return $this->bio;
+    }
+
+
+    public function setBio($VALUE)
+    {
+        $this->bio = $VALUE;
     }
 
     public static function login($LNUMBER, $ROLE)
@@ -121,16 +134,13 @@ class AppUser
       return null;
      }
 	 
-	 //shamelessly copied from Lab 6
+	 // what if the original picture is not a png?  Will browser still display it?
 	 public function getImageFilename() {
         $number_hash = md5($this->getLNumber());
 		$image_filename = $number_hash . '.png';
         return $image_filename;
     }
-
-    public function getImagePath() {
-        $image_path = '../Profile_Pics/' . $this->getImageFilename();
-        return $image_path;
-    }
+    
 }
+
 ?>
