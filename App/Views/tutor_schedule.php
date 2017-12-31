@@ -1,71 +1,69 @@
 <?php include 'header.php'; ?>
 
-	<div class="container-fluid" style="margin-top: 20px; width: 500px">
+	<div class="container-fluid" style="margin-top: 20px; width: 750px">
 
-	<form method="post" action=".?action=edit_schedule" style="margin-bottom: 75px;">
-  	<div class = "form-group">
-      <div class="shifts-container">
-    		<div class="row" style="margin-bottom: 10px;">
-    			<div class = "col-md-5">
-    				<input type="date" name="Day" id="Date" style="width:100%" />
-    			</div>
+		<form method="post" action=".?action=edit_schedule" style="margin-bottom: 75px;">
+			<div class = "form-group">
+			  <div class="shifts-container">
+					<div class="row" style="margin-bottom: 10px;">
+						<div class = "col-md-4">
+							<input type="date" name="Day" id="Date" style="width:100%" />
+						</div>
 
-    			<div class = "col-md-3">
-    				<input type="time" name="StartTime" id="Start" style="width:100%"/>
-    			</div>
+						<div class = "col-md-4">
+							<input type="time" name="StartTime" id="Start" style="width:100%"/>
+						</div>
 
-    			<div class = "col-md-3">
-    				<input type="time" name="EndTime" id="End" style="width:100%"/>
-    			</div>
+						<div class = "col-md-4">
+							<input type="time" name="EndTime" id="End" style="width:100%"/>
+						</div>
 
-          <!-- <div class="col-md-1 pull-right" style="height: 25px; width: 25px;">
-            <button class="btn btn-success pull-right add_field" style="border-radius: 50%;">+</button>
-          </div> -->
+				  <!-- <div class="col-md-1 pull-right" style="height: 25px; width: 25px;">
+					<button class="btn btn-success pull-right add_field" style="border-radius: 50%;">+</button>
+				  </div> -->
 
-    		</div>
-      </div>
-		</div>
-
-		<button type="submit" class="btn btn-primary">Add shift to my schedule</button>
+					</div>
+			  </div>
+			</div>
+			<button type="submit" class="btn btn-primary">Add shift to my schedule</button>
 		</form>
 
 		<table class="table table-responsive table-condensed">
-		<thead>
-			<tr>
-				<th>Day</th><th>Start time</th><th>End time</th><th></th>
-			</tr>
-		</thead>
-		<tbody>
-			<?php
-			if ($schedules != null) {
-				foreach ($schedules as $schedule) {
-					$day =  $schedule->getStringWeekDay();
-					$start = new DateTime($schedule->getStartTime());
-					$end = new DateTime($schedule->getEndTime());
-					$fstart = $start->format('H:i A');
-					$fend = $end->format('H:i A');
-					echo '<tr><td>';
-					echo $day;
-					echo '</td><td>';
-					echo $fstart;
-					echo '</td><td>';
-					echo $fend;
-					echo '</td><td>';
-					echo '<form action="?action=delete_schedule" method="post">';
-					echo '<input type="hidden" name="id" value="';
-					echo $schedule->getScheduleID();
-					echo '?>">';
-					echo '<input class="btn btn-danger" type="submit" name="submit" value="Delete"></form>';
-					echo '</td></tr>';
+			<thead>
+				<tr>
+					<th>Day</th><th>Start time</th><th>End time</th><th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php
+				if ($schedules != null) {
+					foreach ($schedules as $schedule) {
+						$day =  $schedule->getStringWeekDay();
+						$start = new DateTime($schedule->getStartTime());
+						$end = new DateTime($schedule->getEndTime());
+						$fstart = $start->format('h:i A');
+						$fend = $end->format('h:i A');
+						echo '<tr><td>';
+						echo $day;
+						echo '</td><td>';
+						echo $fstart;
+						echo '</td><td>';
+						echo $fend;
+						echo '</td><td>';
+						echo '<form action="?action=delete_schedule" method="post">';
+						echo '<input type="hidden" name="id" value="';
+						echo $schedule->getScheduleID();
+						echo '?>">';
+						echo '<input class="btn btn-danger" type="submit" name="submit" value="Delete"></form>';
+						echo '</td></tr>';
+					}
 				}
-			}
-			else {
-				echo '<tr><td> You are not currently scheduled </td></tr>';
-			}
-      ?>
-		</tbody>
+				else {
+					echo '<tr><td> You are not currently scheduled </td></tr>';
+				}
+		  		?>
+			</tbody>
 		</table>
-
 	</div>
 
 <?php include 'footer.php'; ?>
