@@ -91,19 +91,18 @@
 
 <script>
     $(document).ready(function() {
-      CheckAcceptedQuestions();
-      setInterval(function() {
-        CheckAcceptedQuestions();
-      }, 30000);
+		CheckAcceptedQuestions();
+		setInterval("CheckAcceptedQuestions()", 1000 * 60 * 1);
+		setInterval("stillLoggedIn()", 1000 * 60 * 2);
+      
+		$('#studentResolveQuestion').click(function() {
+      		var val = $(this).val();
+      		$.post('', { action:'resolve_question', resolveQuestion:val });
+    	});
     });
-
-    $('#studentResolveQuestion').click(function() {
-      var val = $(this).val();
-      $.post('', { action:'resolve_question', resolveQuestion:val });
-    });
-
+	
     function CheckAcceptedQuestions() {
-      $.post('', { action:'check_accepted' }, function(ret) {
+		$.post('', { action:'check_accepted' }, function(ret) {
           var data = JSON.parse(ret);
           var modal = $('#acceptedModal');
 
@@ -117,7 +116,11 @@
               }
             });
           }
-
-    });
-  }
+    	});
+    }
+    
+	function stillLoggedIn() {
+		$.get('.?action=still_logged_in');
+	}
+	
 </script>

@@ -231,7 +231,6 @@ $(document).ready(function() {
 		setInterval(function() {
 			loadTable();
 		}, 1000*60*2);
-		setInterval("stillLoggedIn()", 1000*60*5);
 
 		$('#location option').each(function() {
 			if ($(this).val() == "<?php echo $visit->getLocationID() ?>")
@@ -343,10 +342,6 @@ $(document).on('click', '.details', function() {
 			})
 			.done(function() { loadTable(); });
 	});
-
-function stillLoggedIn() {
-	$.get('.?action=still_logged_in');
-}
 
 function loadTable() {
 	$.post('', { action:'display_questions' }, function(ret) {
