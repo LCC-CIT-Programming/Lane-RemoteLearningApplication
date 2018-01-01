@@ -100,46 +100,43 @@ class Question
 
     public static function AskQuestion($COURSENUM, $SUBJECT, $DESCRIPTION)
     {
-        $STATUS = "open";
-        $ASKTIME = date("Y-m-d H:i:s");
+        $status = "open";
+        $asktime = date("Y-m-d H:i:s");
         
-        if ($COURSENUM == null || $SUBJECT == null || $DESCRIPTION == null) 
-        {
-            $questionStatus = "Invalid question. Check all fields and try again.";
-            include("./Views/ask.php");
-        } 
+		// ----------- USER -----------  // 
+		$user = $_SESSION['user'];
+		$userId = $user->GetUserID();
 
-        else 
-        {
-            // ----------- USER -----------  // 
-            $user = $_SESSION['user'];
-            $USERID = $user->GetUserID();
-
-            // ----------- QUESTION -----------  //
-            $question = new Question($USERID, $COURSENUM, $SUBJECT, $DESCRIPTION, $STATUS, $ASKTIME);
-            QuestionDB::CreateQuestion($question);
-            $questionStatus = "Question created, ask another?";
-            
-            // ----------- VISIT -----------  //
-            $visit = $_SESSION["visit"];
-            
-
-            // ----------- TASK -----------  //
-            $task = $_SESSION['task'];
-            if (($task !== null) && ($visit !== null)) {
-                if ($task->getCourseNumber() !== $COURSENUM) {
-                    $task->setEndTime(date("Y-m-d H:i:s"));
-                    taskdb::UpdateTask($task);
-                    $startNewTask = new Task($visit->getVisitID(), $COURSENUM, date("Y-m-d H:i:s"));
-                    TaskDB::CreateTask($startNewTask);
-                    $task = TaskDB::RetrieveTask($startNewTask);
-                    $_SESSION['task'] = $task;
-                }
-            }
-
-             // ----------- DISPLAY VIEW -----------  //
-            include("./Views/ask.php");
-        }
+		// ----------- QUESTION -----------  //
+		$question = new Question($userId, $COURSENUM, $SUBJECT, $DESCRIPTION, $status, $asktime);
+		QuestionDB::CreateQuestion($question);
+		
+		// ----------- VISIT -----------  //
+		$visit = $_SESSION["visit"];
+		
+		// ----------- TASK -----------  //
+		$task = $_SESSION['task'];
+		$now = date("Y-m-d H:i:s");
+		if (($task !== null) && ($visit !== null)) {
+			$elapsedTime = (strtotime($now) - strtotime($task->getStartTime()))/60;
+			// has the course changed?
+			if ($task->getCourseNumber() !== $COURSENUM) {
+				// has the student been working for a while
+				if ($elapsedTime > 5) {
+					$task->setEndTime(date("Y-m-d H:i:s"));
+					taskdb::EndTask($task);
+					$startNewTask = new Task($visit->getVisitID(), $COURSENUM, 1, date("Y-m-d H:i:s"));
+					TaskDB::CreateTask($startNewTask);
+					$task = TaskDB::RetrieveTask($startNewTask);
+				}
+				// assume he/she means to change the course for the current task
+				else {
+				    $task->setCourseNumber($COURSENUM);            
+               		TaskDB::UpdateTaskContent($task);
+				}
+				$_SESSION['task'] = $task;
+			}
+		}
     }
 
     public function CancelQuestion()

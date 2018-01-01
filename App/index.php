@@ -121,6 +121,7 @@ try {
             // ----------- SUCCESSFUL LOGIN -----------  //
             if ($user !== null)
             {
+                $visit = $_SESSION['visit'];
                 header('Location: index.php?action=home');
                 die();
             }
@@ -135,23 +136,40 @@ try {
         // ----------- ASK [GET] -----------  //
         case "ask":
             $questionStatus = "";
+            $task = $_SESSION['task'];
             include("./Views/ask.php");
         break;
 
         // ----------- ASK [POST] -----------  //
         case "ask_question":
+            $questionStatus = "";
             $courseNum = filter_input(INPUT_POST, "courseSelect");
-            $subject = filter_input(INPUT_POST, "subject");
-            $description = filter_input(INPUT_POST, "description");
-            Question::AskQuestion($courseNum, $subject, $description);
+            $subject = filter_input(INPUT_POST, "subject", FILTER_SANITIZE_STRING);
+            $description = filter_input(INPUT_POST, "description", FILTER_SANITIZE_STRING);
+			if ($courseNum == null || $courseNum === false || 
+				$subject == null || $subject === false || 
+				$description == null || $description === false) 
+			{
+				$questionStatus = "Invalid question. Check all fields and try again.";
+			} 
+			else 
+			{
+			    Question::AskQuestion($courseNum, $subject, $description);
+			    // asking a question about another course will change the task in session
+			    $task = $_SESSION['task'];
+			    $questionStatus = "Question created, ask another?";
+			}
+            include("./Views/ask.php");
         break;
 
         // ----------- TASK [AJAX/POST] -----------  //
         case "update_task":
+            $task = $_SESSION['task'];
             $courseNumber = filter_input(INPUT_POST, "courseNumber");
             $taskType = filter_input(INPUT_POST, "taskType");
-            $currentTask = Task::ChangeTask($courseNumber, $taskType, $visit, $task);
+            $currentTask = Task::ChangeTask($courseNumber, $taskType, $visit, $task);          
             $_SESSION['task'] = $currentTask;
+            $task = $currentTask;
         break;
 
         // ----------- LOCATION [AJAX/POST] -----------  //

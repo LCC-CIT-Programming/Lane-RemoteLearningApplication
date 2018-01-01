@@ -243,7 +243,7 @@ $(document).ready(function() {
             $.ajax({
                     url: ".?action=update_task",
                     type: "POST",
-                    data: {"courseNumber": $(this).val(), "taskType": $("#taskType").val()},
+                    data: {"courseNumber": $(this).val(), "taskType": $("#tasktype").val()},
            });
     	});
         $("#tasktype").change( function(){
