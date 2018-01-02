@@ -81,7 +81,7 @@
 
       <div class="modal-footer">
 				<div id="acceptedModalButtons">
-					<button id="studentResolveQuestion" type="button" class="btn btn-success" data-dismiss="modal">Resolved</button>
+					<button id="studentResolveQuestion" type="button" class="btn btn-success" data-dismiss="modal">OK</button>
 			  </div>
       </div>
     </div>
@@ -97,8 +97,9 @@
       
 		$('#studentResolveQuestion').click(function() {
       		var val = $(this).val();
-      		$.post('', { action:'resolve_question', resolveQuestion:val });
+      		$.post('', { action:'acknowledge_tutor', acknowledgeQuestion:val });
     	});
+    	
     });
 	
     function CheckAcceptedQuestions() {
