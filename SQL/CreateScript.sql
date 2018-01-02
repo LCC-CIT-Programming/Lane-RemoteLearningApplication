@@ -1,7 +1,6 @@
 DROP TABLE IF EXISTS `CITLabMonitor`.`Resolution` ;
 DROP TABLE IF EXISTS `CITLabMonitor`.`Question` ;
 DROP TABLE IF EXISTS `CITLabMonitor`.`Schedule` ;
-DROP TABLE IF EXISTS `CITLabMonitor`.`TutorExpertise` ;
 DROP TABLE IF EXISTS `CITLabMonitor`.`StudentRegistration` ;
 DROP TABLE IF EXISTS `CITLabMonitor`.`Tutor` ;
 DROP TABLE IF EXISTS `CITLabMonitor`.`Task` ;
@@ -48,9 +47,9 @@ CREATE TABLE IF NOT EXISTS `CITLabMonitor`.`AppUser` (
   `LNumber` VARCHAR(9) NULL DEFAULT NULL,
   `EmailAddress` VARCHAR(50) NULL DEFAULT NULL,
   `AppUserBio` VARCHAR(250) NULL DEFAULT NULL,
-  PRIMARY KEY (`UserID`))
+  PRIMARY KEY (`UserID`),
+  UNIQUE INDEX `AppUser_LNumber_IDX` (`LNumber` ASC))
 ENGINE = InnoDB;
-
 
 -- -----------------------------------------------------
 -- Table `CITLabMonitor`.`Student`
@@ -315,7 +314,7 @@ CREATE TABLE IF NOT EXISTS `CITLabMonitor`.`Question` (
   `UserID` INT NOT NULL,
   `Subject` VARCHAR(45) NULL,
   `Description` VARCHAR(300) NULL DEFAULT NULL,
-  `Status` VARCHAR(20) NULL DEFAULT NULL,
+  `Status` VARCHAR(45) NULL DEFAULT NULL,
   `AskTime` DATETIME NULL DEFAULT NULL,
   `OpenTime` DATETIME NULL DEFAULT NULL,
   `CloseTime` DATETIME NULL DEFAULT NULL,

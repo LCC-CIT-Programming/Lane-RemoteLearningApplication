@@ -121,6 +121,7 @@ try {
             // ----------- SUCCESSFUL LOGIN -----------  //
             if ($user !== null)
             {
+                $visit = $_SESSION['visit'];
                 header('Location: index.php?action=home');
                 die();
             }
@@ -135,23 +136,40 @@ try {
         // ----------- ASK [GET] -----------  //
         case "ask":
             $questionStatus = "";
+            $task = $_SESSION['task'];
             include("./Views/ask.php");
         break;
 
         // ----------- ASK [POST] -----------  //
         case "ask_question":
+            $questionStatus = "";
             $courseNum = filter_input(INPUT_POST, "courseSelect");
-            $subject = filter_input(INPUT_POST, "subject");
-            $description = filter_input(INPUT_POST, "description");
-            Question::AskQuestion($courseNum, $subject, $description);
+            $subject = filter_input(INPUT_POST, "subject", FILTER_SANITIZE_STRING);
+            $description = filter_input(INPUT_POST, "description", FILTER_SANITIZE_STRING);
+			if ($courseNum == null || $courseNum === false || 
+				$subject == null || $subject === false || 
+				$description == null || $description === false) 
+			{
+				$questionStatus = "Invalid question. Check all fields and try again.";
+			} 
+			else 
+			{
+			    Question::AskQuestion($courseNum, $subject, $description);
+			    // asking a question about another course will change the task in session
+			    $task = $_SESSION['task'];
+			    $questionStatus = "Question created, ask another?";
+			}
+            include("./Views/ask.php");
         break;
 
         // ----------- TASK [AJAX/POST] -----------  //
         case "update_task":
+            $task = $_SESSION['task'];
             $courseNumber = filter_input(INPUT_POST, "courseNumber");
             $taskType = filter_input(INPUT_POST, "taskType");
-            $currentTask = Task::ChangeTask($courseNumber, $taskType, $visit, $task);
+            $currentTask = Task::ChangeTask($courseNumber, $taskType, $visit, $task);          
             $_SESSION['task'] = $currentTask;
+            $task = $currentTask;
         break;
 
         // ----------- LOCATION [AJAX/POST] -----------  //
@@ -205,7 +223,8 @@ try {
 
         // ----------- DISPLAY QUESTION [AJAX/POST] -----------  //
         case "display_questions":
-            $questions = QuestionDB::getOpenQuestions();
+            //$questions = QuestionDB::getOpenQuestions();
+            $questions = QuestionDB::getUnresolvedQuestions();
             $questionTableData = array();
 
             foreach ($questions as $question) {
@@ -217,7 +236,8 @@ try {
                                         "questionID" => $question->getQuestionID(),
                                         "askUserID" => $question->getUserID(),
                                         "userID" => $user->getUserID(),
-                                        "userRole" => $role);
+                                        "userRole" => $role,
+                                        "status" => $question->getStatus());
 
                 array_push($questionTableData, $singleQuestion);
             }
@@ -227,7 +247,7 @@ try {
 
         // ----------- CHECK UNRESOLVED/ACCEPTED QUESTIONS [AJAX/POST] -----------  //
         case "check_accepted":
-            $resolutions = ResolutionDB::RetrieveUnfinishedResolutions();
+            $resolutions = ResolutionDB::RetrieveUnfinishedResolutionsByStatus('Tutor Accepted');
 
             if ($resolutions != null) {
                 $acceptedQuestionInfo = array();
@@ -277,7 +297,7 @@ try {
             $questionDetails = QuestionDB::GetQuestionByID($questionID);
             $studentDetails = StudentDB::RetrieveStudentByID($questionDetails->getUserID());
 
-            $questionDetails->setStatus('In-Process');
+            $questionDetails->setStatus('Tutor Accepted');
             $questionDetails->setOpenTime(date("Y-m-d H:i:s", time()));
             QuestionDB::UpdateQuestion($questionDetails);
 
@@ -295,6 +315,15 @@ try {
                                     "studentEmail" => $studentDetails->getEmail());
 
             echo json_encode($questionJSON);
+        break;
+        
+        case "acknowledge_tutor":
+            if (filter_input(INPUT_POST, "acknowledgeQuestion") !== null) {
+                $questionID = filter_input(INPUT_POST, "acknowledgeQuestion");
+                $questionDetails = QuestionDB::GetQuestionByID($questionID);
+                $questionDetails->setStatus('Student Acknowledged');
+                QuestionDB::UpdateQuestion($questionDetails);
+            }
         break;
 
         // ----------- REOPEN SPECIFIC QUESTIONS [AJAX/POST] -----------  //
@@ -314,8 +343,13 @@ try {
         case "escalate_question":
             if (filter_input(INPUT_POST, "escalateQuestion") !== null) {
                 $questionID = filter_input(INPUT_POST, "escalateQuestion");
+                $description = filter_input(INPUT_POST, "escalationText", FILTER_SANITIZE_STRING);
                 $questionDetails = QuestionDB::GetQuestionByID($questionID);
                 $questionDetails->setStatus('Escalated');
+                
+                $res = ResolutionDB::RetrieveResolutionByID($questionID);
+                $res->setResolution($description);
+                ResolutionDB::UpdateResolution($res);
                 QuestionDB::UpdateQuestion($questionDetails);
             }
         break;
@@ -323,17 +357,19 @@ try {
         case "resolve_question":
             if (filter_input(INPUT_POST, "resolveQuestion") !== null) {
                 $questionID = filter_input(INPUT_POST, "resolveQuestion");
+                $description = filter_input(INPUT_POST, "resolutionText", FILTER_SANITIZE_STRING);
                 $questionDetails = QuestionDB::GetQuestionByID($questionID);
                 $questionDetails->setStatus('Resolved');
                 $questionDetails->setCloseTime(date("Y-m-d H:i:s", time()));
 
                 $res = ResolutionDB::RetrieveResolutionByID($questionID);
-                $res->setResolution('Resolved');
+                $res->setResolution($description);
                 ResolutionDB::UpdateResolution($res);
                 QuestionDB::UpdateQuestion($questionDetails);
             }
         break;
-
+        
+	// ----------- TUTOR SCHEDULE -----------  //
         case "schedule":
             include("./Views/schedule.php");
         break;

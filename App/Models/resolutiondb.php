@@ -98,6 +98,37 @@ class ResolutionDB
             return null;
         }
     }
+    
+    public static function RetrieveUnfinishedResolutionsByStatus($status)
+    {
+        $query = 'SELECT Resolution.QuestionId, Resolution.UserID, Resolution.Resolution, Question.Status 
+                  FROM Resolution INNER JOIN Question
+                  ON Resolution.QuestionId = Question.QuestionId
+                  WHERE Resolution.Resolution IS NULL AND
+                  Question.Status = :status';
+
+        $db = Database::getDB();
+
+        $statement = $db->prepare($query);
+        $statement->bindValue(':status', $status);
+        $statement->execute();
+        $rows = $statement->fetchAll();
+        $statement->closeCursor();
+
+        $resolutions = array();
+
+        if ($rows != null) {
+        foreach ($rows as $row) {
+            $resolution = new Resolution($row['QuestionId'],
+                                         $row['UserID'],
+                                         $row['Resolution']);
+            array_push($resolutions, $resolution);
+        }
+            return $resolutions;
+        } else {
+            return null;
+        }
+    }
 
 
     public static function UpdateResolution($RESOLUTION)
