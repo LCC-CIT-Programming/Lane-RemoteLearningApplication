@@ -93,7 +93,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `CITLabMonitor`.`Course` (
   `CourseNumber` VARCHAR(10) NOT NULL,
-  `CourseName` VARCHAR(50) NOT NULL,
+  `CourseName` VARCHAR(80) NOT NULL,
   `LeadInstructorId` INT NOT NULL,
   PRIMARY KEY (`CourseNumber`),
   UNIQUE INDEX `CourseName_UNIQUE` (`CourseName` ASC),
