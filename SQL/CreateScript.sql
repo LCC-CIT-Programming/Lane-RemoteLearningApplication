@@ -16,6 +16,7 @@ DROP TABLE IF EXISTS `CITLabMonitor`.`Major` ;
 DROP TABLE IF EXISTS `CITLabMonitor`.`AppUser` ;
 DROP VIEW IF EXISTS `CITLabMonitor`.`onlinetutors`;
 DROP VIEW IF EXISTS `CITLabMonitor`.`onlinestudents`;
+DROP VIEW IF EXISTS `CITLabMonitor`.`visithistory`;
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
@@ -396,7 +397,7 @@ CREATE VIEW `onlinestudents` AS
 -- View `CITLabMonitor`.`visithistory`
 -- -----------------------------------------------------      
 CREATE VIEW `visithistory` AS      
-	SELECT Visit.StartTime, DATE_FORMAT(Visit.StartTime, "%m/%d/%Y") AS VisitDate, 
+	SELECT Task.StartTime, DATE_FORMAT(Task.StartTime, "%m/%d/%Y") AS VisitDate, 
 		DATE_FORMAT(Task.StartTime, "%h:%i %p") AS TIme,
 		TIMEDIFF(IF (Task.EndTime IS NULL, Visit.LastPing, Task.EndTime), Task.StartTime) AS ElapsedTime, 	
 		CourseNumber, TaskTypeName, LocationName, UserId, Role
