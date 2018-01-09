@@ -113,6 +113,25 @@ class StudentDB
             return null;
         }
     }
+    
+    public static function GetVisitHistory($STUDENT)
+    {
+        $db = Database::getDB();
+        $query = 'SELECT * FROM visithistory 
+        	where UserId = :userid and role="student" 
+        	order by StartTime';
+        $statement = $db->prepare($query);
+        $statement->bindValue(":userid", $STUDENT->getUserID());        
+        $statement->execute();
+        $rows = $statement->fetchAll();
+        $statement->closeCursor();
+
+        if (isset($rows)) {
+            return $rows;
+        } else {
+            return null;
+        }
+    }
 
     public static function CreateStudent($STUDENT)
     {

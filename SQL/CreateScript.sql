@@ -396,8 +396,8 @@ CREATE VIEW `onlinestudents` AS
 -- View `CITLabMonitor`.`visithistory`
 -- -----------------------------------------------------      
 CREATE VIEW `visithistory` AS      
-	SELECT DATE_FORMAT(Visit.StartTime, "%m/%d/%Y") AS VisitDate, 
-		DATE_FORMAT(Task.StartTime, "%h:%i %p") AS StartTIme,
+	SELECT Visit.StartTime, DATE_FORMAT(Visit.StartTime, "%m/%d/%Y") AS VisitDate, 
+		DATE_FORMAT(Task.StartTime, "%h:%i %p") AS TIme,
 		TIMEDIFF(IF (Task.EndTime IS NULL, Visit.LastPing, Task.EndTime), Task.StartTime) AS ElapsedTime, 	
 		CourseNumber, TaskTypeName, LocationName, UserId, Role
 	FROM Visit INNER JOIN Task
