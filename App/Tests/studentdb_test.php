@@ -101,11 +101,26 @@ function canGetStudentOpenQuestions()
     }
 }
 
+function canGetStudentVisitHistory()
+{
+    $student = StudentDB::StudentLogin('L00000003');
+    $history = array();
+    $history = StudentDB::GetVisitHistory($student);
+    print_r($history);
 
-canStudentLogin();
+    if (count($history) == 1) {
+        echo "<p style='color:green;'>Getting a student's visithistory was successful! </p>";
+    } else {
+        echo "<p style='color:red;'>Getting a student's visithistory was not successful! </p>";
+    }
+}
+
+
+//canStudentLogin();
 //canGetCourses();
-canRetreiveStudentByID();
+//canRetreiveStudentByID();
 //canCreateStudent();
-canUpdateStudent();
+//canUpdateStudent();
 // canDeleteStudent();
-canGetStudentOpenQuestions();
+//canGetStudentOpenQuestions();
+canGetStudentVisitHistory();
