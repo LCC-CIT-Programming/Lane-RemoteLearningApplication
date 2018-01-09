@@ -391,6 +391,22 @@ CREATE VIEW `onlinestudents` AS
 		(Visit.EndTime IS NULL
 			AND Task.EndTime IS NULL)
 			AND (Role = 'student');
+            
+ -- -----------------------------------------------------
+-- View `CITLabMonitor`.`visithistory`
+-- -----------------------------------------------------      
+CREATE VIEW `visithistory` AS      
+	SELECT DATE_FORMAT(Visit.StartTime, "%m/%d/%Y") AS VisitDate, 
+		DATE_FORMAT(Task.StartTime, "%h:%i %p") AS StartTIme,
+		TIMEDIFF(IF (Task.EndTime IS NULL, Visit.LastPing, Task.EndTime), Task.StartTime) AS ElapsedTime, 	
+		CourseNumber, TaskTypeName, LocationName, UserId, Role
+	FROM Visit INNER JOIN Task
+	ON Visit.VisitId = Task.VisitId
+	INNER JOIN TaskType
+	ON Task.TaskTypeId = TaskType.TaskTypeId
+	INNER JOIN Location 
+	ON Visit.LocationId = Location.LocationId;
+    
 -- -----------------------------------------------------
 -- User for the application
 -- -----------------------------------------------------
