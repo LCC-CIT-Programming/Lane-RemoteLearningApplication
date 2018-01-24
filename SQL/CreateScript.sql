@@ -16,7 +16,6 @@ DROP TABLE IF EXISTS `CITLabMonitor`.`Major` ;
 DROP TABLE IF EXISTS `CITLabMonitor`.`AppUser` ;
 DROP VIEW IF EXISTS `CITLabMonitor`.`onlinetutors`;
 DROP VIEW IF EXISTS `CITLabMonitor`.`onlinestudents`;
-DROP VIEW IF EXISTS `CITLabMonitor`.`visithistory`;
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
@@ -381,7 +380,7 @@ CREATE VIEW `onlinestudents` AS
 	FROM
 		Visit
 			INNER JOIN
-		AppUser ON visit.UserID = AppUser.UserID
+		AppUser ON Visit.UserID = AppUser.UserID
 			INNER JOIN
 		Location ON Visit.LocationID = Location.LocationID
 			INNER JOIN
@@ -392,22 +391,6 @@ CREATE VIEW `onlinestudents` AS
 		(Visit.EndTime IS NULL
 			AND Task.EndTime IS NULL)
 			AND (Role = 'student');
-            
- -- -----------------------------------------------------
--- View `CITLabMonitor`.`visithistory`
--- -----------------------------------------------------      
-CREATE VIEW `visithistory` AS      
-	SELECT Task.StartTime, DATE_FORMAT(Task.StartTime, "%m/%d/%Y") AS VisitDate, 
-		DATE_FORMAT(Task.StartTime, "%h:%i %p") AS TIme,
-		TIMEDIFF(IF (Task.EndTime IS NULL, Visit.LastPing, Task.EndTime), Task.StartTime) AS ElapsedTime, 	
-		CourseNumber, TaskTypeName, LocationName, UserId, Role
-	FROM Visit INNER JOIN Task
-	ON Visit.VisitId = Task.VisitId
-	INNER JOIN TaskType
-	ON Task.TaskTypeId = TaskType.TaskTypeId
-	INNER JOIN Location 
-	ON Visit.LocationId = Location.LocationId;
-    
 -- -----------------------------------------------------
 -- User for the application
 -- -----------------------------------------------------
