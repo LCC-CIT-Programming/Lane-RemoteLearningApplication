@@ -381,7 +381,7 @@ CREATE VIEW `onlinestudents` AS
 	FROM
 		Visit
 			INNER JOIN
-		AppUser ON visit.UserID = AppUser.UserID
+		AppUser ON Visit.UserID = AppUser.UserID
 			INNER JOIN
 		Location ON Visit.LocationID = Location.LocationID
 			INNER JOIN
