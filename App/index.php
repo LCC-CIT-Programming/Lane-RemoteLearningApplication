@@ -33,6 +33,8 @@ require_once('Models/tasktype.php');
 require_once('Models/tasktypedb.php');
 require_once('Models/major.php');
 require_once('Models/majordb.php');
+require_once('CAS/config.php');
+require_once('CAS/CAS.php');
 
 forceHttps(true);
 
@@ -42,7 +44,7 @@ try {
     if (isset($_SESSION['user'])) {
         $user = $_SESSION['user'];
     }
-	else 
+	else
 		$user = null;
     if (isset($_SESSION['courses'])) {
         $courses = $_SESSION['courses'];
@@ -85,14 +87,14 @@ try {
             $action = 'default';
         }
     }
-    
+
 	if ($user == null){
 		if ($action != 'default' && $action != 'login')
 		{
 			$action = 'default';
 		}
 	}
-		
+
 
     switch ($action) {
 
@@ -110,12 +112,26 @@ try {
             $role = filter_input(INPUT_POST, "roleSelect");
             if ($useCAS) {
             	//TODO:  Call Jacob's function here
-            	$user = AppUser::login($username, $role);
+                //Only for testing
+                phpCAS::setDebug();
+                phpCAS::setVerbose(true);
+                phpCAS::setNoCasServerValidation();
+                //End testing
+                //phpCAS::setCasServerCACert($cas_server_ca_cert_path); //Need
+                //to set in production.
+                phpCAS::client(CAS_VERSION_2_0, $cas_host, $cas_port,
+                               $cas_context);
+                if (phpCAS::forceAuthentication()) {
+                    $user = AppUser::login($username, $role);
+                }
+                else {
+                    $user = null;
+                }
             }
             else {
                 $user = AppUser::login($username, $role);
             }
-            
+
             $_SESSION['user'] = $user;
 
             // ----------- SUCCESSFUL LOGIN -----------  //
