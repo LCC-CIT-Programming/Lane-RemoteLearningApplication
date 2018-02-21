@@ -104,7 +104,7 @@ class ResolutionDB
         $query = 'SELECT Resolution.QuestionId, Resolution.UserID, Resolution.Resolution, Question.Status 
                   FROM Resolution INNER JOIN Question
                   ON Resolution.QuestionId = Question.QuestionId
-                  WHERE Resolution.Resolution IS NULL AND
+                  WHERE (Resolution.Resolution IS NULL OR Resolution.Resolution = "") AND
                   Question.Status = :status';
 
         $db = Database::getDB();
@@ -124,6 +124,39 @@ class ResolutionDB
                                          $row['Resolution']);
             array_push($resolutions, $resolution);
         }
+            return $resolutions;
+        } else {
+            return null;
+        }
+    }
+    
+    public static function RetrieveUnfinishedResolutionsForStudentByStatus($userID, $status)
+    {
+        $query = 'SELECT Resolution.QuestionId, Resolution.UserID, Resolution.Resolution, Question.Status 
+                  FROM Resolution INNER JOIN Question
+                  ON Resolution.QuestionId = Question.QuestionId
+                  WHERE (Resolution.Resolution IS NULL OR Resolution.Resolution = "") AND
+                  Question.Status = :status AND
+                  Question.UserID = :userID';
+
+        $db = Database::getDB();
+
+        $statement = $db->prepare($query);
+        $statement->bindValue(':status', $status);
+        $statement->bindValue(':userID', $userID);
+        $statement->execute();
+        $rows = $statement->fetchAll();
+        $statement->closeCursor();
+
+        $resolutions = array();
+
+        if ($rows != null) {
+        	foreach ($rows as $row) {
+            	$resolution = new Resolution($row['QuestionId'],
+                                         $row['UserID'],
+                                         $row['Resolution']);
+            	array_push($resolutions, $resolution);
+        	}
             return $resolutions;
         } else {
             return null;

@@ -98,7 +98,6 @@ class AppUser
       else
       {
         $user = StudentDB::StudentLogin($LNUMBER);
-
         if ($user !== null && isset($user)) {
             // ----------- COURSES -----------  //
             $courses = StudentDB::GetStudentCourses($user);

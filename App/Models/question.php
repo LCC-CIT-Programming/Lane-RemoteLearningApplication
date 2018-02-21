@@ -100,7 +100,7 @@ class Question
 
     public static function AskQuestion($COURSENUM, $SUBJECT, $DESCRIPTION)
     {
-        $status = "open";
+        $status = "Open";
         $asktime = date("Y-m-d H:i:s");
         
 		// ----------- USER -----------  // 

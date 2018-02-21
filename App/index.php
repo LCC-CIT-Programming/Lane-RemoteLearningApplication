@@ -44,7 +44,7 @@ try {
     if (isset($_SESSION['user'])) {
         $user = $_SESSION['user'];
     }
-	else
+	else 
 		$user = null;
     if (isset($_SESSION['courses'])) {
         $courses = $_SESSION['courses'];
@@ -87,14 +87,14 @@ try {
             $action = 'default';
         }
     }
-
+    
 	if ($user == null){
 		if ($action != 'default' && $action != 'login')
 		{
 			$action = 'default';
 		}
 	}
-
+		
 
     switch ($action) {
 
@@ -131,7 +131,7 @@ try {
             else {
                 $user = AppUser::login($username, $role);
             }
-
+            
             $_SESSION['user'] = $user;
 
             // ----------- SUCCESSFUL LOGIN -----------  //
@@ -146,6 +146,7 @@ try {
             else {
                 $loginError = "Login attempt failed.";
                 include("./Views/login.php");
+                die();
             }
         break;
 
@@ -240,7 +241,8 @@ try {
         // ----------- DISPLAY QUESTION [AJAX/POST] -----------  //
         case "display_questions":
             //$questions = QuestionDB::getOpenQuestions();
-            $questions = QuestionDB::getUnresolvedQuestions();
+            //$questions = QuestionDB::getUnresolvedQuestions();
+            $questions = QuestionDB::GetUnresolvedQuestionsForOnlineStudents();
             $questionTableData = array();
 
             foreach ($questions as $question) {
@@ -263,15 +265,23 @@ try {
 
         // ----------- CHECK UNRESOLVED/ACCEPTED QUESTIONS [AJAX/POST] -----------  //
         case "check_accepted":
-            $resolutions = ResolutionDB::RetrieveUnfinishedResolutionsByStatus('Tutor Accepted');
+            $resolutions = ResolutionDB::RetrieveUnfinishedResolutionsForStudentByStatus($user->getUserID(), 'Tutor Accepted');
 
             if ($resolutions != null) {
                 $acceptedQuestionInfo = array();
                 foreach ($resolutions as $resolution) {
                     $tutor = TutorDB::RetrieveTutorByID($resolution->getUserID());
+                    $tutorVisit = VisitDB::RetrieveLastVisit($tutor->getUserID(), "tutor");
                     $question = QuestionDB::GetQuestionByID($resolution->getQuestionID());
-                    $userID = $question->getUserID();
-
+                    
+            		if (($tutorVisit != null) && 
+            			($tutorVisit->getLocationID() == $visit->getLocationID()) &&
+            		 	($tutorVisit->getLocationID() <= 2)) // either of our labs
+						$showUrl = false;
+					else 
+						$showUrl = true;
+					
+					//$showUrl = true;
                     $singleResolution = array("tutorFName" => $tutor->getFirstName(),
                                             "tutorLName" => $tutor->getLastName(),
                                             "tutorEmail" => $tutor->getEmail(),
@@ -279,7 +289,8 @@ try {
                                             "openTime" => $question->getOpenTime(),
                                             "uID" => $question->getUserID(),
                                             "ouID" => $user->getUserID(),
-                                            "qID" => $question->getQuestionID());
+                                            "qID" => $question->getQuestionID(),
+                                            "showUrl" => $showUrl);
 
                     array_push($acceptedQuestionInfo, $singleResolution);
                 }
@@ -294,12 +305,24 @@ try {
             $questionID = filter_input(INPUT_POST, "viewQuestion");
             $questionDetails = QuestionDB::GetQuestionByID($questionID);
             $studentDetails = StudentDB::RetrieveStudentByID($questionDetails->getUserID());
+            $resolution = ResolutionDB::RetrieveResolutionByID($questionID);
+            if ($resolution != null) {
+            	$tutorDetails = TutorDB::RetrieveTutorByID($resolution->getUserID());
+            	$tutorName = $tutorDetails->getFirstName() . " " . $tutorDetails->getLastName() ;
+            }
+            else
+            	$tutorName = "";
+	
+            
             $questionJSON = array(
                                     "courseNumber" => $questionDetails->getCourseNumber(),
                                     "subject" => $questionDetails->getSubject(),
                                     "question" => $questionDetails->getDescription(),
                                     "questionID" => $questionDetails->getQuestionID(),
                                     "askTime" => $questionDetails->getAskTime(),
+                                    "status" => $questionDetails->getStatus(), 
+                                    "resolutionText" => ($resolution != null) ? $resolution->getResolution() : "" ,
+                                    "tutorName" => $tutorName,  
                                     "studentFirstName" => $studentDetails->getFirstName(),
                                     "studentLastName" => $studentDetails->getLastName(),
                                     "studentEmail" => $studentDetails->getEmail());
@@ -316,9 +339,17 @@ try {
             $questionDetails->setStatus('Tutor Accepted');
             $questionDetails->setOpenTime(date("Y-m-d H:i:s", time()));
             QuestionDB::UpdateQuestion($questionDetails);
-
-            $newResolution = new Resolution($questionID, $user->getUserID());
-            ResolutionDB::CreateResolution($newResolution);
+            
+            $resolution = ResolutionDB::RetrieveResolutionByID($questionID);
+            if ($resolution == null) {
+				$newResolution = new Resolution($questionID, $user->getUserID());
+				ResolutionDB::CreateResolution($newResolution);
+            }
+            else {
+            	$resolution->setUserID($user->getUserID());
+            	$resolution->setResolution("");
+            	ResolutionDB::UpdateResolution($resolution);
+            }
 
             $questionJSON = array(
                                     "courseNumber" => $questionDetails->getCourseNumber(),
@@ -346,13 +377,17 @@ try {
         case "reopen_question":
             if (filter_input(INPUT_POST, "openQuestion") !== null) {
                 $questionID = filter_input(INPUT_POST, "openQuestion");
+                $description = filter_input(INPUT_POST, "resolutionText", FILTER_SANITIZE_STRING);
                 $questionDetails = QuestionDB::GetQuestionByID($questionID);
                 $questionDetails->setStatus('Open');
                 $questionDetails->setOpenTime(null);
                 QuestionDB::UpdateQuestion($questionDetails);
 
                 $resolution = ResolutionDB::RetrieveResolutionByID($questionID);
-                ResolutionDB::DeleteResolution($resolution);
+                $resolution->setUserID($user->getUserID());
+                $resolution->setResolution($description);
+                ResolutionDB::UpdateResolution($resolution);
+                //ResolutionDB::DeleteResolution($resolution);
             }
         break;
 
@@ -364,6 +399,7 @@ try {
                 $questionDetails->setStatus('Escalated');
                 
                 $res = ResolutionDB::RetrieveResolutionByID($questionID);
+                $res->setUserID($user->getUserID());
                 $res->setResolution($description);
                 ResolutionDB::UpdateResolution($res);
                 QuestionDB::UpdateQuestion($questionDetails);
@@ -379,6 +415,7 @@ try {
                 $questionDetails->setCloseTime(date("Y-m-d H:i:s", time()));
 
                 $res = ResolutionDB::RetrieveResolutionByID($questionID);
+                $res->setUserID($user->getUserID());
                 $res->setResolution($description);
                 ResolutionDB::UpdateResolution($res);
                 QuestionDB::UpdateQuestion($questionDetails);
@@ -394,9 +431,9 @@ try {
             $id = filter_input(INPUT_POST, 'id');
             if (isset($id)) {
                 $temp = new Schedule(1, date("Y-m-d H:i:s", time()), date("Y-m-d H:i:s", time()), 1, $id);
-                $schedule = scheduledb::GetSchedule($temp);
-                scheduledb::DeleteSchedule($schedule);
-                $schedules = scheduledb::GetTutorSchedule($user);
+                $schedule = ScheduleDB::GetSchedule($temp);
+                ScheduleDB::DeleteSchedule($schedule);
+                $schedules = ScheduleDB::GetTutorSchedule($user);
                 $_SESSION['schedule'] = $schedules;
                 include("./Views/tutor_schedule.php");
             }
@@ -463,7 +500,7 @@ try {
             	$user->setBio($bio);
             	if ($user instanceof Tutor) {
             		$user->setTutorBio($tutorbio);
-					TutorDB::UpdateTutor($user);
+            		TutorDB::UpdateTutor($user);
             	}
             	else {
             		$user->setMajorId($majorid);
@@ -487,7 +524,8 @@ try {
     }
 } catch (PDOException $pdoEx) {
     $error_message = $pdoEx->getMessage();
-    include('./Errors/database_error.php');
+    print_r($pdoEx);
+    //include('./Errors/database_error.php');
     exit();
 }
 catch (Exception $ex) {

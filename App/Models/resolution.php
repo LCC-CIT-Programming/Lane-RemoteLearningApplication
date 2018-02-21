@@ -31,4 +31,8 @@ class Resolution
     {
         $this->resolution = $VALUE;
     }
+    public function setUserID($VALUE)
+    {
+        $this->userID = $VALUE;
+    }
 }

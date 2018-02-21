@@ -98,6 +98,40 @@ class QuestionDB
         }
         return $questions;
     }
+    
+    public static function GetUnresolvedQuestionsForOnlineStudents()
+    {
+        $db = Database::getDB();
+
+        $query = 'SELECT Question.*
+			    FROM Question
+			    INNER JOIN onlinestudents 
+			    ON Question.UserID = onlinestudents.UserID 
+                WHERE Question.Status != "Resolved"  
+                ORDER BY askTime';
+
+        $statement = $db->prepare($query);
+        $statement->execute();
+        $rows = $statement->fetchAll();
+        $statement->closeCursor();
+
+        $questions = array();
+        foreach ($rows as $row) {
+            $question = new Question(
+                 $row['UserID'],
+                 $row['CourseNumber'],
+                 $row['Subject'],
+                 $row['Description'],
+                 $row['Status'],
+                 $row['AskTime'],
+                 $row['QuestionID'],
+                 $row['OpenTime'],
+                 $row['CloseTime']);
+
+            array_push($questions, $question);
+        }
+        return $questions;
+    }
 
     public static function GetQuestion($QUESTION)
     {

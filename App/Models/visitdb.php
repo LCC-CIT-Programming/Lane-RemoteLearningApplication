@@ -4,7 +4,7 @@ class VisitDB
     public static function CreateVisit($VISIT)
     {
     
-    	self::EndPreviousVisitForUser($VISIT->getUserID());
+    	self::EndPreviousVisitForUser($VISIT->getUserID(), $VISIT->getRole());
     
         $db = Database::getDB();
 
@@ -69,16 +69,19 @@ class VisitDB
         }
     }
     
-    public static function RetrieveLastVisit($userID)
+    public static function RetrieveLastVisit($userID, $role)
     {
         $db = Database::getDB();
 
         $query = 'SELECT *
-			          FROM Visit
-                WHERE Visit.UserID = :userid AND Visit.EndTime IS NULL';
+			        FROM Visit
+                	WHERE Visit.UserID = :userid AND
+                		Visit.Role = :role AND  
+                		Visit.EndTime IS NULL';
 
         $statement = $db->prepare($query);
         $statement->bindValue(":userid", $userID);
+        $statement->bindValue(":role", $role);
         $statement->execute();
         $row = $statement->fetch();
         $statement->closeCursor();
@@ -145,9 +148,9 @@ class VisitDB
         $statement->closeCursor();
     }
     
-    public static function EndPreviousVisitForUser($userID)
+    public static function EndPreviousVisitForUser($userID, $role)
     {
-    	$visit = self::RetrieveLastVisit($userID);
+    	$visit = self::RetrieveLastVisit($userID, $role);
     	if ($visit != null)
     	{
     		$db = Database::getDB();

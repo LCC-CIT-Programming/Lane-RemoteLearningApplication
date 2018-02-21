@@ -72,8 +72,11 @@
 
           <div class="text-center">
             <h3 id="tutorName"></h3>
-            <p style="font-size: 16px;">Meet up at hangouts.google.com!</p>
-            <p id="tutorEmail"></p>
+            <div id="zoomUrl">
+				<p style="font-size: 16px;">Join me in a Zoom Meeting!  Here's the url:  
+					<a href="https://lanecc.zoom.us/j/754449649" target="_blank">https://lanecc.zoom.us/j/754449649</a></p>
+				<p id="tutorEmail"></p>
+            </div>
           </div>
 
 				</div>
@@ -114,6 +117,11 @@
                 modal.find('#tutorName').html(data[key]['tutorFName'] + ' ' + data[key]['tutorLName'] + '  has accepted your question!');
                 modal.find('#tutorEmail').html(data[key]['tutorEmail']);
                 modal.find('#studentResolveQuestion').val(data[key]['qID']);
+                console.log(data[key]['showUrl']);
+            	if (data[key]['showUrl'] == true)
+            		modal.find('#zoomUrl').show();
+            	else
+            		modal.find('#zoomUrl').hide();            		
               }
             });
           }

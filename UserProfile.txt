@@ -1,9 +1,0 @@
-
-Current state:
-We can upload a .png file successfully to the new folder we created to store pictures (/Profile_Pics)
-There are functions to take an Lnumber and convert it to a hashed string using MD5().
-We have a few ways to validate the file, but commented them out in our testing.
-
-What's left to do:
--modifying upload_Picture function in uploads.php
--display Smiley.png if no user profile picture is present

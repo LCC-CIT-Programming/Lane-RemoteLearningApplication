@@ -186,14 +186,14 @@
 						<tr class="col-xs-12"><th class="col-xs-3" style="min-width: 150px;">Course:</th><td class="col-xs-9" id="courseNumber"></td></tr>
 						<tr class="col-xs-12"><th class="col-xs-3" style="min-width: 150px;">Subject:</th><td class="col-xs-9" id="subject"></td></tr>
 						<tr class="col-xs-12"><th class="col-xs-3" style="min-width: 150px;">Question:</th><td class="col-xs-9" id="question"></td></tr>
-						<tr class="col-xs-12"><th class="col-xs-3" style="min-width: 150px;">Status Description:</th>
+						<tr class="col-xs-12"><th class="col-xs-3" style="min-width: 150px;" id="tutorName">Comments:</th>
 							<td class="col-xs-9" id="resolution"><input id="resolutionText" type="text" style="min-width: 250px;"/></td></tr>
 					</table>
 				</div>
 			</div>
 			<div class="modal-footer">
 				<div id="modalButtons">
-					<button id="acceptQuestion" type="button" class="btn btn-success">Accept</button>
+					<button id="acceptQuestion" type="button" class="btn btn-success" data-dismiss="modal">Accept</button>
 					<button id="closeDetails" type="button" class="btn btn-danger" data-dismiss="modal" >Close</button>
 					<button id="resolveQuestion" type="button" class="btn btn-success" data-dismiss="modal">Resolved</button>
 					<button id="escalateQuestion" type="button" class="btn btn-warning" data-dismiss="modal">Escalate</button>
@@ -267,7 +267,9 @@ $(document).ready(function() {
 			var val = $(this).val();
 		//	POST QUESTIONID TO ACTION
 	      	$.post('', { action:'accept_question', acceptQuestion:val }, function(ret) {
+
 				var data = JSON.parse(ret);
+				/* don't need this - close modal if tutor accepts a question 
 				var modal = $('#myModal');
 
 				modal.find('#courseNumber').html(data.courseNumber);
@@ -282,12 +284,20 @@ $(document).ready(function() {
 				modal.find('#resolveQuestion').show();
 				modal.find('#escalateQuestion').show();
 				modal.find('#openQuestion').show();
+				*/
 			});
 		});
 
 		$('#openQuestion').click(function() {
 			var val = $(this).val();
-			$.post('', { action:'reopen_question', openQuestion:val });
+			var description = $('#myModal').find('#resolutionText').val();
+			$.post('', 
+				{ 
+				action:'reopen_question', 
+				openQuestion:val , 
+				resolutionText:description
+				}
+			);
 		});
 
 		$('#escalateQuestion').click(function() {
@@ -331,16 +341,39 @@ $(document).on('click', '.details', function() {
 			modal.find('#question').html(data.question);
 			modal.find('#askTime').html(data.askTime);
 			modal.find('#studentName').html(data.studentFirstName + " " + data.studentLastName);
+			modal.find('#tutorName').html((data.tutorName == "") ? "Tutor Comments:" : data.tutorName + "'s Comments:");			
+			modal.find('#resolutionText').val(data.resolutionText);
 			modal.find('#acceptQuestion').val(data.questionID);
 			modal.find('#resolveQuestion').val(data.questionID);
 			modal.find('#escalateQuestion').val(data.questionID);
 			modal.find('#openQuestion').val(data.questionID);
-			modal.find('#acceptQuestion').show();
-			modal.find('#closeDetails').show();
-			modal.find('#emailRow').hide();
-			modal.find('#resolveQuestion').hide();
-			modal.find('#escalateQuestion').hide();
-			modal.find('#openQuestion').hide();
+			switch (data.status)
+			{
+				case "Open":
+					modal.find('#acceptQuestion').show();
+					modal.find('#closeDetails').show();
+					modal.find('#emailRow').hide();
+					modal.find('#resolveQuestion').hide();
+					modal.find('#escalateQuestion').hide();
+					modal.find('#openQuestion').hide();
+					break;
+				case "Tutor Accepted": case "Student Acknowledged":
+					modal.find('#acceptQuestion').hide();
+					modal.find('#closeDetails').show();
+					modal.find('#emailRow').hide();
+					modal.find('#resolveQuestion').show();
+					modal.find('#escalateQuestion').show();
+					modal.find('#openQuestion').show();
+					break;
+				default:
+					modal.find('#acceptQuestion').hide();
+					modal.find('#closeDetails').show();
+					modal.find('#emailRow').hide();
+					modal.find('#resolveQuestion').hide();
+					modal.find('#escalateQuestion').hide();
+					modal.find('#openQuestion').hide();
+					break;
+			}
 		});
 	});
 
