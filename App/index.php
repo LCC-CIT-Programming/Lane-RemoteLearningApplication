@@ -523,13 +523,26 @@ try {
 		break;
     }
 } catch (PDOException $pdoEx) {
-    $error_message = $pdoEx->getMessage();
-    print_r($pdoEx);
-    //include('./Errors/database_error.php');
+    $datetime = new DateTime();    
+    $datetime->setTimezone(new DateTimeZone('America/Los_Angeles'));    
+    $logEntry = $datetime->;format('Y/m/d H:i:s') . '/' .              
+    	$pdoEx->getMessage(). '/' .        
+        $pdoEx->getCode() . '/' .        
+        $pdoEx->getFile() . '/' .        
+        $pdoEx->getLine();      
+    error_log($logEntry);   
+    include('./Errors/database_error.php');
     exit();
 }
 catch (Exception $ex) {
-    $error_message = $ex->getMessage();
-    echo($error_message);
+    $datetime = new DateTime();    
+    $datetime->setTimezone(new DateTimeZone('America/Los_Angeles'));    
+    $logEntry = $datetime->;format('Y/m/d H:i:s') . '/' .              
+    	$ex->getMessage(). '/' .        
+        $ex->getCode() . '/' .        
+        $ex->getFile() . '/' .        
+        $ex->getLine();      
+    error_log($logEntry);   
+    include('./Errors/database_error.php');
     exit();
 }

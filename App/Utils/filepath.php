@@ -12,7 +12,7 @@ foreach($dirs as $directory) {
     }
 }
 
-$picture_path = '/';
+$picture_path = '/App';
 foreach($dirs as $directory) {
     if (!empty($directory)) {
     	if ($directory == 'App') {
