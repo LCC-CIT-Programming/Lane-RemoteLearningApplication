@@ -16,7 +16,8 @@
 				$user_picture_path = $picture_path . $user_picture_filename;
 				$full_picture_path = $doc_root . $user_picture_path;
 				if (file_exists($full_picture_path))
-					echo "<img src='$user_picture_path' align='left' class='big_smiley'>";
+					//echo "<img src='$user_picture_path' align='left' class='big_smiley'>";
+					echo "<img class='big_smiley' style='background-image:url($user_picture_path)' >";
 				else
 					echo "<img src='./Styles/smiley.png' align='left' class='big_smiley'>";
 			?>

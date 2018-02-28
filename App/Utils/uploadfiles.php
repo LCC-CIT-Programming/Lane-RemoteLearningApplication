@@ -25,13 +25,25 @@
 			}
 
 			if(count($errors) === 0) {
-				if (move_uploaded_file($_FILES['savePicture']['tmp_name'], $full_picture_path))
-					return true;
+				if (is_uploaded_file($_FILES['savePicture']['tmp_name'])) {
+					//echo ("uploaded");
+					if (move_uploaded_file($_FILES['savePicture']['tmp_name'], $full_picture_path)) {
+						//echo ("saved");
+						return true;
+					}
+					else {
+						$errors[] = 'A technical error has occurred.  Your file was not uploaded but could not be saved.' ;
+						//print_r($errors);
+						return false;
+					}
+				} 
 				else {
-					$errors[] = 'A technical error has occurred.  Your file was not uploaded.';
+					$errors[] = 'A technical error has occurred.  Your file was not uploaded.' ;
+					//print_r($errors);
 					return false;
 				}
-			} else {
+			}	
+			else {
 				return false;
 			}
 		}

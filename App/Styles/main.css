@@ -144,7 +144,7 @@ td{
     height: 40px;
     width: 40px;
 }
-
+/*
 .big_smiley{
     margin: auto;
     height: 15%;
@@ -152,6 +152,18 @@ td{
     padding-left: 20%;
     padding-top: 10px;
     padding-bottom: 10px;
+}
+*/
+.big_smiley {
+    background-color: #DDD;
+    border-radius: 5px;
+    /*background-image:url('https://pbs.twimg.com/profile_images/804421640465580032/aG7EyewO_400x400.jpg');*/
+    background-size: cover;
+    background-position: top center;
+    width: 120px;
+    height: 120px;
+    margin: auto;
+    /*margin-right: 20px;*/
 }
 
 h4 {
