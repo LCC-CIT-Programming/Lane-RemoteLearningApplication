@@ -19,3 +19,4 @@ class Tutor extends AppUser
         $this->tutorBio = $VALUE;
     }
 }
+?>

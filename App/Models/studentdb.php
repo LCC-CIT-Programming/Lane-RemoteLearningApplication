@@ -271,3 +271,4 @@ class StudentDB
         $statement->closeCursor();
     }
 }
+?>
