@@ -9,17 +9,18 @@
 	<div class="row">
       <!-- left column -->
       <div class="col-md-3">
-		<div>
+		<div class="text-center">
       	  	<!-- user picture -->
 			<?php
 				$user_picture_filename = $user->getImageFilename();
 				$user_picture_path = $picture_path . $user_picture_filename;
 				$full_picture_path = $doc_root . $user_picture_path;
+				$default_image = './Styles/smiley.png';
 				if (file_exists($full_picture_path))
-					//echo "<img src='$user_picture_path' align='left' class='big_smiley'>";
-					echo "<img class='big_smiley' style='background-image:url($user_picture_path)' >";
+					echo "<div class='big_smiley' style='background-image:url($user_picture_path)'></div>";
 				else
-					echo "<img src='./Styles/smiley.png' align='left' class='big_smiley'>";
+					echo "<div class='big_smiley' style='background-image:url($default_image)'></div>";
+
 			?>
       	</div>
         <div class="text-center">
