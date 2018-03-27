@@ -86,7 +86,7 @@ class TutorDB
         $tutorBio = $tutor->getTutorBio();
         $bio = $tutor->getBio();
 
-        $query1 = 'UPDATE Appuser 
+        $query1 = 'UPDATE AppUser 
         	SET FirstName=:firstName, LastName=:lastName,  
 			EmailAddress=:email, AppUserBio = :bio 
 			WHERE UserID = :userid';
@@ -206,3 +206,4 @@ class TutorDB
         }
     }
 }
+?>

@@ -78,9 +78,11 @@ class AppUser
 
       $_SESSION['role'] = $ROLE;
       if ($ROLE == "faculty") {
-          return null;
+        $user = InstructorDB::InstructorLogin($LNUMBER);
+        if ($user !== null && isset($user)) {
+            return $user;
+        }
       }
-
       else if ($ROLE == "tutor")
       {
         $user = TutorDB::TutorLogin($LNUMBER);

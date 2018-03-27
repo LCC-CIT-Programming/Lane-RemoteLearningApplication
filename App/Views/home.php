@@ -7,6 +7,7 @@
 			<div class="col-sm-2"></div>
 			<div class=" col-sm-4 form-group">
 			<?php
+			
 		    	$role = $_SESSION['role'];
 		    	if ($role == 'student') {
 		        	echo "<label class='' for='class' >Please tell us what you are working on.</label>";
@@ -23,18 +24,21 @@
 		        	}
 		        	echo "</select>";
     			}
+    		
     		?>
 			</div>
 			<div class=" col-sm-4 form-group">
-			<label class="" for="location">Where are you working today?</label>
-			<select class="form-control" id="location">
 			<?php
+				if ($role == 'student' || $role == 'tutor') {
+					echo '<label class="" for="location">Where are you working today?</label>';
+					echo '<select class="form-control" id="location">';
 		        	$locations = $_SESSION['locations'];
 		        	foreach ($locations as $location) {
 		           	 	echo '<option value = "' . $location->getLocationId().'" >' . $location->getLocationName() . '</option>';
 		        	}
-    		?>
-			</select>
+					echo '</select>';
+				}
+			?>
 			</div>
 			<div class="col-sm-2"></div>
 	  </div>
@@ -44,8 +48,8 @@
 	<div class="col-lg-3 well" id="student_div">
 		<?php	
 			$user_picture_filename = $user->getImageFilename();
-			$user_picture_path = $picture_path . $user_picture_filename;
-			$full_picture_path = $doc_root . $user_picture_path;
+			$user_picture_path = $app_path . $picture_path . $user_picture_filename;
+			$full_picture_path = $doc_root . $picture_path . $user_picture_filename;
 			$default_image = './Styles/smiley.png';
 			if (file_exists($full_picture_path))
 				echo "<div class='smiley' style='background-image:url($user_picture_path)'></div>";

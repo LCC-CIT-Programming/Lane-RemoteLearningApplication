@@ -19,3 +19,4 @@ class Student extends AppUser
         $this->majorID = $VALUE;
     }
 }
+?>

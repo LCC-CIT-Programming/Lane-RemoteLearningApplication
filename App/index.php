@@ -1,12 +1,12 @@
 <?php
 
 $useCAS = false;
-$doc_root = "";
-$app_path = "";
-$picture_path = "";
+$doc_root = "/var/www/citlab/";
+$app_path = "/citlab/";
+$picture_path = "ProfilePictures/";
 
 require_once('Utils/settimezone.php');
-require_once('Utils/filepath.php');
+//require_once('Utils/filepath.php');
 require_once('Utils/uploadfiles.php');
 require_once('Utils/usehttps.php');
 require_once('Models/appuser.php');
@@ -33,6 +33,8 @@ require_once('Models/tasktype.php');
 require_once('Models/tasktypedb.php');
 require_once('Models/major.php');
 require_once('Models/majordb.php');
+require_once('Models/instructor.php');
+require_once('Models/instructordb.php');
 require_once('CAS/config.php');
 require_once('CAS/CAS.php');
 
@@ -131,17 +133,15 @@ try {
             else {
                 $user = AppUser::login($username, $role);
             }
-            
-            $_SESSION['user'] = $user;
 
-            // ----------- SUCCESSFUL LOGIN -----------  //
-            if ($user !== null)
-            {
-                $visit = $_SESSION['visit'];
-                header('Location: index.php?action=home');
+            // ----------- SUCCESSFUL LOGIN -----------  //            
+            $_SESSION['user'] = $user;
+            if ($user !== null) {
+            	if ($role == 'student' || $role == 'tutor')
+            	    $visit = $_SESSION['visit'];
+            	header('Location: index.php?action=home');
                 die();
             }
-
             // -----------   FAILED LOGIN   -----------  //
             else {
                 $loginError = "Login attempt failed.";
@@ -222,9 +222,11 @@ try {
                 if ($role == 'student') {
                     $task->setEndTime(date("Y-m-d H:i:s", time()));
                     taskdb::EndTask($task);
-                }
-                $visit->setEndTime(date("Y-m-d H:i:s", time()));
-                visitdb::UpdateVisit($visit);
+                } 
+                else if ($role == 'tutor') {
+					$visit->setEndTime(date("Y-m-d H:i:s", time()));
+					visitdb::UpdateVisit($visit);
+				}
             }
 
             $loginError = "";
@@ -502,9 +504,12 @@ try {
             		$user->setTutorBio($tutorbio);
             		TutorDB::UpdateTutor($user);
             	}
-            	else {
+            	else if ($user instanceof Student) {
             		$user->setMajorId($majorid);
             		StudentDB::UpdateStudent($user);
+            	}
+            	else if ($user instanceof Instructor) {
+            		InstructorDB::UpdateInstructor($user);
             	}
             	$profileSuccess = "Your profile has been saved.";
             }
