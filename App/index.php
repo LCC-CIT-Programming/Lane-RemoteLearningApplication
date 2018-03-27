@@ -1,12 +1,12 @@
 <?php
 
 $useCAS = false;
-$doc_root = "";
-$app_path = "";
-$picture_path = "";
+$doc_root = "/var/www/citlab/";
+$app_path = "/citlab/";
+$picture_path = "ProfilePictures/";
 
 require_once('Utils/settimezone.php');
-require_once('Utils/filepath.php');
+//require_once('Utils/filepath.php');
 require_once('Utils/uploadfiles.php');
 require_once('Utils/usehttps.php');
 require_once('Models/appuser.php');
@@ -222,9 +222,11 @@ try {
                 if ($role == 'student') {
                     $task->setEndTime(date("Y-m-d H:i:s", time()));
                     taskdb::EndTask($task);
-                }
-                $visit->setEndTime(date("Y-m-d H:i:s", time()));
-                visitdb::UpdateVisit($visit);
+                } 
+                else if ($role == 'tutor') {
+					$visit->setEndTime(date("Y-m-d H:i:s", time()));
+					visitdb::UpdateVisit($visit);
+				}
             }
 
             $loginError = "";

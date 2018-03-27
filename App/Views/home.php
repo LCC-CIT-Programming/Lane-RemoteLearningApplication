@@ -48,8 +48,8 @@
 	<div class="col-lg-3 well" id="student_div">
 		<?php	
 			$user_picture_filename = $user->getImageFilename();
-			$user_picture_path = $picture_path . $user_picture_filename;
-			$full_picture_path = $doc_root . $user_picture_path;
+			$user_picture_path = $app_path . $picture_path . $user_picture_filename;
+			$full_picture_path = $doc_root . $picture_path . $user_picture_filename;
 			$default_image = './Styles/smiley.png';
 			if (file_exists($full_picture_path))
 				echo "<div class='smiley' style='background-image:url($user_picture_path)'></div>";
