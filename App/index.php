@@ -222,6 +222,8 @@ try {
                 if ($role == 'student') {
                     $task->setEndTime(date("Y-m-d H:i:s", time()));
                     taskdb::EndTask($task);
+                    $visit->setEndTime(date("Y-m-d H:i:s", time()));
+					visitdb::UpdateVisit($visit);
                 } 
                 else if ($role == 'tutor') {
 					$visit->setEndTime(date("Y-m-d H:i:s", time()));
